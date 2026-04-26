@@ -1,0 +1,3028 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>门店周报 - 店铺丨本周汇报总表_2026年第16周</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: white;
+            display: flex;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-item.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: #667eea;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .metric-change.positive {
+            color: #27ae60;
+        }
+
+        .metric-change.negative {
+            color: #e74c3c;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            height: 350px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-buttons {
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #f8f9fa;
+            color: #2c3e50;
+            border: 2px solid #e0e0e0;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .filter-btn:hover {
+            background: #e8f4f8;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .store-nav {
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .store-nav-item {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .store-nav-item:hover {
+            background: #e8f4f8;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .store-nav-item.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #5568d3;
+        }
+
+        .reset-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #7f8c8d;
+        }
+
+        #storesContainer {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .manager-group {
+            margin-bottom: 30px;
+        }
+
+        .manager-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .store-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .store-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .store-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .store-tag {
+            background: #e8f4f8;
+            color: #2980b9;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-right: 8px;
+        }
+
+        .info-content {
+            color: #2c3e50;
+        }
+
+        .problem-tag {
+            background: #fee;
+            color: #c0392b;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .highlight-tag {
+            background: #e8f5e9;
+            color: #27ae60;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .lifecycle-nav {
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+        }
+
+        .lifecycle-nav-item {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lifecycle-nav-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .lifecycle-nav-item.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .lifecycle-summary {
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .lifecycle-summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .lifecycle-summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .lifecycle-summary-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .lifecycle-summary-card .count {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .lifecycle-summary-card .label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .problem-category {
+            margin-bottom: 30px;
+        }
+
+        .category-header {
+            background: #fff3cd;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .category-header h3 {
+            color: #856404;
+            margin: 0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            display: flex;
+            align-items: start;
+        }
+
+        .action-number {
+            background: #27ae60;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .action-desc {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header .subtitle {
+                font-size: 12px;
+            }
+
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .nav-item {
+                flex: 1;
+                min-width: 80px;
+                padding: 12px 8px;
+                font-size: 13px;
+                border-bottom-width: 2px;
+            }
+
+            .nav-item.active::after {
+                width: 80%;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .metric-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .metric-value {
+                font-size: 22px;
+            }
+
+            .metric-label {
+                font-size: 12px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .search-box {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-box input {
+                max-width: 100%;
+                margin-bottom: 0;
+                padding: 12px 15px;
+            }
+
+            .search-btn,
+            .reset-btn {
+                width: 100%;
+                margin-left: 0;
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .filter-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-btn {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .store-nav {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .store-nav-item {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+
+            .lifecycle-nav {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .lifecycle-nav-item {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .lifecycle-summary {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
+
+            .lifecycle-summary-card {
+                padding: 15px;
+            }
+
+            .lifecycle-summary-card h4 {
+                font-size: 14px;
+            }
+
+            .lifecycle-summary-card .count {
+                font-size: 24px;
+            }
+
+            .store-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .store-tag {
+                margin-top: 8px;
+            }
+
+            .table-responsive {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-item {
+                font-size: 12px;
+                padding: 10px 5px;
+            }
+
+            .nav-item.active::after {
+                width: 70%;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .store-card {
+                padding: 12px;
+            }
+
+            .store-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lifecycle-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .action-item {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>店铺丨本周汇报总表_2026年第16周</h1>
+            <div class="subtitle">报告周期：2026年第16周（4月13日-4月19日）</div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-item active" data-tab="overview">大盘运营情况</div>
+            <div class="nav-item" data-tab="stores">各门店详细分析</div>
+            <div class="nav-item" data-tab="problems">问题归因参谋</div>
+        </div>
+
+        <div class="content">
+            <!-- 大盘运营情况 -->
+            <div class="section active" id="overview">
+                <h2 class="section-title">大盘运营情况</h2>
+
+                <div class="card">
+                    <h3>核心指标概览</h3>
+                    <div class="metric-grid">
+                        
+        <div class="metric-card">
+            <div class="metric-value">140578</div>
+            <div class="metric-label">会员总数</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">22407</div>
+            <div class="metric-label">有效会员数</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">769</div>
+            <div class="metric-label">平均客单价</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">2.7</div>
+            <div class="metric-label">平均连带率</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">4721</div>
+            <div class="metric-label">活跃会员数</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">2481</div>
+            <div class="metric-label">沉默会员数</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">5247</div>
+            <div class="metric-label">睡眠会员数</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value">9976</div>
+            <div class="metric-label">预流失会员数</div>
+        </div>
+        
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #999;">
+                        *复购定义：客户历史有消费，在统计时间内再次或多次消费
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>核心发现</h3>
+                    <ul class="action-list">
+                        
+        <li class="action-item">
+            <div class="action-number" style="background: #e74c3c;">1</div>
+            <div class="action-content">
+                <div class="action-title">会员活跃度严重不足</div>
+                <div class="action-desc">活跃会员仅4721人，占有效会员的21.1%，远低于健康水平（50%），21家门店活跃率低于40%，需加强会员激活和召回</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number" style="background: #e74c3c;">2</div>
+            <div class="action-content">
+                <div class="action-title">预流失会员预警</div>
+                <div class="action-desc">预流失会员达9976人，占有效会员的44.5%，流失风险极高，所有门店预流失率均高于20%，需紧急干预</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number" style="background: #e74c3c;">3</div>
+            <div class="action-content">
+                <div class="action-title">会员分层健康度堪忧</div>
+                <div class="action-desc">活跃和沉默会员占比仅32.1%，远低于健康标准70%，会员基础薄弱</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number" style="background: #e74c3c;">4</div>
+            <div class="action-content">
+                <div class="action-title">会员分层健康度堪忧</div>
+                <div class="action-desc">活跃和沉默会员占比仅32.1%，远低于健康标准70%，会员基础薄弱</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number" style="background: #e74c3c;">5</div>
+            <div class="action-content">
+                <div class="action-title">复购率尚可</div>
+                <div class="action-desc">平均复购率2.7%，但仍有10家门店复购率低于50%，会员忠诚度有待提升</div>
+            </div>
+        </li>
+        
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>整体趋势洞察</h3>
+                    <div class="chart-container">
+                        <div id="memberStatusChart" style="height: 350px;"></div>
+                    </div>
+                    <div class="chart-container">
+                        <div id="memberTotalChart" style="height: 300px;"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>门店排名</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>排名</th>
+                                    <th>门店名称</th>
+                                    <th>区域负责人</th>
+                                    <th>有效会员数</th>
+                                    <th>占比</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+        <tr>
+            <td>1</td>
+            <td>萝岗万达</td>
+            <td>赖月平</td>
+            <td>2736</td>
+            <td>17.4%</td>
+        </tr>
+        
+        <tr>
+            <td>2</td>
+            <td>清远城市广场</td>
+            <td>陈祝利</td>
+            <td>2446</td>
+            <td>15.6%</td>
+        </tr>
+        
+        <tr>
+            <td>3</td>
+            <td>广州塔广场店</td>
+            <td>彭苑婷</td>
+            <td>1957</td>
+            <td>12.5%</td>
+        </tr>
+        
+        <tr>
+            <td>4</td>
+            <td>海珠乐峰广场</td>
+            <td>彭苑婷</td>
+            <td>1618</td>
+            <td>10.3%</td>
+        </tr>
+        
+        <tr>
+            <td>5</td>
+            <td>乐从天佑城</td>
+            <td>陈祝利</td>
+            <td>1406</td>
+            <td>9.0%</td>
+        </tr>
+        
+        <tr>
+            <td>6</td>
+            <td>潘州广场朵以</td>
+            <td>彭苑婷</td>
+            <td>1194</td>
+            <td>7.6%</td>
+        </tr>
+        
+        <tr>
+            <td>7</td>
+            <td>宜都清江店</td>
+            <td>鲜于浩</td>
+            <td>1180</td>
+            <td>7.5%</td>
+        </tr>
+        
+        <tr>
+            <td>8</td>
+            <td>通城朵以</td>
+            <td>鲜于浩</td>
+            <td>1153</td>
+            <td>7.3%</td>
+        </tr>
+        
+        <tr>
+            <td>9</td>
+            <td>岗顶天娱广场</td>
+            <td>彭苑婷</td>
+            <td>1048</td>
+            <td>6.7%</td>
+        </tr>
+        
+        <tr>
+            <td>10</td>
+            <td>茂名印象汇</td>
+            <td>彭苑婷</td>
+            <td>962</td>
+            <td>6.1%</td>
+        </tr>
+        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>大盘行动建议</h3>
+                    <ul class="action-list">
+                        
+        <li class="action-item">
+            <div class="action-number">1</div>
+            <div class="action-content">
+                <div class="action-title">立即启动会员激活计划</div>
+                <div class="action-desc">针对活跃率低于40%的21家门店开展专项提升行动，增加会员互动活动，提高会员到店频率</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number">2</div>
+            <div class="action-content">
+                <div class="action-title">对预流失会员进行分层运营</div>
+                <div class="action-desc">对预流失率超过50%的门店重点干预，对预流失会员进行一对一沟通，了解需求并提供个性化服务</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number">3</div>
+            <div class="action-content">
+                <div class="action-title">建立会员关怀机制</div>
+                <div class="action-desc">定期回访长期未消费会员，提供关怀和优惠，降低流失风险</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number">4</div>
+            <div class="action-content">
+                <div class="action-title">优化会员权益体系</div>
+                <div class="action-desc">提升会员价值和粘性，建立会员积分体系，提供积分兑换和增值服务</div>
+            </div>
+        </li>
+        
+        <li class="action-item">
+            <div class="action-number">5</div>
+            <div class="action-content">
+                <div class="action-title">加强店员培训</div>
+                <div class="action-desc">提高服务质量和连带销售能力，提升客单价和连带率</div>
+            </div>
+        </li>
+        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 各门店详细分析 -->
+            <div class="section" id="stores">
+                <h2 class="section-title">各门店详细分析</h2>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索门店名称...">
+                    <button class="search-btn" onclick="searchStores()">搜索</button>
+                    <button class="reset-btn" onclick="resetSearch()">重置</button>
+                </div>
+
+                <div class="store-nav">
+                    <button class="store-nav-item active" onclick="showManagerPage('all')">全部</button>
+                    <button class="store-nav-item" onclick="showManagerPage('彭苑婷')">彭苑婷</button><button class="store-nav-item" onclick="showManagerPage('李硕果')">李硕果</button><button class="store-nav-item" onclick="showManagerPage('赖月平')">赖月平</button><button class="store-nav-item" onclick="showManagerPage('陈祝利')">陈祝利</button><button class="store-nav-item" onclick="showManagerPage('鲜于浩')">鲜于浩</button>
+                </div>
+
+                <div id="storesContainer">
+                    
+        <div class="manager-group">
+            <div class="manager-header">
+                <h3>区域负责人：陈祝利</h3>
+                <div style="margin-top: 5px; opacity: 0.9;">门店数量：7</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">清远城市广场</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数504人，占有效会员20.6%，低于健康水平50%</span> <span class="problem-tag">预流失会员数1101人，占有效会员45.0%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>8997人</td></tr><tr><td>有效会员数</td><td>2446；占比27.2%</td></tr><tr><td>活跃会员数</td><td>504；占比20.6%</td></tr><tr><td>沉默会员数</td><td>271；占比11.1%</td></tr><tr><td>睡眠会员数</td><td>573；占比23.4%</td></tr><tr><td>预流失会员数</td><td>1101；占比45.0%</td></tr><tr><td>复购人数</td><td>65；占比61.3%；环比+18252.9%</td></tr><tr><td>客单价</td><td>658元+4.8%</td></tr><tr><td>连带率</td><td>2.2件</td></tr><tr><td>储值客户人数</td><td>947人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">高埗万和</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数151人，占有效会员21.1%，低于健康水平50%</span> <span class="problem-tag">连带率2.47件，低于整体平均2.68件</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数21人，占比72.4%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数151人、连带率2.47件，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>2160人</td></tr><tr><td>有效会员数</td><td>714；占比33.1%</td></tr><tr><td>活跃会员数</td><td>151；占比21.1%</td></tr><tr><td>沉默会员数</td><td>105；占比14.7%</td></tr><tr><td>睡眠会员数</td><td>198；占比27.7%</td></tr><tr><td>预流失会员数</td><td>260；占比36.4%</td></tr><tr><td>复购人数</td><td>21；占比72.4%；环比+3312.5%</td></tr><tr><td>客单价</td><td>724元-0.2%</td></tr><tr><td>连带率</td><td>2.5件</td></tr><tr><td>储值客户人数</td><td>78人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">大朗店</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数109人，占有效会员18.6%，严重低于健康水平50%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数16人，占比80.0%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在1个主要问题：活跃会员数109人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>4614人</td></tr><tr><td>有效会员数</td><td>587；占比12.7%</td></tr><tr><td>活跃会员数</td><td>109；占比18.6%</td></tr><tr><td>沉默会员数</td><td>83；占比14.1%</td></tr><tr><td>睡眠会员数</td><td>171；占比29.1%</td></tr><tr><td>预流失会员数</td><td>224；占比38.2%</td></tr><tr><td>复购人数</td><td>16；占比80.0%；环比+6833.3%</td></tr><tr><td>客单价</td><td>719元+6.3%</td></tr><tr><td>连带率</td><td>2.6件</td></tr><tr><td>储值客户人数</td><td>149人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞南城</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数70人，占有效会员14.3%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数271人，占有效会员55.2%，严重超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">客单价1197元，高于整体平均769元，消费能力强</span> <span class="highlight-tag">复购人数11人，占比84.6%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数70人、预流失会员数271人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>6594人</td></tr><tr><td>有效会员数</td><td>491；占比7.4%</td></tr><tr><td>活跃会员数</td><td>70；占比14.3%</td></tr><tr><td>沉默会员数</td><td>41；占比8.4%</td></tr><tr><td>睡眠会员数</td><td>109；占比22.2%</td></tr><tr><td>预流失会员数</td><td>271；占比55.2%</td></tr><tr><td>复购人数</td><td>11；占比84.6%；环比+2833.3%</td></tr><tr><td>客单价</td><td>1197元+5.2%</td></tr><tr><td>连带率</td><td>3.9件</td></tr><tr><td>储值客户人数</td><td>61人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">英德朵以</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数70人，占有效会员24.0%，低于健康水平50%</span> <span class="problem-tag">预流失会员数122人，占有效会员41.8%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">客单价936元，高于整体平均769元，消费能力强</span> <span class="highlight-tag">复购人数15人，占比88.2%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数70人、预流失会员数122人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>1350人</td></tr><tr><td>有效会员数</td><td>292；占比21.6%</td></tr><tr><td>活跃会员数</td><td>70；占比24.0%</td></tr><tr><td>沉默会员数</td><td>34；占比11.6%</td></tr><tr><td>睡眠会员数</td><td>66；占比22.6%</td></tr><tr><td>预流失会员数</td><td>122；占比41.8%</td></tr><tr><td>复购人数</td><td>15；占比88.2%；环比+2150.0%</td></tr><tr><td>客单价</td><td>936元-3.3%</td></tr><tr><td>连带率</td><td>3.1件</td></tr><tr><td>储值客户人数</td><td>119人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞黄江大道</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数86人，占有效会员15.2%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数244人，占有效会员43.2%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">连带率3.07件，高于整体平均，商品组合销售能力较强</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>2705人</td></tr><tr><td>有效会员数</td><td>565；占比20.9%</td></tr><tr><td>活跃会员数</td><td>86；占比15.2%</td></tr><tr><td>沉默会员数</td><td>71；占比12.6%</td></tr><tr><td>睡眠会员数</td><td>165；占比29.2%</td></tr><tr><td>预流失会员数</td><td>244；占比43.2%</td></tr><tr><td>复购人数</td><td>6；占比40.0%；环比+1100.0%</td></tr><tr><td>客单价</td><td>861元+1.2%</td></tr><tr><td>连带率</td><td>3.1件</td></tr><tr><td>储值客户人数</td><td>56人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">乐从天佑城</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">陈祝利</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数222人，占有效会员15.8%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数719人，占有效会员51.1%，严重超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>11745人</td></tr><tr><td>有效会员数</td><td>1406；占比12.0%</td></tr><tr><td>活跃会员数</td><td>222；占比15.8%</td></tr><tr><td>沉默会员数</td><td>157；占比11.2%</td></tr><tr><td>睡眠会员数</td><td>308；占比21.9%</td></tr><tr><td>预流失会员数</td><td>719；占比51.1%</td></tr><tr><td>复购人数</td><td>19；占比52.8%</td></tr><tr><td>客单价</td><td>555元+2.7%</td></tr><tr><td>连带率</td><td>2.2件</td></tr><tr><td>储值客户人数</td><td>411人</td></tr></tbody></table></div>
+            </div>
+            </div>
+        <div class="manager-group">
+            <div class="manager-header">
+                <h3>区域负责人：赖月平</h3>
+                <div style="margin-top: 5px; opacity: 0.9;">门店数量：1</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">萝岗万达</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">赖月平</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数596人，占有效会员21.8%，低于健康水平50%</span> <span class="problem-tag">预流失会员数1232人，占有效会员45.0%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数596人、预流失会员数1232人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>17763人</td></tr><tr><td>有效会员数</td><td>2736；占比15.4%</td></tr><tr><td>活跃会员数</td><td>596；占比21.8%</td></tr><tr><td>沉默会员数</td><td>306；占比11.2%</td></tr><tr><td>睡眠会员数</td><td>604；占比22.1%</td></tr><tr><td>预流失会员数</td><td>1232；占比45.0%</td></tr><tr><td>复购人数</td><td>52；占比55.3%；环比+33328.6%</td></tr><tr><td>客单价</td><td>859元+8.1%</td></tr><tr><td>连带率</td><td>3.0件</td></tr><tr><td>储值客户人数</td><td>1143人</td></tr></tbody></table></div>
+            </div>
+            </div>
+        <div class="manager-group">
+            <div class="manager-header">
+                <h3>区域负责人：彭苑婷</h3>
+                <div style="margin-top: 5px; opacity: 0.9;">门店数量：8</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">南村店</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数98人，占有效会员18.3%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数253人，占有效会员47.2%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>6786人</td></tr><tr><td>有效会员数</td><td>536；占比7.9%</td></tr><tr><td>活跃会员数</td><td>98；占比18.3%</td></tr><tr><td>沉默会员数</td><td>61；占比11.4%</td></tr><tr><td>睡眠会员数</td><td>124；占比23.1%</td></tr><tr><td>预流失会员数</td><td>253；占比47.2%</td></tr><tr><td>复购人数</td><td>12；占比57.1%；环比-8500.0%</td></tr><tr><td>客单价</td><td>747元-10.0%</td></tr><tr><td>连带率</td><td>2.1件</td></tr><tr><td>储值客户人数</td><td>169人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">岗顶天娱广场</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数240人，占有效会员22.9%，低于健康水平50%</span> <span class="problem-tag">预流失会员数498人，占有效会员47.5%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">客单价1115元，高于整体平均769元，消费能力强</span> <span class="highlight-tag">连带率3.98件，高于整体平均，商品组合销售能力较强</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数240人、预流失会员数498人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>9336人</td></tr><tr><td>有效会员数</td><td>1048；占比11.2%</td></tr><tr><td>活跃会员数</td><td>240；占比22.9%</td></tr><tr><td>沉默会员数</td><td>88；占比8.4%</td></tr><tr><td>睡眠会员数</td><td>221；占比21.1%</td></tr><tr><td>预流失会员数</td><td>498；占比47.5%</td></tr><tr><td>复购人数</td><td>24；占比58.5%；环比-16900.0%</td></tr><tr><td>客单价</td><td>1115元-10.7%</td></tr><tr><td>连带率</td><td>4.0件</td></tr><tr><td>储值客户人数</td><td>315人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">白云万象汇朵以</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数186人，占有效会员20.7%，低于健康水平50%</span> <span class="problem-tag">预流失会员数367人，占有效会员40.9%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>5398人</td></tr><tr><td>有效会员数</td><td>897；占比16.6%</td></tr><tr><td>活跃会员数</td><td>186；占比20.7%</td></tr><tr><td>沉默会员数</td><td>119；占比13.3%</td></tr><tr><td>睡眠会员数</td><td>226；占比25.2%</td></tr><tr><td>预流失会员数</td><td>367；占比40.9%</td></tr><tr><td>复购人数</td><td>11；占比31.4%；环比+1825.0%</td></tr><tr><td>客单价</td><td>586元+4.7%</td></tr><tr><td>连带率</td><td>2.1件</td></tr><tr><td>储值客户人数</td><td>289人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">潘州广场朵以</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数230人，占有效会员19.3%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数513人，占有效会员43.0%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>9136人</td></tr><tr><td>有效会员数</td><td>1194；占比13.1%</td></tr><tr><td>活跃会员数</td><td>230；占比19.3%</td></tr><tr><td>沉默会员数</td><td>116；占比9.7%</td></tr><tr><td>睡眠会员数</td><td>335；占比28.1%</td></tr><tr><td>预流失会员数</td><td>513；占比43.0%</td></tr><tr><td>复购人数</td><td>18；占比58.1%；环比+800.0%</td></tr><tr><td>客单价</td><td>559元+14.7%</td></tr><tr><td>连带率</td><td>2.1件</td></tr><tr><td>储值客户人数</td><td>249人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">湛江吴川</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数122人，占有效会员26.8%，低于健康水平50%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数12人，占比75.0%，会员忠诚度高</span> <span class="highlight-tag">活跃会员数122人，占有效会员26.8%，会员活跃度相对较好</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在1个主要问题：活跃会员数122人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>3527人</td></tr><tr><td>有效会员数</td><td>455；占比12.9%</td></tr><tr><td>活跃会员数</td><td>122；占比26.8%</td></tr><tr><td>沉默会员数</td><td>79；占比17.4%</td></tr><tr><td>睡眠会员数</td><td>118；占比25.9%</td></tr><tr><td>预流失会员数</td><td>136；占比29.9%</td></tr><tr><td>复购人数</td><td>12；占比75.0%；环比-4900.0%</td></tr><tr><td>客单价</td><td>721元-17.3%</td></tr><tr><td>连带率</td><td>3.1件</td></tr><tr><td>储值客户人数</td><td>246人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">茂名印象汇</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数225人，占有效会员23.4%，低于健康水平50%</span> <span class="problem-tag">连带率2.48件，低于整体平均2.68件</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数225人、连带率2.48件，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>5319人</td></tr><tr><td>有效会员数</td><td>962；占比18.1%</td></tr><tr><td>活跃会员数</td><td>225；占比23.4%</td></tr><tr><td>沉默会员数</td><td>106；占比11.0%</td></tr><tr><td>睡眠会员数</td><td>265；占比27.5%</td></tr><tr><td>预流失会员数</td><td>366；占比38.0%</td></tr><tr><td>复购人数</td><td>21；占比65.6%；环比-6209.1%</td></tr><tr><td>客单价</td><td>705元-9.5%</td></tr><tr><td>连带率</td><td>2.5件</td></tr><tr><td>储值客户人数</td><td>488人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">海珠乐峰广场</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数398人，占有效会员24.6%，低于健康水平50%</span> <span class="problem-tag">连带率2.27件，低于整体平均2.68件</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数398人、连带率2.27件，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>6176人</td></tr><tr><td>有效会员数</td><td>1618；占比26.2%</td></tr><tr><td>活跃会员数</td><td>398；占比24.6%</td></tr><tr><td>沉默会员数</td><td>196；占比12.1%</td></tr><tr><td>睡眠会员数</td><td>411；占比25.4%</td></tr><tr><td>预流失会员数</td><td>615；占比38.0%</td></tr><tr><td>复购人数</td><td>31；占比62.0%；环比+12816.7%</td></tr><tr><td>客单价</td><td>655元-19.2%</td></tr><tr><td>连带率</td><td>2.3件</td></tr><tr><td>储值客户人数</td><td>1040人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">广州塔广场店</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">彭苑婷</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数310人，占有效会员15.8%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数1123人，占有效会员57.4%，严重超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">客单价923元，高于整体平均769元，消费能力强</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>9676人</td></tr><tr><td>有效会员数</td><td>1957；占比20.2%</td></tr><tr><td>活跃会员数</td><td>310；占比15.8%</td></tr><tr><td>沉默会员数</td><td>170；占比8.7%</td></tr><tr><td>睡眠会员数</td><td>356；占比18.2%</td></tr><tr><td>预流失会员数</td><td>1123；占比57.4%</td></tr><tr><td>复购人数</td><td>18；占比42.9%；环比+30500.0%</td></tr><tr><td>客单价</td><td>923元+23.3%</td></tr><tr><td>连带率</td><td>3.0件</td></tr><tr><td>储值客户人数</td><td>476人</td></tr></tbody></table></div>
+            </div>
+            </div>
+        <div class="manager-group">
+            <div class="manager-header">
+                <h3>区域负责人：鲜于浩</h3>
+                <div style="margin-top: 5px; opacity: 0.9;">门店数量：3</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜都清江店</div>
+                    <div class="store-tag">需改进</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">鲜于浩</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数172人，占有效会员14.6%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数646人，占有效会员54.7%，严重超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">暂无明显亮点</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店多项指标表现不佳，会员活跃度低、流失风险高，急需全面改进</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>9835人</td></tr><tr><td>有效会员数</td><td>1180；占比12.0%</td></tr><tr><td>活跃会员数</td><td>172；占比14.6%</td></tr><tr><td>沉默会员数</td><td>110；占比9.3%</td></tr><tr><td>睡眠会员数</td><td>252；占比21.4%</td></tr><tr><td>预流失会员数</td><td>646；占比54.7%</td></tr><tr><td>复购人数</td><td>24；占比60.0%；环比+7100.0%</td></tr><tr><td>客单价</td><td>555元+9.9%</td></tr><tr><td>连带率</td><td>2.2件</td></tr><tr><td>储值客户人数</td><td>292人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜城香港路</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">鲜于浩</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数106人，占有效会员20.7%，低于健康水平50%</span> <span class="problem-tag">预流失会员数243人，占有效会员47.4%，超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数15人，占比93.8%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数106人、预流失会员数243人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>2919人</td></tr><tr><td>有效会员数</td><td>513；占比17.6%</td></tr><tr><td>活跃会员数</td><td>106；占比20.7%</td></tr><tr><td>沉默会员数</td><td>71；占比13.8%</td></tr><tr><td>睡眠会员数</td><td>94；占比18.3%</td></tr><tr><td>预流失会员数</td><td>243；占比47.4%</td></tr><tr><td>复购人数</td><td>15；占比93.8%；环比+9650.0%</td></tr><tr><td>客单价</td><td>681元-26.8%</td></tr><tr><td>连带率</td><td>2.6件</td></tr><tr><td>储值客户人数</td><td>111人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">通城朵以</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">鲜于浩</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数181人，占有效会员15.7%，严重低于健康水平50%</span> <span class="problem-tag">预流失会员数599人，占有效会员52.0%，严重超过警戒线20%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数41人，占比70.7%，会员忠诚度高</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：活跃会员数181人、预流失会员数599人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>5005人</td></tr><tr><td>有效会员数</td><td>1153；占比23.0%</td></tr><tr><td>活跃会员数</td><td>181；占比15.7%</td></tr><tr><td>沉默会员数</td><td>117；占比10.1%</td></tr><tr><td>睡眠会员数</td><td>256；占比22.2%</td></tr><tr><td>预流失会员数</td><td>599；占比52.0%</td></tr><tr><td>复购人数</td><td>41；占比70.7%；环比+5688.2%</td></tr><tr><td>客单价</td><td>801元+9.0%</td></tr><tr><td>连带率</td><td>2.9件</td></tr><tr><td>储值客户人数</td><td>366人</td></tr></tbody></table></div>
+            </div>
+            </div>
+        <div class="manager-group">
+            <div class="manager-header">
+                <h3>区域负责人：李硕果</h3>
+                <div style="margin-top: 5px; opacity: 0.9;">门店数量：5</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳龙岗坪山店</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">李硕果</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数227人，占有效会员31.7%，低于健康水平50%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">复购人数29人，占比72.5%，会员忠诚度高</span> <span class="highlight-tag">活跃会员数227人，占有效会员31.7%，会员活跃度相对较好</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在1个主要问题：活跃会员数227人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>1148人</td></tr><tr><td>有效会员数</td><td>715；占比62.3%</td></tr><tr><td>活跃会员数</td><td>227；占比31.7%</td></tr><tr><td>沉默会员数</td><td>113；占比15.8%</td></tr><tr><td>睡眠会员数</td><td>201；占比28.1%</td></tr><tr><td>预流失会员数</td><td>174；占比24.3%</td></tr><tr><td>复购人数</td><td>29；占比72.5%；环比+4645.5%</td></tr><tr><td>客单价</td><td>763元-18.3%</td></tr><tr><td>连带率</td><td>2.6件</td></tr><tr><td>储值客户人数</td><td>0人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳龙华大浪</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">李硕果</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">连带率2.23件，低于整体平均2.68件</span> <span class="problem-tag">复购人数4人，占比13.8%，低于健康水平60%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">活跃会员数100人，占有效会员69.4%，会员活跃度相对较好</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：连带率2.23件、复购人数4人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>812人</td></tr><tr><td>有效会员数</td><td>144；占比17.7%</td></tr><tr><td>活跃会员数</td><td>100；占比69.4%</td></tr><tr><td>沉默会员数</td><td>0；占比0.0%</td></tr><tr><td>睡眠会员数</td><td>2；占比1.4%</td></tr><tr><td>预流失会员数</td><td>43；占比29.9%</td></tr><tr><td>复购人数</td><td>4；占比13.8%；环比-1300.0%</td></tr><tr><td>客单价</td><td>664元+1.6%</td></tr><tr><td>连带率</td><td>2.2件</td></tr><tr><td>储值客户人数</td><td>0人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳满京华店</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">李硕果</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">连带率2.21件，低于整体平均2.68件</span> <span class="problem-tag">复购人数13人，占比48.1%，低于健康水平60%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">活跃会员数118人，占有效会员41.4%，会员活跃度相对较好</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在2个主要问题：连带率2.21件、复购人数13人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>7217人</td></tr><tr><td>有效会员数</td><td>285；占比3.9%</td></tr><tr><td>活跃会员数</td><td>118；占比41.4%</td></tr><tr><td>沉默会员数</td><td>18；占比6.3%</td></tr><tr><td>睡眠会员数</td><td>61；占比21.4%</td></tr><tr><td>预流失会员数</td><td>91；占比31.9%</td></tr><tr><td>复购人数</td><td>13；占比48.1%；环比+15500.0%</td></tr><tr><td>客单价</td><td>678元-7.0%</td></tr><tr><td>连带率</td><td>2.2件</td></tr><tr><td>储值客户人数</td><td>0人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">坪地宜城店</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">李硕果</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">活跃会员数148人，占有效会员36.3%，低于健康水平50%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">客单价937元，高于整体平均769元，消费能力强</span> <span class="highlight-tag">活跃会员数148人，占有效会员36.3%，会员活跃度相对较好</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在1个主要问题：活跃会员数148人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>1380人</td></tr><tr><td>有效会员数</td><td>408；占比29.6%</td></tr><tr><td>活跃会员数</td><td>148；占比36.3%</td></tr><tr><td>沉默会员数</td><td>45；占比11.0%</td></tr><tr><td>睡眠会员数</td><td>108；占比26.5%</td></tr><tr><td>预流失会员数</td><td>107；占比26.2%</td></tr><tr><td>复购人数</td><td>9；占比50.0%；环比-2620.0%</td></tr><tr><td>客单价</td><td>937元+48.4%</td></tr><tr><td>连带率</td><td>2.8件</td></tr><tr><td>储值客户人数</td><td>0人</td></tr></tbody></table></div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳宝安店</div>
+                    <div class="store-tag">需关注</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">区域负责人：</span>
+                    <span class="info-content">李硕果</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">核心问题：</span>
+                    <div style="margin-top: 5px;"><span class="problem-tag">复购人数7人，占比43.8%，低于健康水平60%</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">亮点说明：</span>
+                    <div style="margin-top: 5px;"><span class="highlight-tag">活跃会员数52人，占有效会员49.5%，会员活跃度相对较好</span> <span class="highlight-tag">连带率3.12件，高于整体平均，商品组合销售能力较强</span></div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题总结：</span>
+                    <span class="info-content">门店存在1个主要问题：复购人数7人，需要重点关注</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">门店核心问题分析建议：</span>
+                    <span class="info-content">建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+
+                <div class="table-responsive"><table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>会员总数</td><td>980人</td></tr><tr><td>有效会员数</td><td>105；占比10.7%</td></tr><tr><td>活跃会员数</td><td>52；占比49.5%</td></tr><tr><td>沉默会员数</td><td>4；占比3.8%</td></tr><tr><td>睡眠会员数</td><td>23；占比21.9%</td></tr><tr><td>预流失会员数</td><td>29；占比27.6%</td></tr><tr><td>复购人数</td><td>7；占比43.8%；环比+1650.0%</td></tr><tr><td>客单价</td><td>866元+133.0%</td></tr><tr><td>连带率</td><td>3.1件</td></tr><tr><td>储值客户人数</td><td>0人</td></tr></tbody></table></div>
+            </div>
+            </div>
+                </div>
+            </div>
+
+            <!-- 问题归因参谋 -->
+            <div class="section" id="problems">
+                <h2 class="section-title">问题归因参谋</h2>
+
+                <div class="lifecycle-nav">
+                    <button class="lifecycle-nav-item active" onclick="showLifecyclePage('all')">全部</button>
+                    <button class="lifecycle-nav-item" onclick="showLifecyclePage('会员活跃度低')">会员活跃度低</button><button class="lifecycle-nav-item" onclick="showLifecyclePage('复购率偏低')">复购率偏低</button><button class="lifecycle-nav-item" onclick="showLifecyclePage('客单价偏低')">客单价偏低</button><button class="lifecycle-nav-item" onclick="showLifecyclePage('连带率偏低')">连带率偏低</button><button class="lifecycle-nav-item" onclick="showLifecyclePage('预流失风险高')">预流失风险高</button>
+                </div>
+
+                <div class="lifecycle-summary">
+                    
+        <div class="lifecycle-summary-card" onclick="showProblemDetailPage('会员活跃度低')">
+            <h4>会员活跃度低</h4>
+            <div class="count">21</div>
+            <div class="label">家门店</div>
+        </div>
+        
+        <div class="lifecycle-summary-card" onclick="showProblemDetailPage('复购率偏低')">
+            <h4>复购率偏低</h4>
+            <div class="count">3</div>
+            <div class="label">家门店</div>
+        </div>
+        
+        <div class="lifecycle-summary-card" onclick="showProblemDetailPage('客单价偏低')">
+            <h4>客单价偏低</h4>
+            <div class="count">0</div>
+            <div class="label">家门店</div>
+        </div>
+        
+        <div class="lifecycle-summary-card" onclick="showProblemDetailPage('连带率偏低')">
+            <h4>连带率偏低</h4>
+            <div class="count">5</div>
+            <div class="label">家门店</div>
+        </div>
+        
+        <div class="lifecycle-summary-card" onclick="showProblemDetailPage('预流失风险高')">
+            <h4>预流失风险高</h4>
+            <div class="count">14</div>
+            <div class="label">家门店</div>
+        </div>
+        
+                </div>
+
+                <div id="problemsContainer">
+                    
+        <div class="problem-category" id="category-会员活跃度低">
+            <div class="category-header">
+                <h3>会员活跃度低</h3>
+                <div style="margin-top: 5px; color: #856404;">涉及门店：21家</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">清远城市广场</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数504人，占有效会员20.6%，低于健康水平50%丨预流失会员数1101人，占有效会员45.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">高埗万和</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数151人，占有效会员21.1%，低于健康水平50%丨连带率2.47件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">大朗店</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数109人，占有效会员18.6%，严重低于健康水平50%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞南城</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数70人，占有效会员14.3%，严重低于健康水平50%丨预流失会员数271人，占有效会员55.2%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">英德朵以</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数70人，占有效会员24.0%，低于健康水平50%丨预流失会员数122人，占有效会员41.8%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞黄江大道</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数86人，占有效会员15.2%，严重低于健康水平50%丨预流失会员数244人，占有效会员43.2%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">乐从天佑城</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数222人，占有效会员15.8%，严重低于健康水平50%丨预流失会员数719人，占有效会员51.1%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">萝岗万达</div>
+                    <div class="store-tag">赖月平</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数596人，占有效会员21.8%，低于健康水平50%丨预流失会员数1232人，占有效会员45.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">南村店</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数98人，占有效会员18.3%，严重低于健康水平50%丨预流失会员数253人，占有效会员47.2%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">岗顶天娱广场</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数240人，占有效会员22.9%，低于健康水平50%丨预流失会员数498人，占有效会员47.5%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">白云万象汇朵以</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数186人，占有效会员20.7%，低于健康水平50%丨预流失会员数367人，占有效会员40.9%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">潘州广场朵以</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数230人，占有效会员19.3%，严重低于健康水平50%丨预流失会员数513人，占有效会员43.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">湛江吴川</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数122人，占有效会员26.8%，低于健康水平50%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">茂名印象汇</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数225人，占有效会员23.4%，低于健康水平50%丨连带率2.48件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">海珠乐峰广场</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数398人，占有效会员24.6%，低于健康水平50%丨连带率2.27件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">广州塔广场店</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数310人，占有效会员15.8%，严重低于健康水平50%丨预流失会员数1123人，占有效会员57.4%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜都清江店</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数172人，占有效会员14.6%，严重低于健康水平50%丨预流失会员数646人，占有效会员54.7%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜城香港路</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数106人，占有效会员20.7%，低于健康水平50%丨预流失会员数243人，占有效会员47.4%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">通城朵以</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数181人，占有效会员15.7%，严重低于健康水平50%丨预流失会员数599人，占有效会员52.0%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳龙岗坪山店</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数227人，占有效会员31.7%，低于健康水平50%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">坪地宜城店</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数148人，占有效会员36.3%，低于健康水平50%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>简要提升方案</h3>
+                <p>对活跃率低的门店，建议增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率</p>
+            </div>
+            </div>
+        <div class="problem-category" id="category-复购率偏低">
+            <div class="category-header">
+                <h3>复购率偏低</h3>
+                <div style="margin-top: 5px; color: #856404;">涉及门店：3家</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳龙华大浪</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">连带率2.23件，低于整体平均2.68件丨复购人数4人，占比13.8%，低于健康水平60%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳满京华店</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">连带率2.21件，低于整体平均2.68件丨复购人数13人，占比48.1%，低于健康水平60%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳宝安店</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">复购人数7人，占比43.8%，低于健康水平60%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>简要提升方案</h3>
+                <p>对复购率低的门店，建议建立会员积分体系，提供积分兑换和增值服务</p>
+            </div>
+            </div>
+        <div class="problem-category" id="category-客单价偏低">
+            <div class="category-header">
+                <h3>客单价偏低</h3>
+                <div style="margin-top: 5px; color: #856404;">涉及门店：0家</div>
+            </div>
+        
+            <div class="card">
+                <h3>简要提升方案</h3>
+                <p>对客单价低的门店，建议加强连带销售，培训店员推荐技巧，推出套餐组合和满减活动</p>
+            </div>
+            </div>
+        <div class="problem-category" id="category-连带率偏低">
+            <div class="category-header">
+                <h3>连带率偏低</h3>
+                <div style="margin-top: 5px; color: #856404;">涉及门店：5家</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">高埗万和</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数151人，占有效会员21.1%，低于健康水平50%丨连带率2.47件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">茂名印象汇</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数225人，占有效会员23.4%，低于健康水平50%丨连带率2.48件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">海珠乐峰广场</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数398人，占有效会员24.6%，低于健康水平50%丨连带率2.27件，低于整体平均2.68件</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳龙华大浪</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">连带率2.23件，低于整体平均2.68件丨复购人数4人，占比13.8%，低于健康水平60%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">深圳满京华店</div>
+                    <div class="store-tag">李硕果</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">连带率2.21件，低于整体平均2.68件丨复购人数13人，占比48.1%，低于健康水平60%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">优化商品陈列，搭配相关商品，方便会员选择；开展搭配活动，鼓励会员购买整套商品；建立会员积分体系，提供积分兑换和增值服务；定期举办会员日活动，提供专属优惠和增值服务</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>简要提升方案</h3>
+                <p>对连带率低的门店，建议优化商品陈列，搭配相关商品，开展搭配活动</p>
+            </div>
+            </div>
+        <div class="problem-category" id="category-预流失风险高">
+            <div class="category-header">
+                <h3>预流失风险高</h3>
+                <div style="margin-top: 5px; color: #856404;">涉及门店：14家</div>
+            </div>
+        
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">清远城市广场</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数504人，占有效会员20.6%，低于健康水平50%丨预流失会员数1101人，占有效会员45.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞南城</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数70人，占有效会员14.3%，严重低于健康水平50%丨预流失会员数271人，占有效会员55.2%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">英德朵以</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数70人，占有效会员24.0%，低于健康水平50%丨预流失会员数122人，占有效会员41.8%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">东莞黄江大道</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数86人，占有效会员15.2%，严重低于健康水平50%丨预流失会员数244人，占有效会员43.2%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">乐从天佑城</div>
+                    <div class="store-tag">陈祝利</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数222人，占有效会员15.8%，严重低于健康水平50%丨预流失会员数719人，占有效会员51.1%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">萝岗万达</div>
+                    <div class="store-tag">赖月平</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数596人，占有效会员21.8%，低于健康水平50%丨预流失会员数1232人，占有效会员45.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">南村店</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数98人，占有效会员18.3%，严重低于健康水平50%丨预流失会员数253人，占有效会员47.2%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">岗顶天娱广场</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数240人，占有效会员22.9%，低于健康水平50%丨预流失会员数498人，占有效会员47.5%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">白云万象汇朵以</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数186人，占有效会员20.7%，低于健康水平50%丨预流失会员数367人，占有效会员40.9%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">潘州广场朵以</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数230人，占有效会员19.3%，严重低于健康水平50%丨预流失会员数513人，占有效会员43.0%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">广州塔广场店</div>
+                    <div class="store-tag">彭苑婷</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数310人，占有效会员15.8%，严重低于健康水平50%丨预流失会员数1123人，占有效会员57.4%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜都清江店</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数172人，占有效会员14.6%，严重低于健康水平50%丨预流失会员数646人，占有效会员54.7%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">宜城香港路</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数106人，占有效会员20.7%，低于健康水平50%丨预流失会员数243人，占有效会员47.4%，超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="store-card">
+                <div class="store-header">
+                    <div class="store-name">通城朵以</div>
+                    <div class="store-tag">鲜于浩</div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">问题描述：</span>
+                    <span class="info-content">活跃会员数181人，占有效会员15.7%，严重低于健康水平50%丨预流失会员数599人，占有效会员52.0%，严重超过警戒线20%</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">详细建议措施：</span>
+                    <span class="info-content">增加会员互动活动，定期推送新品信息和优惠提醒，提高会员到店频率；对沉默会员进行定向营销，发送专属优惠券，唤醒沉睡会员；对预流失会员进行一对一沟通，了解需求并提供个性化服务；建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>简要提升方案</h3>
+                <p>对预流失率高的门店，建议建立会员关怀机制，定期回访长期未消费会员，提供关怀和优惠</p>
+            </div>
+            </div>
+                </div>
+            </div>
+
+            <!-- 问题归因参谋 - 独立分类页面（隐藏） -->
+            <div class="section" id="problem-detail" style="display: none;">
+                <h2 class="section-title" id="problemDetailTitle">问题详情</h2>
+                <button class="filter-btn" onclick="backToProblems()" style="margin-bottom: 20px;">← 返回问题归因参谋</button>
+                <div id="problemDetailContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+
+                // 重新渲染图表
+                if (this.dataset.tab === 'overview') {
+                    setTimeout(() => {
+                        initTrendChart();
+                        initRankingChart();
+                    }, 100);
+                }
+            });
+        });
+
+        // 会员状态饼状图
+        function initMemberStatusChart() {
+            const chartDom = document.getElementById('memberStatusChart');
+            if (!chartDom) return;
+
+            const myChart = echarts.init(chartDom);
+            const option = {
+                title: {
+                    text: '有效会员状态分布',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c}人 ({d}%)'
+                },
+                legend: {
+                    orient: 'horizontal',
+                    bottom: 0
+                },
+                series: [{
+                    type: 'pie',
+                    radius: '60%',
+                    data: [{"name": "活跃会员数", "value": 4721, "itemStyle": {"color": "#5470c6"}}, {"name": "沉默会员数", "value": 2481, "itemStyle": {"color": "#91cc75"}}, {"name": "睡眠会员数", "value": 5247, "itemStyle": {"color": "#fac858"}}, {"name": "预流失会员数", "value": 9976, "itemStyle": {"color": "#ee6666"}}],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    label: {
+                        formatter: '{b}: {c}人\n({d}%)'
+                    }
+                }]
+            };
+            myChart.setOption(option);
+        }
+
+        // 会员总数条形图
+        function initMemberTotalChart() {
+            const chartDom = document.getElementById('memberTotalChart');
+            if (!chartDom) return;
+
+            const myChart = echarts.init(chartDom);
+            const option = {
+                title: {
+                    text: '会员总数对比',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    formatter: '{b}: {c}人'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value'
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ["会员总数", "有效会员数"]
+                },
+                series: [{
+                    type: 'bar',
+                    data: [140578, 22407],
+                    barWidth: '40%',
+                    itemStyle: {
+                        color: '#667eea',
+                        borderRadius: [0, 4, 4, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}人'
+                    }
+                }]
+            };
+            myChart.setOption(option);
+        }
+
+        // 搜索门店
+        function searchStores() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const storeCards = document.querySelectorAll('.store-card');
+            const managerGroups = document.querySelectorAll('.manager-group');
+
+            if (searchTerm === '') {
+                // 搜索框为空，恢复当前页面所有门店显示
+                storeCards.forEach(card => {
+                    card.style.display = 'block';
+                    card.style.order = '';
+                });
+                managerGroups.forEach(group => {
+                    if (group.style.display !== 'none') {
+                        const groupCards = group.querySelectorAll('.store-card');
+                        groupCards.forEach(card => card.style.display = 'block');
+                    }
+                });
+                return;
+            }
+
+            // 搜索：隐藏其他对象，把搜索对象置顶
+            managerGroups.forEach(group => {
+                if (group.style.display === 'none') {
+                    return; // 跳过当前隐藏的分组
+                }
+
+                let groupHasMatch = false;
+                const groupCards = group.querySelectorAll('.store-card');
+
+                groupCards.forEach(card => {
+                    const storeName = card.querySelector('.store-name').textContent.toLowerCase();
+                    const problemTags = Array.from(card.querySelectorAll('.problem-tag'))
+                        .map(tag => tag.textContent.toLowerCase())
+                        .join(' ');
+                    const highlightTags = Array.from(card.querySelectorAll('.highlight-tag'))
+                        .map(tag => tag.textContent.toLowerCase())
+                        .join(' ');
+
+                    if (storeName.includes(searchTerm) ||
+                        problemTags.includes(searchTerm) ||
+                        highlightTags.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        card.style.order = -1; // 置顶
+                        groupHasMatch = true;
+                    } else {
+                        card.style.display = 'none';
+                        card.style.order = '';
+                    }
+                });
+            });
+        }
+
+        // 重置搜索
+        function resetSearch() {
+            // 清空搜索框
+            document.getElementById('searchInput').value = '';
+
+            // 恢复当前页面所有门店显示
+            const storeCards = document.querySelectorAll('.store-card');
+            storeCards.forEach(card => {
+                card.style.display = 'block';
+                card.style.order = '';
+            });
+        }
+
+        // 显示指定负责人的细分页面
+        function showManagerPage(manager) {
+            // 更新按钮状态
+            const navItems = document.querySelectorAll('.store-nav-item');
+            navItems.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.trim() === manager || (manager === 'all' && btn.textContent.trim() === '全部')) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 清空搜索框
+            document.getElementById('searchInput').value = '';
+
+            // 显示/隐藏对应的区域负责人分组
+            const managerGroups = document.querySelectorAll('.manager-group');
+            managerGroups.forEach(group => {
+                const managerHeader = group.querySelector('.manager-header h3');
+                const managerName = managerHeader ? managerHeader.textContent.trim().replace('区域负责人：', '') : '';
+
+                if (manager === 'all') {
+                    group.style.display = 'block';
+                    // 显示该组下的所有门店
+                    const groupCards = group.querySelectorAll('.store-card');
+                    groupCards.forEach(card => {
+                        card.style.display = 'block';
+                        card.style.order = '';
+                    });
+                } else {
+                    if (managerName === manager) {
+                        group.style.display = 'block';
+                        // 显示该组下的所有门店
+                        const groupCards = group.querySelectorAll('.store-card');
+                        groupCards.forEach(card => {
+                            card.style.display = 'block';
+                            card.style.order = '';
+                        });
+                    } else {
+                        group.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // 显示指定生命周期分类的细分页面
+        function showLifecyclePage(category) {
+            // 更新导航按钮状态
+            const navItems = document.querySelectorAll('.lifecycle-nav-item');
+            navItems.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.trim() === category || (category === 'all' && btn.textContent.trim() === '全部')) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 如果点击的是具体分类（非"全部"），跳转到独立页面
+            if (category !== 'all') {
+                showProblemDetailPage(category);
+            } else {
+                // 显示所有分类
+                const problemCategories = document.querySelectorAll('.problem-category');
+                problemCategories.forEach(cat => {
+                    cat.style.display = 'block';
+                });
+            }
+        }
+
+        // 显示问题详情独立页面
+        function showProblemDetailPage(category) {
+            // 隐藏问题归因参谋板块，显示详情页面
+            document.getElementById('problems').style.display = 'none';
+            document.getElementById('problem-detail').style.display = 'block';
+
+            // 设置标题
+            document.getElementById('problemDetailTitle').textContent = category;
+
+            // 获取对应分类的内容
+            const problemCategories = document.querySelectorAll('.problem-category');
+            let detailContent = '';
+
+            problemCategories.forEach(cat => {
+                const catHeader = cat.querySelector('.category-header h3');
+                const catName = catHeader ? catHeader.textContent.trim() : '';
+
+                if (catName === category) {
+                    // 克隆该分类的所有门店卡片
+                    const storeCards = cat.querySelectorAll('.store-card');
+                    storeCards.forEach(card => {
+                        detailContent += card.outerHTML;
+                    });
+
+                    // 如果有分类级建议
+                    const categorySuggestion = cat.querySelector('.card');
+                    if (categorySuggestion) {
+                        detailContent += categorySuggestion.outerHTML;
+                    }
+                }
+            });
+
+            // 设置详情内容
+            document.getElementById('problemDetailContent').innerHTML = detailContent;
+        }
+
+        // 返回问题归因参谋页面
+        function backToProblems() {
+            // 隐藏详情页面，显示问题归因参谋板块
+            document.getElementById('problem-detail').style.display = 'none';
+            document.getElementById('problems').style.display = 'block';
+
+            // 重置导航按钮状态
+            const navItems = document.querySelectorAll('.lifecycle-nav-item');
+            navItems.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.trim() === '全部') {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 显示所有分类
+            const problemCategories = document.querySelectorAll('.problem-category');
+            problemCategories.forEach(cat => {
+                cat.style.display = 'block';
+            });
+        }
+
+        // 回车搜索
+        document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchStores();
+            }
+        });
+
+        // 初始化图表
+        window.onload = function() {
+            initMemberStatusChart();
+            initMemberTotalChart();
+        };
+
+        // 响应式图表
+        window.addEventListener('resize', function() {
+            const memberStatusChart = echarts.getInstanceByDom(document.getElementById('memberStatusChart'));
+            const memberTotalChart = echarts.getInstanceByDom(document.getElementById('memberTotalChart'));
+            memberStatusChart?.resize();
+            memberTotalChart?.resize();
+        });
+    </script>
+</body>
+</html>
