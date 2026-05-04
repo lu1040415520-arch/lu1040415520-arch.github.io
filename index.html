@@ -6139,6 +6139,11 @@ function initStoreTrendChart() {
 function generateStoreChartAnalysis(currentData, yoyData, dates) {
     const analysisWrapper = document.getElementById('storeChartAnalysis');
     const analysisContent = document.getElementById('storeAnalysisContent');
+    const metric = document.getElementById('storeLayerSelect')?.value || '活跃会员数';
+    
+    // 判断指标类型：增长型指标（越高越好）vs 流失型指标（越低越好）
+    const growthMetrics = ['活跃会员数', '新会员数', '升级会员数', '复购会员数'];
+    const isGrowthMetric = growthMetrics.includes(metric);
     
     if (!analysisWrapper || !analysisContent || !currentData || !yoyData) {
         if (analysisWrapper) analysisWrapper.style.display = 'none';
@@ -6187,13 +6192,13 @@ function generateStoreChartAnalysis(currentData, yoyData, dates) {
     const yoyMinWeek = yoyData.indexOf(yoyMin) + 1;
     
     // 分析整体特征
-    let overallChar = analyzeOverallChar(currentData, yoyData, dates);
+    let overallChar = analyzeOverallChar(currentData, yoyData, dates, isGrowthMetric);
     
     // 分析各阶段
-    let stages = analyzeStages(currentData, yoyData, dates);
+    let stages = analyzeStages(currentData, yoyData, dates, isGrowthMetric);
     
     // 生成结论
-    let conclusion = generateConclusion(currentData, yoyData, currentSlope, yoySlope, currentAvg, yoyAvg);
+    let conclusion = generateConclusion(currentData, yoyData, currentSlope, yoySlope, currentAvg, yoyAvg, isGrowthMetric);
     
     // 组装HTML
     let html = '';
@@ -6222,7 +6227,7 @@ function generateStoreChartAnalysis(currentData, yoyData, dates) {
 }
 
 // 分析整体特征
-function analyzeOverallChar(current, yoy, dates) {
+function analyzeOverallChar(current, yoy, dates, isGrowthMetric) {
     // 节日周映射（基于2026年实际日期）
     const holidays = {
         8: '春节', 7: '情人节', 10: '妇女节', 14: '清明节',
@@ -6321,30 +6326,58 @@ function analyzeOverallChar(current, yoy, dates) {
     let currentAvg = current.reduce((a, b) => a + b, 0) / current.length;
     let yoyAvg = yoy.reduce((a, b) => a + b, 0) / yoy.length;
     let diff = yoyAvg - currentAvg;
-    let diffPercent = ((yoyAvg - currentAvg) / yoyAvg * 100).toFixed(1);
     
-    // 判断运营效果 - 以本期为重心
-    let effect = '正常';
-    if (diff > 0 && diff / yoyAvg > 0.3) {
-        effect = '运营存在较大问题，需要重点改善';
-    } else if (diff > 0 && diff / yoyAvg > 0.15) {
-        effect = '运营存在一定差距，需持续优化';
-    } else if (diff > 0) {
-        effect = '运营基本达标，但仍有提升空间';
-    } else if (diff < 0) {
-        effect = '表现优于同期，运营效果良好';
+    // 判断运营效果 - 根据指标类型调整
+    // 增长型指标（活跃/新会员等）：本期高=好
+    // 流失型指标（沉默/睡眠/流失等）：本期低=好（即同期高=不好）
+    let isGood = isGrowthMetric ? (diff < 0) : (diff > 0);
+    let diffRatio = Math.abs((diff / (yoyAvg || 1)));
+    
+    let effect = '';
+    if (isGood) {
+        if (isGrowthMetric) {
+            effect = '表现优于同期，运营效果良好';
+        } else {
+            effect = '流失控制优于同期，运营效果良好';
+        }
     } else {
-        effect = '与同期基本持平';
+        if (isGrowthMetric) {
+            if (diffRatio > 0.3) {
+                effect = '运营存在较大问题，需要重点改善';
+            } else if (diffRatio > 0.15) {
+                effect = '运营存在一定差距，需持续优化';
+            } else {
+                effect = '运营基本达标，但仍有提升空间';
+            }
+        } else {
+            if (diffRatio > 0.3) {
+                effect = '流失情况较严重，需要重点关注';
+            } else if (diffRatio > 0.15) {
+                effect = '流失控制有一定差距，需加强';
+            } else {
+                effect = '流失控制基本达标';
+            }
+        }
     }
     
-    // 整体特征描述 - 以本期为中心
+    // 整体特征描述 - 根据指标类型调整
     let overallDesc = '';
-    if (diff > 0) {
-        overallDesc = `同期始终显著高于本期，且差距在后期${current[current.length-1] < yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
-    } else if (diff < 0) {
-        overallDesc = `本期整体高于同期，且差距在后期${current[current.length-1] > yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+    let metricName = isGrowthMetric ? '' : '流失';
+    
+    if (isGrowthMetric) {
+        // 增长型指标
+        if (diff > 0) {
+            overallDesc = `同期始终显著高于本期，且差距在后期${current[current.length-1] < yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+        } else {
+            overallDesc = `本期整体高于同期，且差距在后期${current[current.length-1] > yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+        }
     } else {
-        overallDesc = `本期与同期基本持平，${effect}。`;
+        // 流失型指标
+        if (diff > 0) {
+            overallDesc = `同期流失会员始终高于本期，且差距在后期${current[current.length-1] > yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+        } else {
+            overallDesc = `本期流失会员整体高于同期，差距在后期${current[current.length-1] < yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+        }
     }
     
     // 添加节日分析总结
@@ -6357,7 +6390,7 @@ function analyzeOverallChar(current, yoy, dates) {
 }
 
 // 分析各阶段
-function analyzeStages(current, yoy, dates) {
+function analyzeStages(current, yoy, dates, isGrowthMetric) {
     let stages = [];
     let n = Math.min(current.length, yoy.length);
     
@@ -6467,7 +6500,7 @@ function analyzeStages(current, yoy, dates) {
 }
 
 // 生成结论
-function generateConclusion(current, yoy, currentSlope, yoySlope, currentAvg, yoyAvg) {
+function generateConclusion(current, yoy, currentSlope, yoySlope, currentAvg, yoyAvg, isGrowthMetric) {
     let conclusions = [];
     
     // 节日周映射（基于2026年实际日期）
@@ -6490,21 +6523,38 @@ function generateConclusion(current, yoy, currentSlope, yoySlope, currentAvg, yo
         conclusions.push('整体走势相对稳定，运营效果基本持平');
     }
     
-    // 均值对比结论
+    // 均值对比结论 - 根据指标类型调整
     let diff = yoyAvg - currentAvg;
-    let diffPercent = (diff / yoyAvg * 100).toFixed(1);
+    let diffPercent = Math.abs((diff / (yoyAvg || 1) * 100)).toFixed(1);
     
-    if (diff / yoyAvg > 0.3) {
-        conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在较大差距`);
-        conclusions.push('核心问题是缺乏有效的会员增长引擎');
-    } else if (diff / yoyAvg > 0.15) {
-        conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在一定差距`);
-        conclusions.push('需要进一步提升会员拉新和留存能力');
-    } else if (diff < 0) {
-        conclusions.push(`本期表现优于同期${Math.abs(diffPercent)}%`);
-        conclusions.push('当前运营策略有效，建议继续保持');
+    if (isGrowthMetric) {
+        // 增长型指标：本期高=好
+        if (diff > 0) {
+            conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在较大差距`);
+            conclusions.push('核心问题是缺乏有效的会员增长引擎');
+        } else if (diff / (yoyAvg || 1) > 0.15) {
+            conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在一定差距`);
+            conclusions.push('需要进一步提升会员拉新和留存能力');
+        } else if (diff < 0) {
+            conclusions.push(`本期表现优于同期${Math.abs(diffPercent)}%`);
+            conclusions.push('当前运营策略有效，建议继续保持');
+        } else {
+            conclusions.push(`本期均值与同期基本持平`);
+        }
     } else {
-        conclusions.push(`本期均值与同期基本持平`);
+        // 流失型指标：本期低=好
+        if (diff < 0) {
+            conclusions.push(`本期流失均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)高${Math.abs(diffPercent)}%，流失控制不佳`);
+            conclusions.push('核心问题是流失会员未得到有效控制');
+        } else if (Math.abs(diff / (yoyAvg || 1)) > 0.15) {
+            conclusions.push(`本期流失均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)高${Math.abs(diffPercent)}%，需加强流失预防`);
+            conclusions.push('需要进一步提升会员留存能力');
+        } else if (diff > 0) {
+            conclusions.push(`本期流失控制优于同期${Math.abs(diffPercent)}%`);
+            conclusions.push('流失预防策略有效，建议继续保持');
+        } else {
+            conclusions.push(`本期流失均值与同期基本持平`);
+        }
     }
     
     // 节日效应分析
