@@ -2551,6 +2551,53 @@
             height: 500px;
         }
 
+        /* 节日标签开关样式 */
+        .holiday-toggle {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .holiday-toggle label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            background: #ccc;
+            border-radius: 11px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #10b981;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(18px);
+        }
+
         .settings-wrapper {
             max-width: 600px;
         }
@@ -5458,6 +5505,10 @@ function initDashboard() {
                 <!-- 趋势图表 -->
                 <div class="trend-chart-wrapper">
                     <div id="trendChart" class="trend-chart"></div>
+                    <div class="holiday-toggle">
+                        <div id="trendHolidayToggle" class="toggle-switch active" onclick="toggleHoliday('trend')"></div>
+                        <label onclick="document.getElementById('trendHolidayToggle').click()">节日标签</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -5497,6 +5548,10 @@ function initDashboard() {
                 <!-- 门店趋势图表 -->
                 <div class="trend-chart-wrapper">
                     <div id="storeTrendChart" class="trend-chart"></div>
+                    <div class="holiday-toggle">
+                        <div id="storeHolidayToggle" class="toggle-switch active" onclick="toggleHoliday('store')"></div>
+                        <label onclick="document.getElementById('storeHolidayToggle').click()">节日标签</label>
+                    </div>
                 </div>
                 
                 <!-- 数据统计 -->
@@ -5533,6 +5588,23 @@ function initDashboard() {
 
 <script>
 const CORRECT_PASSWORD = "420103053";
+
+// 节日标签开关状态
+var showTrendHoliday = true;
+var showStoreHoliday = true;
+
+// 节日标签开关函数
+function toggleHoliday(type) {
+    if (type === 'trend') {
+        showTrendHoliday = !showTrendHoliday;
+        document.getElementById('trendHolidayToggle').classList.toggle('active', showTrendHoliday);
+        initTrendChart();
+    } else if (type === 'store') {
+        showStoreHoliday = !showStoreHoliday;
+        document.getElementById('storeHolidayToggle').classList.toggle('active', showStoreHoliday);
+        initStoreTrendChart();
+    }
+}
 
 function openPasswordModal() {
     document.getElementById('passwordModal').style.display = 'flex';
@@ -5864,7 +5936,7 @@ function initStoreTrendChart() {
                         { offset: 1, color: 'rgba(139, 92, 246, 0.05)' }
                     ])
                 },
-                markLine: {
+                markLine: showStoreHoliday ? {
                     silent: true,
                     symbol: ['none', 'arrow'],
                     symbolSize: [6, 10],
@@ -5921,7 +5993,7 @@ function initStoreTrendChart() {
                         }
                         return marks;
                     })()
-                }
+                } : {}
             },
             {
                 name: '同期',
@@ -6319,7 +6391,7 @@ function updateStoreTrendChart() {
                         { offset: 1, color: 'rgba(139, 92, 246, 0.05)' }
                     ])
                 },
-                markLine: {
+                markLine: showStoreHoliday ? {
                     silent: true,
                     symbol: ['none', 'arrow'],
                     symbolSize: [6, 10],
@@ -6376,7 +6448,7 @@ function updateStoreTrendChart() {
                         }
                         return marks;
                     })()
-                }
+                } : {}
             },
             {
                 name: '同期',
@@ -6571,7 +6643,7 @@ function initTrendChart() {
                         ]
                     }
                 },
-                markLine: {
+                markLine: showTrendHoliday ? {
                     silent: true,
                     symbol: ['none', 'arrow'],
                     symbolSize: [6, 10],
@@ -6628,7 +6700,7 @@ function initTrendChart() {
                         }
                         return marks;
                     })()
-                }
+                } : {}
             },
             {
                 name: '趋势线',
