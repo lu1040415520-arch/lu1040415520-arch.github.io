@@ -5863,6 +5863,64 @@ function initStoreTrendChart() {
                         { offset: 0, color: 'rgba(139, 92, 246, 0.3)' },
                         { offset: 1, color: 'rgba(139, 92, 246, 0.05)' }
                     ])
+                },
+                markLine: {
+                    silent: true,
+                    symbol: ['none', 'arrow'],
+                    symbolSize: [6, 10],
+                    lineStyle: { 
+                        type: 'solid', 
+                        color: '#ef4444', 
+                        width: 2,
+                        opacity: 0.7
+                    },
+                    label: { 
+                        show: true, 
+                        position: 'end',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        borderColor: '#ef4444',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: [4, 8],
+                        fontSize: 11, 
+                        color: '#dc2626', 
+                        fontWeight: 'bold',
+                        formatter: function(params) { return params.name; }
+                    },
+                    emphasis: {
+                        lineStyle: { width: 3, opacity: 1 },
+                        label: { fontSize: 12 }
+                    },
+                    data: (function() {
+                        // 2026年节日周数（根据实际日期计算）
+                        var holidays = [
+                            { week: 7, name: '情人节' },
+                            { week: 8, name: '春节' },
+                            { week: 10, name: '妇女节' },
+                            { week: 14, name: '清明节' },
+                            { week: 18, name: '劳动节' },
+                            { week: 19, name: '母亲节' },
+                            { week: 22, name: '端午节' },
+                            { week: 25, name: '618' },
+                            { week: 40, name: '国庆节' },
+                            { week: 40, name: '中秋节' },
+                            { week: 46, name: '双十一' },
+                            { week: 50, name: '双十二' }
+                        ];
+                        var marks = [];
+                        for (var i = 0; i < dates.length; i++) {
+                            var match = dates[i].match(/第(\d+)周/);
+                            if (match) {
+                                var week = parseInt(match[1]);
+                                for (var j = 0; j < holidays.length; j++) {
+                                    if (holidays[j].week === week) {
+                                        marks.push({ xAxis: i, name: holidays[j].name });
+                                    }
+                                }
+                            }
+                        }
+                        return marks;
+                    })()
                 }
             },
             {
@@ -6260,6 +6318,64 @@ function updateStoreTrendChart() {
                         { offset: 0, color: 'rgba(139, 92, 246, 0.3)' },
                         { offset: 1, color: 'rgba(139, 92, 246, 0.05)' }
                     ])
+                },
+                markLine: {
+                    silent: true,
+                    symbol: ['none', 'arrow'],
+                    symbolSize: [6, 10],
+                    lineStyle: { 
+                        type: 'solid', 
+                        color: '#ef4444', 
+                        width: 2,
+                        opacity: 0.7
+                    },
+                    label: { 
+                        show: true, 
+                        position: 'end',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        borderColor: '#ef4444',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: [4, 8],
+                        fontSize: 11, 
+                        color: '#dc2626', 
+                        fontWeight: 'bold',
+                        formatter: function(params) { return params.name; }
+                    },
+                    emphasis: {
+                        lineStyle: { width: 3, opacity: 1 },
+                        label: { fontSize: 12 }
+                    },
+                    data: (function() {
+                        // 2026年节日周数（根据实际日期计算）
+                        var holidays = [
+                            { week: 7, name: '情人节' },
+                            { week: 8, name: '春节' },
+                            { week: 10, name: '妇女节' },
+                            { week: 14, name: '清明节' },
+                            { week: 18, name: '劳动节' },
+                            { week: 19, name: '母亲节' },
+                            { week: 22, name: '端午节' },
+                            { week: 25, name: '618' },
+                            { week: 40, name: '国庆节' },
+                            { week: 40, name: '中秋节' },
+                            { week: 46, name: '双十一' },
+                            { week: 50, name: '双十二' }
+                        ];
+                        var marks = [];
+                        for (var i = 0; i < dates.length; i++) {
+                            var match = dates[i].match(/第(\d+)周/);
+                            if (match) {
+                                var week = parseInt(match[1]);
+                                for (var j = 0; j < holidays.length; j++) {
+                                    if (holidays[j].week === week) {
+                                        marks.push({ xAxis: i, name: holidays[j].name });
+                                    }
+                                }
+                            }
+                        }
+                        return marks;
+                    })()
                 }
             },
             {
@@ -6454,6 +6570,64 @@ function initTrendChart() {
                             { offset: 1, color: 'rgba(99, 91, 255, 0.05)' }
                         ]
                     }
+                },
+                markLine: {
+                    silent: true,
+                    symbol: ['none', 'arrow'],
+                    symbolSize: [6, 10],
+                    lineStyle: { 
+                        type: 'solid', 
+                        color: '#ef4444', 
+                        width: 2,
+                        opacity: 0.7
+                    },
+                    label: { 
+                        show: true, 
+                        position: 'end',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        borderColor: '#ef4444',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: [4, 8],
+                        fontSize: 11, 
+                        color: '#dc2626', 
+                        fontWeight: 'bold',
+                        formatter: function(params) { return params.name; }
+                    },
+                    emphasis: {
+                        lineStyle: { width: 3, opacity: 1 },
+                        label: { fontSize: 12 }
+                    },
+                    data: (function() {
+                        // 2026年节日周数（根据实际日期计算）
+                        var holidays = [
+                            { week: 7, name: '情人节' },
+                            { week: 8, name: '春节' },
+                            { week: 10, name: '妇女节' },
+                            { week: 14, name: '清明节' },
+                            { week: 18, name: '劳动节' },
+                            { week: 19, name: '母亲节' },
+                            { week: 22, name: '端午节' },
+                            { week: 25, name: '618' },
+                            { week: 40, name: '国庆节' },
+                            { week: 40, name: '中秋节' },
+                            { week: 46, name: '双十一' },
+                            { week: 50, name: '双十二' }
+                        ];
+                        var marks = [];
+                        for (var i = 0; i < dates.length; i++) {
+                            var match = dates[i].match(/第(\d+)周/);
+                            if (match) {
+                                var week = parseInt(match[1]);
+                                for (var j = 0; j < holidays.length; j++) {
+                                    if (holidays[j].week === week) {
+                                        marks.push({ xAxis: i, name: holidays[j].name });
+                                    }
+                                }
+                            }
+                        }
+                        return marks;
+                    })()
                 }
             },
             {
