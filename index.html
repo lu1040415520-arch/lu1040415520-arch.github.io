@@ -2598,6 +2598,95 @@
             transform: translateX(18px);
         }
 
+        /* 折线图分析样式 */
+        .chart-analysis-wrapper {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .analysis-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .analysis-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 16px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b5cf6;
+            display: inline-block;
+        }
+
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .analysis-content h5 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #8b5cf6;
+            margin: 16px 0 8px 0;
+        }
+
+        .analysis-content h5:first-child {
+            margin-top: 0;
+        }
+
+        .analysis-content p {
+            margin: 6px 0;
+            text-align: justify;
+        }
+
+        .analysis-stage {
+            background: rgba(139, 92, 246, 0.08);
+            border-left: 3px solid #8b5cf6;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .analysis-stage-title {
+            font-weight: 600;
+            color: #7c3aed;
+            margin-bottom: 4px;
+        }
+
+        .analysis-stage-content {
+            color: #475569;
+        }
+
+        .analysis-highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .analysis-conclusion {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+        }
+
+        .analysis-conclusion-title {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 6px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .settings-wrapper {
             max-width: 600px;
         }
@@ -5553,6 +5642,14 @@ function initDashboard() {
                         <label onclick="document.getElementById('storeHolidayToggle').click()">节日标签</label>
                     </div>
                 </div>
+
+                <!-- 折线图分析 -->
+                <div class="chart-analysis-wrapper" id="storeChartAnalysis" style="margin-top: 20px; display: none;">
+                    <div class="analysis-card">
+                        <h4 class="analysis-title">折线图分析</h4>
+                        <div class="analysis-content" id="storeAnalysisContent"></div>
+                    </div>
+                </div>
                 
                 <!-- 数据统计 -->
                 <div class="store-trend-stats" id="storeTrendStats"></div>
@@ -6027,12 +6124,440 @@ function initStoreTrendChart() {
     storeTrendChart.setOption(option);
     console.log('✅ 门店趋势图表设置成功');
     
+    // 生成折线图分析
+    generateStoreChartAnalysis(currentData, yoyData, dates);
+    
     // 响应窗口大小变化
     window.addEventListener('resize', function() {
         if (storeTrendChart) {
             storeTrendChart.resize();
         }
     });
+}
+
+// 生成门店折线图分析
+function generateStoreChartAnalysis(currentData, yoyData, dates) {
+    const analysisWrapper = document.getElementById('storeChartAnalysis');
+    const analysisContent = document.getElementById('storeAnalysisContent');
+    
+    if (!analysisWrapper || !analysisContent || !currentData || !yoyData) {
+        if (analysisWrapper) analysisWrapper.style.display = 'none';
+        return;
+    }
+    
+    // 检查是否有有效数据
+    const hasCurrentData = currentData.some(v => v > 0);
+    const hasYoyData = yoyData.some(v => v > 0);
+    
+    if (!hasCurrentData || !hasYoyData) {
+        analysisWrapper.style.display = 'none';
+        return;
+    }
+    
+    // 计算各项统计指标
+    const n = Math.min(currentData.length, yoyData.length);
+    
+    // 计算趋势（线性回归斜率）
+    function calcSlope(data) {
+        let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+        for (let i = 0; i < data.length; i++) {
+            sumX += i;
+            sumY += data[i];
+            sumXY += i * data[i];
+            sumX2 += i * i;
+        }
+        return (data.length * sumXY - sumX * sumY) / (data.length * sumX2 - sumX * sumX);
+    }
+    
+    const currentSlope = calcSlope(currentData);
+    const yoySlope = calcSlope(yoyData);
+    
+    // 计算均值
+    const currentAvg = currentData.reduce((a, b) => a + b, 0) / n;
+    const yoyAvg = yoyData.reduce((a, b) => a + b, 0) / n;
+    
+    // 计算极值
+    const currentMax = Math.max(...currentData);
+    const currentMin = Math.min(...currentData);
+    const yoyMax = Math.max(...yoyData);
+    const yoyMin = Math.min(...yoyData);
+    const currentMaxWeek = currentData.indexOf(currentMax) + 1;
+    const currentMinWeek = currentData.indexOf(currentMin) + 1;
+    const yoyMaxWeek = yoyData.indexOf(yoyMax) + 1;
+    const yoyMinWeek = yoyData.indexOf(yoyMin) + 1;
+    
+    // 分析整体特征
+    let overallChar = analyzeOverallChar(currentData, yoyData, dates);
+    
+    // 分析各阶段
+    let stages = analyzeStages(currentData, yoyData, dates);
+    
+    // 生成结论
+    let conclusion = generateConclusion(currentData, yoyData, currentSlope, yoySlope, currentAvg, yoyAvg);
+    
+    // 组装HTML
+    let html = '';
+    
+    // 整体特征
+    html += `<h5>整体特征</h5>`;
+    html += `<p>${overallChar}</p>`;
+    
+    // 分阶段拆解
+    html += `<h5>分阶段拆解</h5>`;
+    for (let i = 0; i < stages.length; i++) {
+        html += `<div class="analysis-stage">
+            <div class="analysis-stage-title">${stages[i].title}</div>
+            <div class="analysis-stage-content">${stages[i].content}</div>
+        </div>`;
+    }
+    
+    // 核心结论
+    html += `<div class="analysis-conclusion">
+        <div class="analysis-conclusion-title">核心结论</div>
+        <p>${conclusion}</p>
+    </div>`;
+    
+    analysisContent.innerHTML = html;
+    analysisWrapper.style.display = 'block';
+}
+
+// 分析整体特征
+function analyzeOverallChar(current, yoy, dates) {
+    // 节日周映射（基于2026年实际日期）
+    const holidays = {
+        8: '春节', 7: '情人节', 10: '妇女节', 14: '清明节',
+        18: '劳动节', 19: '母亲节', 22: '端午节', 25: '618',
+        40: '国庆/中秋', 46: '双十一', 50: '双十二'
+    };
+    
+    // 计算趋势
+    let currentTrend = current[current.length - 1] - current[0];
+    let yoyTrend = yoy[yoy.length - 1] - yoy[0];
+    
+    // 判断形状
+    let currentShape = '平稳';
+    let yoyShape = '平稳';
+    
+    // 寻找峰值和谷值
+    let currentPeak = 0, currentPeakWeek = 0;
+    let currentTrough = Infinity, currentTroughWeek = 0;
+    for (let i = 0; i < current.length; i++) {
+        if (current[i] > currentPeak) {
+            currentPeak = current[i];
+            currentPeakWeek = i + 1;
+        }
+        if (current[i] < currentTrough) {
+            currentTrough = current[i];
+            currentTroughWeek = i + 1;
+        }
+    }
+    
+    let yoyPeak = 0, yoyPeakWeek = 0;
+    let yoyTrough = Infinity, yoyTroughWeek = 0;
+    for (let i = 0; i < yoy.length; i++) {
+        if (yoy[i] > yoyPeak) {
+            yoyPeak = yoy[i];
+            yoyPeakWeek = i + 1;
+        }
+        if (yoy[i] < yoyTrough) {
+            yoyTrough = yoy[i];
+            yoyTroughWeek = i + 1;
+        }
+    }
+    
+    // 判断是否有深跌
+    let yoyDrop = yoyPeak - yoyTrough;
+    let hasDeepDrop = yoyDrop / yoyPeak > 0.2;
+    
+    // 判断是否有反弹
+    let currentEnd = current[current.length - 1];
+    let currentStart = current[0];
+    let hasRecovery = currentEnd > currentTrough * 1.1;
+    
+    // 判断是否抓住节日红利
+    let holidayAnalysis = [];
+    for (let week = 1; week <= Math.min(current.length, 52); week++) {
+        if (holidays[week] && current[week - 1] !== undefined) {
+            let holidayValue = current[week - 1];
+            let prevWeek = week > 1 ? current[week - 2] : holidayValue;
+            let nextWeek = week < current.length ? current[week] : holidayValue;
+            let avg = (prevWeek + nextWeek) / 2;
+            
+            if (avg > 0) {
+                let change = ((holidayValue - avg) / avg * 100);
+                if (change > 10) {
+                    holidayAnalysis.push(`<span class="analysis-highlight">第${week}周${holidays[week]}期间</span>表现突出，较周边增长${change.toFixed(0)}%，成功抓住节日红利`);
+                } else if (change < -10) {
+                    holidayAnalysis.push(`<span class="analysis-highlight">第${week}周${holidays[week]}</span>表现不佳，较周边下降${Math.abs(change).toFixed(0)}%，未能抓住节日机会`);
+                }
+            }
+        }
+    }
+    
+    // 生成描述
+    let currentDesc = '';
+    if (currentTrend > 50) {
+        currentDesc = '整体上升';
+    } else if (currentTrend < -50) {
+        currentDesc = '整体下滑';
+    } else {
+        currentDesc = '走势平稳';
+    }
+    
+    let yoyDesc = '';
+    if (hasDeepDrop && yoyTrend > 0) {
+        yoyDesc = '单峰 + 深跌 + 强势反弹';
+    } else if (hasDeepDrop && yoyTrend < 0) {
+        yoyDesc = '波动下行';
+    } else if (yoyTrend > 50) {
+        yoyDesc = '稳步增长';
+    } else if (yoyTrend < -50) {
+        yoyDesc = '持续下滑';
+    } else {
+        yoyDesc = '相对平稳';
+    }
+    
+    // 计算差距
+    let currentAvg = current.reduce((a, b) => a + b, 0) / current.length;
+    let yoyAvg = yoy.reduce((a, b) => a + b, 0) / yoy.length;
+    let diff = yoyAvg - currentAvg;
+    let diffPercent = ((yoyAvg - currentAvg) / yoyAvg * 100).toFixed(1);
+    
+    // 判断运营效果 - 以本期为重心
+    let effect = '正常';
+    if (diff > 0 && diff / yoyAvg > 0.3) {
+        effect = '运营存在较大问题，需要重点改善';
+    } else if (diff > 0 && diff / yoyAvg > 0.15) {
+        effect = '运营存在一定差距，需持续优化';
+    } else if (diff > 0) {
+        effect = '运营基本达标，但仍有提升空间';
+    } else if (diff < 0) {
+        effect = '表现优于同期，运营效果良好';
+    } else {
+        effect = '与同期基本持平';
+    }
+    
+    // 整体特征描述 - 以本期为中心
+    let overallDesc = '';
+    if (diff > 0) {
+        overallDesc = `同期始终显著高于本期，且差距在后期${current[current.length-1] < yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+    } else if (diff < 0) {
+        overallDesc = `本期整体高于同期，且差距在后期${current[current.length-1] > yoy[yoy.length-1] ? '进一步' : '有所'}扩大，${effect}。`;
+    } else {
+        overallDesc = `本期与同期基本持平，${effect}。`;
+    }
+    
+    // 添加节日分析总结
+    let holidaySummary = '';
+    if (holidayAnalysis.length > 0) {
+        holidaySummary = `<br>节日效应：${holidayAnalysis.join('；')}`;
+    }
+    
+    return `同期呈 "<span class="analysis-highlight">${yoyDesc}</span>"，本期呈 "<span class="analysis-highlight">${currentDesc}</span>"。${overallDesc}${holidaySummary}`;
+}
+
+// 分析各阶段
+function analyzeStages(current, yoy, dates) {
+    let stages = [];
+    let n = Math.min(current.length, yoy.length);
+    
+    // 节日周映射（基于2026年实际日期）
+    const holidays = {
+        8: '春节', 7: '情人节', 10: '妇女节', 14: '清明节',
+        18: '劳动节', 19: '母亲节', 22: '端午节', 25: '618',
+        40: '国庆/中秋', 46: '双十一', 50: '双十二'
+    };
+    
+    // 将数据分成4个阶段
+    let stageSize = Math.floor(n / 4);
+    if (stageSize < 2) stageSize = 2;
+    
+    for (let s = 0; s < 4; s++) {
+        let start = s * stageSize;
+        let end = Math.min((s + 1) * stageSize, n);
+        
+        if (start >= n) break;
+        
+        let currentStage = current.slice(start, end);
+        let yoyStage = yoy.slice(start, end);
+        
+        let currentStart = currentStage[0];
+        let currentEnd = currentStage[currentStage.length - 1];
+        let yoyStart = yoyStage[0];
+        let yoyEnd = yoyStage[yoyStage.length - 1];
+        
+        let currentChange = currentEnd - currentStart;
+        let yoyChange = yoyEnd - yoyStart;
+        
+        let currentPeak = Math.max(...currentStage);
+        let currentPeakWeek = start + currentStage.indexOf(currentPeak) + 1;
+        let yoyPeak = Math.max(...yoyStage);
+        let yoyPeakWeek = start + yoyStage.indexOf(yoyPeak) + 1;
+        
+        let currentMin = Math.min(...currentStage.filter(v => v > 0));
+        let currentMinWeek = start + currentStage.indexOf(currentMin) + 1;
+        
+        let stageName = '';
+        let content = '';
+        
+        // 检查本阶段是否包含节日
+        let stageHolidays = [];
+        for (let w = start + 1; w <= end; w++) {
+            if (holidays[w]) {
+                stageHolidays.push(holidays[w]);
+            }
+        }
+        let holidayNote = stageHolidays.length > 0 ? `（含${stageHolidays.join('、')}）` : '';
+        
+        // 判断阶段特征
+        if (currentChange > 30 && yoyChange > 30) {
+            stageName = `第${start + 1}-${end}周：双升期${holidayNote}`;
+            content = `同期从${yoyStart.toFixed(0)}人升至${yoyEnd.toFixed(0)}人；本期从${currentStart.toFixed(0)}人升至${currentEnd.toFixed(0)}人`;
+        } else if (currentChange > 30 && yoyChange < -30) {
+            stageName = `第${start + 1}-${end}周：分化期${holidayNote}`;
+            content = `同期从${yoyStart.toFixed(0)}人降至${yoyEnd.toFixed(0)}人；本期却从${currentStart.toFixed(0)}人升至${currentEnd.toFixed(0)}人`;
+        } else if (currentChange < -30 && yoyChange > 30) {
+            stageName = `第${start + 1}-${end}周：反向分化期${holidayNote}`;
+            content = `同期从${yoyStart.toFixed(0)}人升至${yoyEnd.toFixed(0)}人；本期从${currentStart.toFixed(0)}人降至${currentEnd.toFixed(0)}人`;
+        } else if (currentChange < -30 && yoyChange < -30) {
+            stageName = `第${start + 1}-${end}周：双降期${holidayNote}`;
+            content = `同期从${yoyStart.toFixed(0)}人降至${yoyEnd.toFixed(0)}人；本期从${currentStart.toFixed(0)}人降至${currentEnd.toFixed(0)}人`;
+        } else if (currentEnd > currentPeak * 0.9 && currentPeakWeek >= start && currentPeakWeek < end) {
+            stageName = `第${start + 1}-${end}周：峰值维持期${holidayNote}`;
+            content = `本期维持在${currentPeak.toFixed(0)}人左右的高位；同期维持在${yoyPeak.toFixed(0)}人左右`;
+        } else if (Math.abs(currentChange) < 30 && Math.abs(yoyChange) < 30) {
+            stageName = `第${start + 1}-${end}周：平稳期${holidayNote}`;
+            content = `同期维持在${yoyAvg.toFixed(0)}人左右；本期维持在${currentAvg.toFixed(0)}人左右`;
+        } else {
+            stageName = `第${start + 1}-${end}周：波动期${holidayNote}`;
+            content = `同期变化${yoyChange > 0 ? '上升' : '下降'}${Math.abs(yoyChange).toFixed(0)}人；本期变化${currentChange > 0 ? '上升' : '下降'}${Math.abs(currentChange).toFixed(0)}人`;
+        }
+        
+        // 添加差距信息
+        let stageYoyAvg = yoyStage.reduce((a, b) => a + b, 0) / yoyStage.length;
+        let stageCurrentAvg = currentStage.reduce((a, b) => a + b, 0) / currentStage.length;
+        let gap = stageYoyAvg - stageCurrentAvg;
+        content += `，差距约${Math.abs(gap).toFixed(0)}人`;
+        
+        // 分析节日效应
+        if (stageHolidays.length > 0) {
+            // 找到节日周的数据表现
+            for (let w = start + 1; w <= end; w++) {
+                if (holidays[w] && current[w - 1] !== undefined) {
+                    let holidayIdx = w - 1;
+                    let holidayVal = current[holidayIdx];
+                    let prevIdx = holidayIdx > 0 ? holidayIdx - 1 : holidayIdx;
+                    let nextIdx = holidayIdx < current.length - 1 ? holidayIdx + 1 : holidayIdx;
+                    let avg = (current[prevIdx] + current[nextIdx]) / 2;
+                    
+                    if (avg > 0) {
+                        let effect = ((holidayVal - avg) / avg * 100).toFixed(0);
+                        if (Math.abs(effect) > 5) {
+                            content += `；${holidays[w]}期间${effect > 0 ? '增长' : '下降'}${Math.abs(effect)}%`;
+                        }
+                    }
+                }
+            }
+        }
+        
+        stages.push({ title: stageName, content });
+    }
+    
+    return stages;
+}
+
+// 生成结论
+function generateConclusion(current, yoy, currentSlope, yoySlope, currentAvg, yoyAvg) {
+    let conclusions = [];
+    
+    // 节日周映射（基于2026年实际日期）
+    const holidays = {
+        8: '春节', 7: '情人节', 10: '妇女节', 14: '清明节',
+        18: '劳动节', 19: '母亲节', 22: '端午节', 25: '618',
+        40: '国庆/中秋', 46: '双十一', 50: '双十二'
+    };
+    
+    // 趋势对比结论
+    if (currentSlope < 0 && yoySlope > 0) {
+        conclusions.push('趋势线显示同期缓慢上行而本期持续下行，说明本期运营效果不如去年同期');
+    } else if (currentSlope > 0 && yoySlope < 0) {
+        conclusions.push('趋势线显示本期持续改善而同期有所下滑，说明本期运营策略有一定成效');
+    } else if (currentSlope > 0 && yoySlope > 0) {
+        conclusions.push('两者均呈上升趋势，但本期增速需进一步提升');
+    } else if (currentSlope < 0 && yoySlope < 0) {
+        conclusions.push('两者均呈下滑趋势，需共同关注市场因素影响');
+    } else {
+        conclusions.push('整体走势相对稳定，运营效果基本持平');
+    }
+    
+    // 均值对比结论
+    let diff = yoyAvg - currentAvg;
+    let diffPercent = (diff / yoyAvg * 100).toFixed(1);
+    
+    if (diff / yoyAvg > 0.3) {
+        conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在较大差距`);
+        conclusions.push('核心问题是缺乏有效的会员增长引擎');
+    } else if (diff / yoyAvg > 0.15) {
+        conclusions.push(`本期均值(${currentAvg.toFixed(0)}人)较同期(${yoyAvg.toFixed(0)}人)低${diffPercent}%，存在一定差距`);
+        conclusions.push('需要进一步提升会员拉新和留存能力');
+    } else if (diff < 0) {
+        conclusions.push(`本期表现优于同期${Math.abs(diffPercent)}%`);
+        conclusions.push('当前运营策略有效，建议继续保持');
+    } else {
+        conclusions.push(`本期均值与同期基本持平`);
+    }
+    
+    // 节日效应分析
+    let holidayPerformance = { success: [], failed: [] };
+    for (let week = 1; week <= Math.min(current.length, 52); week++) {
+        if (holidays[week] && current[week - 1] !== undefined && yoy[week - 1] !== undefined) {
+            let holidayVal = current[week - 1];
+            let yoyHolidayVal = yoy[week - 1];
+            let prevIdx = week > 2 ? week - 2 : 0;
+            let nextIdx = week < current.length - 1 ? week : current.length - 1;
+            let currentAvgAround = (current[prevIdx] + current[nextIdx]) / 2;
+            let yoyAvgAround = (yoy[prevIdx] + yoy[nextIdx]) / 2;
+            
+            // 本期节日效应
+            if (currentAvgAround > 0) {
+                let currentEffect = ((holidayVal - currentAvgAround) / currentAvgAround * 100);
+                let yoyEffect = ((yoyHolidayVal - yoyAvgAround) / yoyAvgAround * 100);
+                
+                // 成功抓住节日红利的判断：节日周增长超过周边10%
+                if (currentEffect > 10 && currentEffect > yoyEffect) {
+                    holidayPerformance.success.push(holidays[week]);
+                } else if (currentEffect < -10 || (yoyEffect - currentEffect > 15)) {
+                    holidayPerformance.failed.push(holidays[week]);
+                }
+            }
+        }
+    }
+    
+    if (holidayPerformance.success.length > 0) {
+        conclusions.push(`成功抓住${holidayPerformance.success.join('、')}等节日红利，节日营销策略有效`);
+    }
+    if (holidayPerformance.failed.length > 0) {
+        conclusions.push(`${holidayPerformance.failed.join('、')}等节日表现不佳，未能有效利用节日营销机会`);
+    }
+    
+    // 极值分析
+    let currentMax = Math.max(...current);
+    let currentMin = Math.min(...current);
+    let currentMinWeek = current.indexOf(currentMin) + 1;
+    
+    // 检查年末节日表现
+    let yearEndHolidays = ['双十一', '双十二'];
+    let yearEndFailed = holidayPerformance.failed.filter(h => yearEndHolidays.includes(h));
+    
+    if (current[current.length - 1] < currentMax * 0.8) {
+        if (yearEndFailed.length > 0) {
+            conclusions.push(`未能抓住${yearEndFailed.join('、')}等年末消费旺季实现反弹，节日营销策略需大幅改进`);
+        } else {
+            conclusions.push(`年末未能抓住消费旺季实现反弹，第${currentMinWeek}周跌至谷底后回升力度不足`);
+        }
+    }
+    
+    return conclusions.join('。') + '。';
 }
 
 // 初始化区域负责人和门店选择下拉框
@@ -6481,6 +7006,9 @@ function updateStoreTrendChart() {
     
     storeTrendChart.setOption(option, true);
     console.log('✅ 门店趋势图表更新成功');
+    
+    // 生成折线图分析
+    generateStoreChartAnalysis(currentData, yoyData, dates);
 }
 
 function initTrendChart() {
