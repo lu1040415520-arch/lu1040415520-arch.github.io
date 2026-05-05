@@ -194,7 +194,7 @@
             transition: all 0.3s ease;
             opacity: 0;
             visibility: hidden;
-            z-index: 1000;
+            z-index: 99999;
         }
 
         .back-to-top.visible {
@@ -417,7 +417,7 @@
             width: 100%;
             height: 100%;
             background: #f8f9fa;
-            z-index: 9999;
+            z-index: 99999;
             overflow-y: auto;
         }
 
@@ -750,7 +750,12 @@
             padding: 16px;
             margin: 24px 0;
             position: relative;
-            overflow: hidden;
+            /* 移除overflow hidden以避免裁剪tooltip */
+        }
+
+        .lifecycle-section > * {
+            position: relative;
+            z-index: 1;
         }
 
         .lifecycle-section::before {
@@ -762,6 +767,7 @@
             height: 200px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
+            z-index: 0;
         }
 
         .lifecycle-section::after {
@@ -773,6 +779,7 @@
             height: 150px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
+            z-index: 0;
         }
 
         .lifecycle-header {
@@ -792,18 +799,98 @@
             letter-spacing: 0.5px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
+        /* 大盘运营情况指标卡Tooltip - 保留?图标，hover时显示 */
         .metric-card {
+            position: relative;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border: 1px solid #e0e6ed;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
         }
-
         .metric-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 20px rgba(44, 95, 151, 0.15);
+            border-color: #8b5cf6;
+        }
+        .metric-card .metric-name-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+        }
+        .metric-card .metric-name {
+            color: #333;
+        }
+        /* ?图标样式 */
+        .metric-card .tooltip-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: #e8e8e8;
+            color: #666;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .metric-card .tooltip-trigger:hover {
+            background: #8b5cf6;
+            color: white;
+            transform: scale(1.1);
+        }
+        /* Tooltip显示在?图标下方 */
+        .metric-card .tooltip-content {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: normal;
+            width: 220px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, top 0.2s ease;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        /* 小三角箭头 */
+        .metric-card .tooltip-content::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-bottom-color: #1a1a2e;
+        }
+        .metric-card .tooltip-trigger:hover + .tooltip-content,
+        .metric-card .tooltip-content:hover {
+            opacity: 1;
+            visibility: visible;
+            top: calc(100% + 12px);
+        }
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .metric-card .tooltip-content {
+                width: 180px;
+                font-size: 11px;
+            }
+        }
         }
 
         .lifecycle-card {
@@ -841,7 +928,12 @@
             border-radius: 16px;
             padding: 16px;
             margin: 24px 0;
-            overflow: hidden;
+            /* 移除overflow hidden以避免裁剪tooltip */
+        }
+
+        .value-section > * {
+            position: relative;
+            z-index: 1;
         }
 
         .value-section::before {
@@ -853,6 +945,7 @@
             height: 200px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
         }
 
         .value-section::after {
@@ -864,6 +957,7 @@
             height: 150px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.08);
+            z-index: 0;
         }
 
         .value-header {
@@ -2845,7 +2939,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.2s, visibility 0.2s;
-            z-index: 1000;
+            z-index: 99999;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
@@ -3022,19 +3116,35 @@
                 <!-- 核心指标概览 -->
                 <div class="metrics-grid" id="metrics-grid">
                     <div class="metrics-row"><div class="metric-card">
-                <div class="metric-name">会员总数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">会员总数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">门店累计注册的会员总人数，反映门店会员资产规模</div>
+                </div>
                 <div class="metric-value">143,465</div>
                 <span class="metric-change up">↑+1.0%</span>
             </div><div class="metric-card">
-                <div class="metric-name">有效会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">有效会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产</div>
+                </div>
                 <div class="metric-value">21,375</div>
                 <span class="metric-change up">↑+6.3%</span>
             </div><div class="metric-card">
-                <div class="metric-name">平均客单价</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">平均客单价</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">会员单笔消费的平均金额，反映会员消费能力</div>
+                </div>
                 <div class="metric-value">778.60元</div>
                 <span class="metric-change up">↑+75.20</span>
             </div><div class="metric-card">
-                <div class="metric-name">平均连带率</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">平均连带率</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">会员人均购买的件数，反映会员的购买深度和搭配购买能力</div>
+                </div>
                 <div class="metric-value">2.60</div>
                 <span class="metric-change up">↑+0.18</span>
             </div></div></div><div class="value-section">
@@ -3042,19 +3152,35 @@
                 <span class="value-badge">会员价值分层</span>
             </div>
             <div class="value-metrics-row"><div class="metric-card value-card">
-                <div class="metric-name">核心VIP</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">核心VIP</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">有效会员中，累计支付金额5千元以上或累计支付金额3-5千元且笔单价1千元以上且支付次数4次以上</div>
+                </div>
                 <div class="metric-value">839</div>
                 <span class="metric-change up">↑+0.7%丨+6</span>
             </div><div class="metric-card value-card">
-                <div class="metric-name">重要会员</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">重要会员</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">有效会员中，累计支付金额2至5千元或累计支付金额1.2-2千元且笔单价6百元以上且支付次数3次以上</div>
+                </div>
                 <div class="metric-value">2,842</div>
                 <span class="metric-change down">↓-0.9%丨-26</span>
             </div><div class="metric-card value-card">
-                <div class="metric-name">普通会员</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">普通会员</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">有效会员中，累计支付金额5百至2千元或累计支付金额3-5百元且笔单价2百元以上且支付次数2次以上</div>
+                </div>
                 <div class="metric-value">13,322</div>
                 <span class="metric-change down">↓-0.3%丨-42</span>
             </div><div class="metric-card value-card">
-                <div class="metric-name">初级会员</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">初级会员</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">有效会员中，累计支付金额3百元以下或累计支付金额5百元以下且支付次数仅1次</div>
+                </div>
                 <div class="metric-value">126,385</div>
                 <span class="metric-change up">↑+0.5%丨+602</span>
             </div></div></div><div class="lifecycle-section">
@@ -3062,23 +3188,43 @@
                 <span class="lifecycle-badge">会员生命周期</span>
             </div>
             <div class="lifecycle-metrics-row"><div class="metric-card lifecycle-card">
-                <div class="metric-name">活跃会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">活跃会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近60天内最后一次购买的会员，反映门店的会员活跃度</div>
+                </div>
                 <div class="metric-value">5,609</div>
                 <span class="metric-change up">↑+13.2%丨+654</span>
             </div><div class="metric-card lifecycle-card">
-                <div class="metric-name">沉默会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">沉默会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近61天到90天最后一次购买的会员，需重点关注</div>
+                </div>
                 <div class="metric-value">2,118</div>
                 <span class="metric-change down">↓-12.6%丨-305</span>
             </div><div class="metric-card lifecycle-card">
-                <div class="metric-name">睡眠会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">睡眠会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近91天到180天内最后一次购买的会员，存在流失风险</div>
+                </div>
                 <div class="metric-value">5,467</div>
                 <span class="metric-change up">↑+0.8%丨+43</span>
             </div><div class="metric-card lifecycle-card">
-                <div class="metric-name">预流失会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">预流失会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近181天到365天内最后一次购买的会员，高流失风险</div>
+                </div>
                 <div class="metric-value">9,827</div>
                 <span class="metric-change down">↓-3.8%丨-387</span>
             </div><div class="metric-card lifecycle-card">
-                <div class="metric-name">流失会员数</div>
+                <div class="metric-name-wrapper">
+                    <div class="metric-name">流失会员数</div>
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-content">近366天内没有购买过的会员（不含入会未消费会员），已流失</div>
+                </div>
                 <div class="metric-value">120,376</div>
                 <span class="metric-change up">↑+0.5%丨+589</span>
             </div></div><div class="lifecycle-analysis">高风险会员占比81.5%（沉默+睡眠+预流失），整体会员健康状况堪忧，建议立即启动全面会员运营优化计划。</div></div>
@@ -3394,35 +3540,35 @@
                     <td>6,795</td>
                     <td><span style="color: #f56c6c;">↑+0.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>584</td>
                     <td><span style="color: #f56c6c;">↑+0.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>125</td>
                     <td><span style="color: #f56c6c;">↑+19.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>31</td>
                     <td><span style="color: #67c23a;">↓-32.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>128</td>
                     <td><span style="color: #f56c6c;">↑+0.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>257</td>
                     <td><span style="color: #67c23a;">↓-1.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>20</td>
                     <td><span style="color: #f56c6c;">↑+150.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>967.48元</td>
                     <td><span style="color: #67c23a;">↓-21.29</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>3.00</td>
                     <td><span style="color: #67c23a;">↓-0.21</span></td>
                 </tr>
@@ -3455,35 +3601,35 @@
                     <td>9,368</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,033</td>
                     <td><span style="color: #67c23a;">↓-0.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>265</td>
                     <td><span style="color: #f56c6c;">↑+6.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>79</td>
                     <td><span style="color: #67c23a;">↓-2.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>200</td>
                     <td><span style="color: #67c23a;">↓-4.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>495</td>
                     <td><span style="color: #67c23a;">↓-1.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>30</td>
                     <td><span style="color: #f56c6c;">↑+7.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>994.00元</td>
                     <td><span style="color: #67c23a;">↓-52.20</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.94</td>
                     <td><span style="color: #67c23a;">↓-0.54</span></td>
                 </tr>
@@ -3516,35 +3662,35 @@
                     <td>1,221</td>
                     <td><span style="color: #f56c6c;">↑+2.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>165</td>
                     <td><span style="color: #f56c6c;">↑+34.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>273</td>
                     <td><span style="color: #f56c6c;">↑+9.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>74</td>
                     <td><span style="color: #67c23a;">↓-16.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>232</td>
                     <td><span style="color: #f56c6c;">↑+7.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>180</td>
                     <td><span style="color: #67c23a;">↓-1.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>39</td>
                     <td><span style="color: #f56c6c;">↑+105.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>702.74元</td>
                     <td><span style="color: #67c23a;">↓-152.62</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.37</td>
                     <td><span style="color: #f56c6c;">↑+0.04</span></td>
                 </tr>
@@ -3577,35 +3723,35 @@
                     <td>1,064</td>
                     <td><span style="color: #f56c6c;">↑+5.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>138</td>
                     <td><span style="color: #f56c6c;">↑+48.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>132</td>
                     <td><span style="color: #f56c6c;">↑+55.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>3</td>
                     <td><span style="color: #f56c6c;">↑+50.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>21</td>
                     <td><span style="color: #67c23a;">↓-4.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>32</td>
                     <td><span style="color: #f56c6c;">↑+3.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>28</td>
                     <td><span style="color: #f56c6c;">↑+27.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>831.72元</td>
                     <td><span style="color: #67c23a;">↓-57.89</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.91</td>
                     <td><span style="color: #67c23a;">↓-0.09</span></td>
                 </tr>
@@ -3638,35 +3784,35 @@
                     <td>2,928</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>517</td>
                     <td><span style="color: #f56c6c;">↑+0.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>110</td>
                     <td><span style="color: #f56c6c;">↑+13.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>73</td>
                     <td><span style="color: #67c23a;">↓-7.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>96</td>
                     <td><span style="color: #f56c6c;">↑+4.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>234</td>
                     <td><span style="color: #67c23a;">↓-2.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>19</td>
                     <td><span style="color: #f56c6c;">↑+216.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>793.27元</td>
                     <td><span style="color: #f56c6c;">↑+249.14</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>3.21</td>
                     <td><span style="color: #f56c6c;">↑+0.33</span></td>
                 </tr>
@@ -3699,35 +3845,35 @@
                     <td>5,035</td>
                     <td><span style="color: #f56c6c;">↑+0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,199</td>
                     <td><span style="color: #f56c6c;">↑+0.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>222</td>
                     <td><span style="color: #f56c6c;">↑+18.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>113</td>
                     <td><span style="color: #67c23a;">↓-6.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>240</td>
                     <td><span style="color: #f56c6c;">↑+0.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>555</td>
                     <td><span style="color: #67c23a;">↓-5.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>39</td>
                     <td><span style="color: #f56c6c;">↑+50.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>634.11元</td>
                     <td><span style="color: #f56c6c;">↑+148.78</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.29</td>
                     <td><span style="color: #f56c6c;">↑+0.55</span></td>
                 </tr>
@@ -3760,35 +3906,35 @@
                     <td>5,438</td>
                     <td><span style="color: #f56c6c;">↑+0.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>921</td>
                     <td><span style="color: #67c23a;">↓-0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>216</td>
                     <td><span style="color: #f56c6c;">↑+11.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>84</td>
                     <td><span style="color: #67c23a;">↓-18.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>235</td>
                     <td><span style="color: #f56c6c;">↑+2.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>370</td>
                     <td><span style="color: #67c23a;">↓-1.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>16</td>
                     <td><span style="color: #f56c6c;">↑+60.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>506.28元</td>
                     <td><span style="color: #67c23a;">↓-130.01</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>1.89</td>
                     <td><span style="color: #67c23a;">↓-0.32</span></td>
                 </tr>
@@ -3821,35 +3967,35 @@
                     <td>17,855</td>
                     <td><span style="color: #f56c6c;">↑+0.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>2,633</td>
                     <td><span style="color: #67c23a;">↓-1.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>676</td>
                     <td><span style="color: #f56c6c;">↑+8.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>224</td>
                     <td><span style="color: #67c23a;">↓-14.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>612</td>
                     <td>-</td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>1,192</td>
                     <td><span style="color: #67c23a;">↓-3.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>58</td>
                     <td><span style="color: #f56c6c;">↑+87.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>709.94元</td>
                     <td><span style="color: #67c23a;">↓-145.23</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.48</td>
                     <td><span style="color: #67c23a;">↓-0.51</span></td>
                 </tr>
@@ -3882,35 +4028,35 @@
                     <td>9,063</td>
                     <td><span style="color: #f56c6c;">↑+0.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>2,266</td>
                     <td><span style="color: #67c23a;">↓-0.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>563</td>
                     <td><span style="color: #f56c6c;">↑+11.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>219</td>
                     <td><span style="color: #67c23a;">↓-11.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>566</td>
                     <td><span style="color: #67c23a;">↓-1.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>1,061</td>
                     <td><span style="color: #67c23a;">↓-3.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>60</td>
                     <td><span style="color: #f56c6c;">↑+76.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>686.75元</td>
                     <td><span style="color: #f56c6c;">↑+51.14</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.22</td>
                     <td><span style="color: #f56c6c;">↑+0.34</span></td>
                 </tr>
@@ -3943,35 +4089,35 @@
                     <td>1,993</td>
                     <td><span style="color: #f56c6c;">↑+1.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>775</td>
                     <td><span style="color: #f56c6c;">↑+0.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>151</td>
                     <td><span style="color: #f56c6c;">↑+18.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>98</td>
                     <td><span style="color: #67c23a;">↓-11.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>196</td>
                     <td><span style="color: #f56c6c;">↑+3.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>304</td>
                     <td><span style="color: #67c23a;">↓-5.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>21</td>
                     <td>-</td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>829.27元</td>
                     <td><span style="color: #f56c6c;">↑+829.27</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.84</td>
                     <td><span style="color: #f56c6c;">↑+2.84</span></td>
                 </tr>
@@ -4004,35 +4150,35 @@
                     <td>6,599</td>
                     <td><span style="color: #f56c6c;">↑+0.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>471</td>
                     <td><span style="color: #67c23a;">↓-2.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>77</td>
                     <td><span style="color: #f56c6c;">↑+2.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>26</td>
                     <td><span style="color: #67c23a;">↓-16.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>114</td>
                     <td><span style="color: #f56c6c;">↑+3.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>254</td>
                     <td><span style="color: #67c23a;">↓-3.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>18</td>
                     <td><span style="color: #f56c6c;">↑+38.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>849.70元</td>
                     <td><span style="color: #f56c6c;">↑+79.90</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.67</td>
                     <td><span style="color: #67c23a;">↓-0.74</span></td>
                 </tr>
@@ -4065,35 +4211,35 @@
                     <td>9,736</td>
                     <td><span style="color: #f56c6c;">↑+0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,741</td>
                     <td><span style="color: #67c23a;">↓-3.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>306</td>
                     <td><span style="color: #f56c6c;">↑+7.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>187</td>
                     <td><span style="color: #67c23a;">↓-6.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>345</td>
                     <td><span style="color: #67c23a;">↓-0.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>1,024</td>
                     <td><span style="color: #67c23a;">↓-6.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>21</td>
                     <td><span style="color: #f56c6c;">↑+50.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>973.53元</td>
                     <td><span style="color: #f56c6c;">↑+224.84</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.83</td>
                     <td><span style="color: #f56c6c;">↑+0.24</span></td>
                 </tr>
@@ -4126,35 +4272,35 @@
                     <td>5,346</td>
                     <td><span style="color: #f56c6c;">↑+0.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>998</td>
                     <td><span style="color: #f56c6c;">↑+0.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>232</td>
                     <td><span style="color: #f56c6c;">↑+7.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>114</td>
                     <td><span style="color: #67c23a;">↓-5.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>246</td>
                     <td><span style="color: #67c23a;">↓-0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>367</td>
                     <td><span style="color: #67c23a;">↓-2.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>23</td>
                     <td><span style="color: #f56c6c;">↑+43.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>691.91元</td>
                     <td><span style="color: #f56c6c;">↑+34.35</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.51</td>
                     <td><span style="color: #f56c6c;">↑+0.25</span></td>
                 </tr>
@@ -4187,35 +4333,35 @@
                     <td>6,241</td>
                     <td><span style="color: #f56c6c;">↑+0.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,768</td>
                     <td><span style="color: #67c23a;">↓-0.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>423</td>
                     <td><span style="color: #f56c6c;">↑+8.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>188</td>
                     <td><span style="color: #67c23a;">↓-3.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>405</td>
                     <td><span style="color: #67c23a;">↓-1.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>614</td>
                     <td><span style="color: #67c23a;">↓-1.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>41</td>
                     <td><span style="color: #f56c6c;">↑+95.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>881.26元</td>
                     <td><span style="color: #f56c6c;">↑+124.93</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.79</td>
                     <td><span style="color: #f56c6c;">↑+0.30</span></td>
                 </tr>
@@ -4248,35 +4394,35 @@
                     <td>3,541</td>
                     <td><span style="color: #f56c6c;">↑+0.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>445</td>
                     <td><span style="color: #67c23a;">↓-0.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>109</td>
                     <td><span style="color: #f56c6c;">↑+3.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>84</td>
                     <td><span style="color: #67c23a;">↓-4.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>124</td>
                     <td><span style="color: #f56c6c;">↑+2.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>130</td>
                     <td><span style="color: #67c23a;">↓-3.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>12</td>
                     <td><span style="color: #f56c6c;">↑+33.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>798.65元</td>
                     <td><span style="color: #f56c6c;">↑+57.44</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.90</td>
                     <td><span style="color: #f56c6c;">↑+0.11</span></td>
                 </tr>
@@ -4309,35 +4455,35 @@
                     <td>9,877</td>
                     <td><span style="color: #f56c6c;">↑+0.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,179</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>247</td>
                     <td><span style="color: #f56c6c;">↑+33.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>100</td>
                     <td><span style="color: #67c23a;">↓-11.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>227</td>
                     <td><span style="color: #67c23a;">↓-2.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>585</td>
                     <td><span style="color: #67c23a;">↓-4.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>36</td>
                     <td><span style="color: #f56c6c;">↑+56.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>518.86元</td>
                     <td><span style="color: #67c23a;">↓-31.76</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.12</td>
                     <td><span style="color: #67c23a;">↓-0.02</span></td>
                 </tr>
@@ -4370,35 +4516,35 @@
                     <td>1,359</td>
                     <td><span style="color: #f56c6c;">↑+0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>369</td>
                     <td><span style="color: #67c23a;">↓-3.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>79</td>
                     <td><span style="color: #f56c6c;">↑+9.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>16</td>
                     <td><span style="color: #67c23a;">↓-36.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>73</td>
                     <td><span style="color: #f56c6c;">↑+2.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>102</td>
                     <td><span style="color: #67c23a;">↓-13.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>8</td>
                     <td><span style="color: #f56c6c;">↑+100.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>886.58元</td>
                     <td><span style="color: #f56c6c;">↑+204.95</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>3.42</td>
                     <td><span style="color: #f56c6c;">↑+1.53</span></td>
                 </tr>
@@ -4431,35 +4577,35 @@
                     <td>11,777</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>1,018</td>
                     <td><span style="color: #67c23a;">↓-0.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>266</td>
                     <td><span style="color: #f56c6c;">↑+15.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>99</td>
                     <td><span style="color: #67c23a;">↓-26.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>322</td>
                     <td><span style="color: #f56c6c;">↑+4.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>635</td>
                     <td><span style="color: #67c23a;">↓-7.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>22</td>
                     <td><span style="color: #f56c6c;">↑+120.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>554.02元</td>
                     <td><span style="color: #f56c6c;">↑+71.39</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.00</td>
                     <td><span style="color: #f56c6c;">↑+0.30</span></td>
                 </tr>
@@ -4492,35 +4638,35 @@
                     <td>2,718</td>
                     <td><span style="color: #f56c6c;">↑+0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>576</td>
                     <td><span style="color: #67c23a;">↓-0.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>102</td>
                     <td><span style="color: #f56c6c;">↑+20.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>41</td>
                     <td><span style="color: #67c23a;">↓-31.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>164</td>
                     <td><span style="color: #f56c6c;">↑+2.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>248</td>
                     <td><span style="color: #67c23a;">↓-0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>11</td>
                     <td><span style="color: #f56c6c;">↑+83.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>1035.83元</td>
                     <td><span style="color: #f56c6c;">↑+347.27</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.90</td>
                     <td><span style="color: #f56c6c;">↑+0.34</span></td>
                 </tr>
@@ -4553,35 +4699,35 @@
                     <td>9,161</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>964</td>
                     <td><span style="color: #f56c6c;">↑+1.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>254</td>
                     <td><span style="color: #f56c6c;">↑+11.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>98</td>
                     <td><span style="color: #67c23a;">↓-10.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>335</td>
                     <td><span style="color: #67c23a;">↓-2.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>501</td>
                     <td><span style="color: #67c23a;">↓-0.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>30</td>
                     <td><span style="color: #f56c6c;">↑+20.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>569.54元</td>
                     <td><span style="color: #67c23a;">↓-123.86</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.11</td>
                     <td><span style="color: #67c23a;">↓-0.54</span></td>
                 </tr>
@@ -4614,35 +4760,35 @@
                     <td>4,632</td>
                     <td><span style="color: #f56c6c;">↑+0.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>585</td>
                     <td><span style="color: #f56c6c;">↑+1.6%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>146</td>
                     <td><span style="color: #f56c6c;">↑+29.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>49</td>
                     <td><span style="color: #67c23a;">↓-29.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>180</td>
                     <td><span style="color: #f56c6c;">↑+1.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>209</td>
                     <td><span style="color: #67c23a;">↓-4.1%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>32</td>
                     <td><span style="color: #f56c6c;">↑+146.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>621.22元</td>
                     <td><span style="color: #67c23a;">↓-277.86</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.22</td>
                     <td><span style="color: #67c23a;">↓-1.32</span></td>
                 </tr>
@@ -4675,35 +4821,35 @@
                     <td>2,179</td>
                     <td><span style="color: #f56c6c;">↑+0.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>652</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>171</td>
                     <td><span style="color: #f56c6c;">↑+11.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>62</td>
                     <td><span style="color: #67c23a;">↓-23.5%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>222</td>
                     <td><span style="color: #f56c6c;">↑+4.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>256</td>
                     <td><span style="color: #67c23a;">↓-2.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>26</td>
                     <td><span style="color: #f56c6c;">↑+271.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>917.40元</td>
                     <td><span style="color: #f56c6c;">↑+241.82</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.78</td>
                     <td><span style="color: #f56c6c;">↑+0.71</span></td>
                 </tr>
@@ -4736,35 +4882,35 @@
                     <td>7,237</td>
                     <td><span style="color: #f56c6c;">↑+0.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>93</td>
                     <td><span style="color: #f56c6c;">↑+25.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>147</td>
                     <td><span style="color: #f56c6c;">↑+15.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>12</td>
                     <td><span style="color: #67c23a;">↓-25.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>60</td>
                     <td><span style="color: #67c23a;">↓-3.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>82</td>
                     <td><span style="color: #67c23a;">↓-2.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>19</td>
                     <td><span style="color: #f56c6c;">↑+90.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>732.97元</td>
                     <td><span style="color: #67c23a;">↓-136.70</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.15</td>
                     <td><span style="color: #67c23a;">↓-0.09</span></td>
                 </tr>
@@ -4797,35 +4943,35 @@
                     <td>1,404</td>
                     <td><span style="color: #f56c6c;">↑+1.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>80</td>
                     <td><span style="color: #f56c6c;">↑+25.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>146</td>
                     <td><span style="color: #67c23a;">↓-2.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>44</td>
                     <td><span style="color: #f56c6c;">↑+4.8%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>121</td>
                     <td><span style="color: #f56c6c;">↑+10.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>107</td>
                     <td><span style="color: #67c23a;">↓-5.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>17</td>
                     <td><span style="color: #f56c6c;">↑+41.7%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>965.50元</td>
                     <td><span style="color: #f56c6c;">↑+40.88</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.72</td>
                     <td><span style="color: #f56c6c;">↑+0.05</span></td>
                 </tr>
@@ -4858,35 +5004,35 @@
                     <td>898</td>
                     <td><span style="color: #f56c6c;">↑+7.4%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="排除流失会员后的有效会员数，反映会员资产质量">有效会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产">有效会员数</span></td>
                     <td>205</td>
                     <td><span style="color: #f56c6c;">↑+32.3%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="近30天有消费或互动的会员数，反映会员活跃度">活跃会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近60天内最后一次购买的会员，反映门店的会员活跃度">活跃会员数</span></td>
                     <td>171</td>
                     <td><span style="color: #f56c6c;">↑+44.9%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="30-90天无消费但仍有积分的会员数，需重点关注">沉默会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近61天到90天最后一次购买的会员，需重点关注">沉默会员数</span></td>
                     <td>0</td>
                     <td><span style="color: #67c23a;">↓-100.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="90-180天无消费的会员数，存在流失风险">睡眠会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近91天到180天内最后一次购买的会员，存在流失风险">睡眠会员数</span></td>
                     <td>3</td>
                     <td><span style="color: #f56c6c;">↑+50.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="180天以上无消费的会员数，高流失风险">预流失会员数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="近181天到365天内最后一次购买的会员，高流失风险">预流失会员数</span></td>
                     <td>33</td>
                     <td><span style="color: #67c23a;">↓-13.2%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="本期有复购行为的会员数量，反映会员粘性">复购人数</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="历史有消费，在统计时间内再次或多次消费的会员人数">复购人数</span></td>
                     <td>11</td>
                     <td><span style="color: #f56c6c;">↑+175.0%</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员平均每笔订单消费金额，反映消费能力">客单价</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员单笔消费的平均金额，反映会员消费能力">客单价</span></td>
                     <td>812.43元</td>
                     <td><span style="color: #f56c6c;">↑+303.23</span></td>
                 </tr><tr>
-                    <td><span class="metric-tooltip" data-tooltip="会员单笔订单购买多品的比例，反映交叉购买能力">连带率</span></td>
+                    <td><span class="metric-tooltip" data-tooltip="会员人均购买的件数，反映会员的购买深度和搭配购买能力">连带率</span></td>
                     <td>2.79</td>
                     <td><span style="color: #f56c6c;">↑+0.84</span></td>
                 </tr>
@@ -5521,6 +5667,82 @@ function initDashboard() {
         initDashboard();
         
         });
+
+        // Tooltip交互 - 使用fixed定位避免布局问题
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为每个tooltip添加定位逻辑
+            document.querySelectorAll('.metric-tooltip-icon').forEach(function(icon) {
+                var tooltipBox = icon.nextElementSibling;
+                if (!tooltipBox || !tooltipBox.classList.contains('metric-tooltip-box')) return;
+                
+                // 使用事件委托处理
+                icon.addEventListener('mouseenter', function() {
+                    var rect = icon.getBoundingClientRect();
+                    
+                    // 初始定位到图标右侧，垂直居中
+                    var left = rect.right + 12;
+                    var top = rect.top + (rect.height / 2);
+                    
+                    // 先设置位置并显示
+                    tooltipBox.style.left = left + 'px';
+                    tooltipBox.style.top = top + 'px';
+                    tooltipBox.style.transform = 'translateY(-50%)';
+                    tooltipBox.classList.add('show');
+                    
+                    // 显示后获取实际尺寸
+                    var boxRect = tooltipBox.getBoundingClientRect();
+                    var boxWidth = boxRect.width;
+                    var boxHeight = boxRect.height;
+                    
+                    // 重新计算水平位置
+                    if (left + boxWidth > window.innerWidth - 20) {
+                        left = rect.left - boxWidth - 12;
+                        tooltipBox.style.left = left + 'px';
+                    }
+                    if (left < 10) {
+                        left = 10;
+                        tooltipBox.style.left = left + 'px';
+                    }
+                    
+                    // 垂直边界检测
+                    var adjustedTop = top;
+                    if (adjustedTop - boxHeight/2 < 10) {
+                        adjustedTop = boxHeight/2 + 10;
+                    }
+                    if (adjustedTop + boxHeight/2 > window.innerHeight - 10) {
+                        adjustedTop = window.innerHeight - boxHeight/2 - 10;
+                    }
+                    if (adjustedTop !== top) {
+                        tooltipBox.style.top = adjustedTop + 'px';
+                        tooltipBox.style.transform = 'translateY(0)';
+                    }
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    tooltipBox.classList.remove('show');
+                });
+                
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    tooltipBox.classList.toggle('show');
+                });
+            });
+            
+            // 点击页面其他位置关闭所有tooltip
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.metric-tooltip-box.show').forEach(function(box) {
+                    box.classList.remove('show');
+                });
+            });
+            
+            // 防止tooltip内部点击关闭
+            document.querySelectorAll('.metric-tooltip-box').forEach(function(box) {
+                box.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+
     </script>
 
     <!-- 密钥弹窗 -->
