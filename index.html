@@ -85,9 +85,6 @@
             border-radius: var(--radius-xl);
             margin-bottom: 32px;
             box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 10px;
-            z-index: 9999;
             transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
 
@@ -2892,9 +2889,6 @@
 
         .hidden-navbar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: sticky;
-            top: 0;
-            z-index: 10;
         }
 
         .hidden-header {
@@ -6797,7 +6791,13 @@
                             show: true,
                             position: 'right',
                             formatter: function(params) {
-                                return params.value + '人';
+                                const value = params.value;
+                                if (params.dataIndex === 0) {
+                                    // 有效会员：显示数量和占总会员的占比
+                                    const ratio = ((value / totalCount) * 100).toFixed(1) + '%';
+                                    return value + '人 | ' + ratio;
+                                }
+                                return value + '人';
                             },
                             fontSize: 13,
                             color: '#666'
