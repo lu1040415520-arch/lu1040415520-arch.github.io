@@ -127,6 +127,16 @@
             50% { opacity: 0.8; transform: scale(1.1); }
         }
 
+        /* 导航条容器 */
+        .nav-bar-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 85%, transparent 100%);
+            padding: 16px 0 24px 0;
+            margin-bottom: -8px;
+        }
+
         /* 导航条样式 */
         .nav-bar {
             position: relative;
@@ -136,19 +146,19 @@
             border-radius: 8px;
             padding: 4px;
             gap: 4px;
-            margin: 24px 0;
+            box-shadow: 0 4px 16px rgba(99, 91, 255, 0.3);
         }
 
         /* 导航指示器 */
         .nav-indicator {
             position: absolute;
             bottom: 4px;
-            height: 2px;
+            height: 3px;
             background: #FFFFFF;
-            border-radius: 1px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
-            opacity: 0.5;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
 
         .nav-item {
@@ -156,23 +166,69 @@
             padding: 10px 16px;
             border: none;
             background: transparent;
-            color: #FFFFFF;
+            color: rgba(255, 255, 255, 0.85);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             border-radius: 6px;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
         }
 
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
         }
 
         .nav-item.active {
             background: #FFFFFF;
             color: #635BFF;
             font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 点击波纹效果 */
+        .nav-item .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 键盘导航焦点样式 */
+        .nav-item:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item.active:focus {
+            box-shadow: inset 0 0 0 2px #635BFF, 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 快捷键提示 */
+        .nav-shortcut {
+            position: absolute;
+            bottom: 2px;
+            right: 6px;
+            font-size: 10px;
+            opacity: 0.5;
+            font-weight: 400;
+        }
+
+        .nav-item.active .nav-shortcut {
+            opacity: 0.7;
         }
 
         /* 回到顶部按钮 */
@@ -1186,6 +1242,61 @@
         }
         .custom-metric-diff.down {
             color: #67c23a;
+        }
+
+        /* 排除深圳门店开关 */
+        .custom-filter-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .custom-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+        .custom-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .custom-switch input:checked + .custom-slider {
+            background-color: #2C5F97;
+        }
+        .custom-switch input:checked + .custom-slider:before {
+            transform: translateX(20px);
+        }
+        .custom-filter-bar span {
+            font-size: 14px;
+            color: #606266;
         }
 
         /* 自定义分析折线图 */
@@ -3513,14 +3624,16 @@
                 <div class="data-period">数据取值周期：2026年4月27日至5月3日</div>
                 
             </div>
-            <div class="nav-bar">
-                <div class="nav-indicator"></div>
-                <button class="nav-item active" onclick="switchPage('page-dashboard')">大盘运营情况</button>
-                <button class="nav-item" onclick="switchPage('page-regions')">区域分析</button>
-                <button class="nav-item" onclick="switchPage('page-stores')">各门店详细分析</button>
-                <button class="nav-item" onclick="switchPage('page-problems')">问题归因参谋</button>
-                <button class="nav-item" onclick="switchPage('page-custom')">自定义分析</button>
-                <button class="nav-item" onclick="openPasswordModal()">其它功能</button>
+            <div class="nav-bar-wrapper">
+                <div class="nav-bar">
+                    <div class="nav-indicator"></div>
+                    <button class="nav-item active" data-index="0" onclick="switchPage('page-dashboard')">大盘运营情况</button>
+                    <button class="nav-item" data-index="1" onclick="switchPage('page-regions')">区域分析</button>
+                    <button class="nav-item" data-index="2" onclick="switchPage('page-stores')">各门店详细分析</button>
+                    <button class="nav-item" data-index="3" onclick="switchPage('page-problems')">问题归因参谋</button>
+                    <button class="nav-item" data-index="4" onclick="switchPage('page-custom')">自定义分析</button>
+                    <button class="nav-item" data-index="5" onclick="openPasswordModal()">其它功能</button>
+                </div>
             </div>
         </div>
 
@@ -5572,13 +5685,22 @@
                 <div class="custom-metrics-grid" id="custom-metrics-grid">
                     <div class="custom-metric-card">
                 <div class="custom-metric-header">
+                    <div class="custom-metric-name">支付金额</div>
+                    <span class="metric-info-icon" title="统计时间内，指定客群的支付金额总和">?</span>
+                    <div class="metric-tooltip-content">统计时间内，指定客群的支付金额总和</div>
+                </div>
+                <div class="custom-metric-value">807,690</div>
+                
+                <div class="custom-metric-diff up">同比 +13598</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
                     <div class="custom-metric-name">支付人数</div>
                     <span class="metric-info-icon" title="统计时间内，指定客群的支付人数">?</span>
                     <div class="metric-tooltip-content">统计时间内，指定客群的支付人数</div>
                 </div>
-                <div class="custom-metric-value">1,181</div>
+                <div class="custom-metric-value">1,148</div>
                 
-                <div class="custom-metric-diff down">同比 -113</div>
+                <div class="custom-metric-diff up">同比 +69</div>
             </div><div class="custom-metric-card">
                 <div class="custom-metric-header">
                     <div class="custom-metric-name">活跃会员数</div>
@@ -5590,40 +5712,31 @@
                 <div class="custom-metric-diff down">同比 -372</div>
             </div><div class="custom-metric-card">
                 <div class="custom-metric-header">
-                    <div class="custom-metric-name">首购人数</div>
-                    <span class="metric-info-icon" title="统计时间内，历史从未有过消费的客户，在统计时间内产生首次消费的人数">?</span>
-                    <div class="metric-tooltip-content">统计时间内，历史从未有过消费的客户，在统计时间内产生首次消费的人数</div>
+                    <div class="custom-metric-name">复购金额</div>
+                    <span class="metric-info-icon" title="统计时间内，历史有消费的客户再次购买的金额总和">?</span>
+                    <div class="metric-tooltip-content">统计时间内，历史有消费的客户再次购买的金额总和</div>
                 </div>
-                <div class="custom-metric-value">493</div>
-                <div class="custom-metric-sub">每日店均 3.29 人</div>
-                <div class="custom-metric-diff down">同比 -69</div>
+                <div class="custom-metric-value">481,504</div>
+                <div class="custom-metric-sub">日均复购金额 3,210.03</div>
+                <div class="custom-metric-diff up">同比 +95484</div>
             </div><div class="custom-metric-card">
                 <div class="custom-metric-header">
                     <div class="custom-metric-name">复购人数</div>
                     <span class="metric-info-icon" title="统计时间内，历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）">?</span>
                     <div class="metric-tooltip-content">统计时间内，历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）</div>
                 </div>
-                <div class="custom-metric-value">677</div>
-                <div class="custom-metric-sub">每日店均 4.51 人</div>
-                <div class="custom-metric-diff down">同比 -45</div>
+                <div class="custom-metric-value">643</div>
+                <div class="custom-metric-sub">每日店均 4.29 人</div>
+                <div class="custom-metric-diff up">同比 +108</div>
             </div><div class="custom-metric-card">
                 <div class="custom-metric-header">
                     <div class="custom-metric-name">客单价</div>
                     <span class="metric-info-icon" title="统计时间内，平均每位客户购买的金额">?</span>
                     <div class="metric-tooltip-content">统计时间内，平均每位客户购买的金额</div>
                 </div>
-                <div class="custom-metric-value">686.97</div>
+                <div class="custom-metric-value">703</div>
                 
-                <div class="custom-metric-diff down">同比 -10.11</div>
-            </div><div class="custom-metric-card">
-                <div class="custom-metric-header">
-                    <div class="custom-metric-name">客单量</div>
-                    <span class="metric-info-icon" title="统计时间内，平均每位客户的支付订单数">?</span>
-                    <div class="metric-tooltip-content">统计时间内，平均每位客户的支付订单数</div>
-                </div>
-                <div class="custom-metric-value">1.07</div>
-                
-                <div class="custom-metric-diff up">同比 +0.07</div>
+                <div class="custom-metric-diff down">同比 -32</div>
             </div><div class="custom-metric-card">
                 <div class="custom-metric-header">
                     <div class="custom-metric-name">折扣率</div>
@@ -5639,9 +5752,16 @@
                     <span class="metric-info-icon" title="统计时间内，平均每笔支付订单购买商品的件数">?</span>
                     <div class="metric-tooltip-content">统计时间内，平均每笔支付订单购买商品的件数</div>
                 </div>
-                <div class="custom-metric-value">2.61</div>
+                <div class="custom-metric-value">2.46</div>
                 
-                <div class="custom-metric-diff down">同比 -0.33</div>
+                <div class="custom-metric-diff up">同比 +0.13</div>
+            </div>
+            <div class="custom-filter-bar">
+                <label class="custom-switch">
+                    <input type="checkbox" id="excludeShenzhenToggle">
+                    <span class="custom-slider"></span>
+                </label>
+                <span>排除深圳门店</span>
             </div>
             <div class="custom-chart-section">
                 <div class="custom-chart-header">
@@ -5649,9 +5769,8 @@
                     <select id="custom-metric-select" class="custom-metric-select">
                         <option value="支付人数">支付人数</option>
                         <option value="支付金额">支付金额</option>
-                        <option value="活跃会员数">活跃会员数</option>
-                        <option value="流失会员数">流失会员数</option>
-                        <option value="首购人数">首购人数</option>
+                        <option value="活跃会员数">活跃人数</option>
+                        <option value="流失会员数">流失人数</option>
                         <option value="复购人数">复购人数</option>
                         <option value="客单价">客单价</option>
                     </select>
@@ -5659,8 +5778,9 @@
                 <div id="custom-chart" class="custom-chart"></div>
             </div>
             <script>
-                window.customChartData = {"current": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [162, 289, 234, 207, 153, 136], "支付金额": [105633, 212018, 175281, 126283, 111086, 96891], "活跃会员数": [5208, 5356, 5494, 5609, 5685, 5727], "流失会员数": [120250, 120310, 120334, 120375, 120420, 120451], "首购人数": [51, 127, 101, 98, 66, 50], "复购人数": [107, 160, 130, 110, 86, 84], "客单价": [584.53, 776.16, 775.53, 629.9, 719.56, 636.14]}, "previous": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [186, 303, 228, 221, 198, 158], "支付金额": [128321, 220867, 166743, 168069, 143757, 96347], "活跃会员数": [5596, 5738, 5811, 5917, 6018, 6099], "流失会员数": [99790, 99824, 99845, 99881, 99915, 99949], "首购人数": [70, 124, 107, 97, 90, 74], "复购人数": [114, 176, 120, 123, 108, 81], "客单价": [703.22, 681.46, 709.86, 750.94, 723.66, 613.35]}, "trend": {"current": {"支付人数": [237.19, 221.05, 204.9, 188.76, 172.62, 156.48], "支付金额": [166115.62, 154815.5, 143515.39, 132215.28, 120915.16, 109615.05], "活跃会员数": [5249.1, 5354.72, 5460.35, 5565.98, 5671.61, 5777.24], "流失会员数": [120258.38, 120297.7, 120337.01, 120376.32, 120415.64, 120454.95], "首购人数": [95.81, 90.35, 84.9, 79.44, 73.98, 68.52], "复购人数": [138.33, 128.13, 117.93, 107.73, 97.53, 87.33], "客单价": [691.07, 689.43, 687.79, 686.15, 684.51, 682.87]}, "previous": {"支付人数": [248.67, 235.47, 222.27, 209.07, 195.87, 182.67], "支付金额": [181865.48, 170726.22, 159586.96, 148447.7, 137308.45, 126169.19], "活跃会员数": [5615.95, 5714.84, 5813.72, 5912.61, 6011.5, 6110.38], "流失会员数": [99788.48, 99820.02, 99851.56, 99883.1, 99914.65, 99946.19], "首购人数": [100.24, 97.61, 94.98, 92.35, 89.72, 87.1], "复购人数": [146.48, 136.02, 125.56, 115.1, 104.65, 94.19], "客单价": [717.2, 709.15, 701.11, 693.06, 685.01, 676.97]}}};
-                window.customStoreRankData = {"支付金额": [{"store": "萝岗万达", "current": 75775, "previous": 91870, "diff": -16095}, {"store": "清远城市广场", "current": 66405, "previous": 102544, "diff": -36139}, {"store": "海珠乐峰广场", "current": 58176, "previous": 51758, "diff": 6418}, {"store": "花都骏壹万邦", "current": 55387, "previous": 21437, "diff": 33950}, {"store": "广州塔广场店", "current": 46062, "previous": 103168, "diff": -57106}, {"store": "岗顶天娱广场", "current": 45295, "previous": 39973, "diff": 5322}, {"store": "深圳宝安店", "current": 37758, "previous": 2026, "diff": 35732}, {"store": "深圳龙岗坪山", "current": 37023, "previous": 43187, "diff": -6164}, {"store": "潘州广场朵以", "current": 35294, "previous": 49888, "diff": -14594}, {"store": "通城朵以", "current": 35181, "previous": 47531, "diff": -12350}, {"store": "宜都清江店", "current": 34488, "previous": 30297, "diff": 4191}, {"store": "深圳龙华大浪", "current": 29646, "previous": 2191, "diff": 27455}, {"store": "大朗店", "current": 29584, "previous": 26477, "diff": 3107}, {"store": "高埗万和", "current": 25593, "previous": 30743, "diff": -5150}, {"store": "乐从天佑城", "current": 24478, "previous": 68727, "diff": -44249}, {"store": "宜城香港路", "current": 23429, "previous": 28012, "diff": -4583}, {"store": "东莞黄江大道", "current": 22895, "previous": 18369, "diff": 4526}, {"store": "茂名印象汇", "current": 22158, "previous": 33663, "diff": -11505}, {"store": "坪地宜城店", "current": 22141, "previous": 16167, "diff": 5974}, {"store": "白云万象汇朵以", "current": 22061, "previous": 20598, "diff": 1463}, {"store": "南村店", "current": 20780, "previous": 21837, "diff": -1057}, {"store": "深圳满京华店", "current": 18162, "previous": 17812, "diff": 350}, {"store": "湛江吴川", "current": 15359, "previous": 18683, "diff": -3324}, {"store": "东莞南城", "current": 14241, "previous": 21465, "diff": -7224}, {"store": "英德朵以", "current": 9821, "previous": 15681, "diff": -5860}], "支付人数": [{"store": "萝岗万达", "current": 104, "previous": 130, "diff": -26}, {"store": "清远城市广场", "current": 98, "previous": 135, "diff": -37}, {"store": "海珠乐峰广场", "current": 72, "previous": 65, "diff": 7}, {"store": "宜都清江店", "current": 64, "previous": 67, "diff": -3}, {"store": "花都骏壹万邦", "current": 63, "previous": 34, "diff": 29}, {"store": "通城朵以", "current": 63, "previous": 83, "diff": -20}, {"store": "潘州广场朵以", "current": 61, "previous": 78, "diff": -17}, {"store": "广州塔广场店", "current": 56, "previous": 124, "diff": -68}, {"store": "深圳龙岗坪山", "current": 53, "previous": 56, "diff": -3}, {"store": "深圳宝安店", "current": 52, "previous": 2, "diff": 50}, {"store": "岗顶天娱广场", "current": 50, "previous": 52, "diff": -2}, {"store": "大朗店", "current": 48, "previous": 38, "diff": 10}, {"store": "乐从天佑城", "current": 45, "previous": 113, "diff": -68}, {"store": "深圳龙华大浪", "current": 42, "previous": 5, "diff": 37}, {"store": "白云万象汇朵以", "current": 41, "previous": 31, "diff": 10}, {"store": "宜城香港路", "current": 37, "previous": 26, "diff": 11}, {"store": "高埗万和", "current": 36, "previous": 39, "diff": -3}, {"store": "茂名印象汇", "current": 33, "previous": 43, "diff": -10}, {"store": "深圳满京华店", "current": 32, "previous": 20, "diff": 12}, {"store": "坪地宜城店", "current": 29, "previous": 26, "diff": 3}, {"store": "南村店", "current": 26, "previous": 25, "diff": 1}, {"store": "东莞黄江大道", "current": 26, "previous": 22, "diff": 4}, {"store": "湛江吴川", "current": 21, "previous": 21, "diff": 0}, {"store": "东莞南城", "current": 18, "previous": 32, "diff": -14}, {"store": "英德朵以", "current": 11, "previous": 27, "diff": -16}], "客单价": [{"store": "岗顶天娱广场", "current": 924.02, "previous": 759.9, "diff": 164.12}, {"store": "英德朵以", "current": 843.25, "previous": 626.53, "diff": 216.72}, {"store": "海珠乐峰广场", "current": 808.35, "previous": 803.24, "diff": 5.12}, {"store": "东莞南城", "current": 806.58, "previous": 652.88, "diff": 153.71}, {"store": "南村店", "current": 805.78, "previous": 800.97, "diff": 4.82}, {"store": "广州塔广场店", "current": 805.63, "previous": 842.09, "diff": -36.46}, {"store": "萝岗万达", "current": 746.41, "previous": 700.35, "diff": 46.06}, {"store": "深圳龙岗坪山", "current": 744.16, "previous": 732.32, "diff": 11.85}, {"store": "坪地宜城店", "current": 735.35, "previous": 683.37, "diff": 51.98}, {"store": "深圳宝安店", "current": 731.1, "previous": 337.67, "diff": 393.43}, {"store": "花都骏壹万邦", "current": 729.59, "previous": 614.38, "diff": 115.21}, {"store": "东莞黄江大道", "current": 727.81, "previous": 949.9, "diff": -222.09}, {"store": "湛江吴川", "current": 723.1, "previous": 844.91, "diff": -121.82}, {"store": "清远城市广场", "current": 687.84, "previous": 747.78, "diff": -59.94}, {"store": "茂名印象汇", "current": 658.46, "previous": 796.13, "diff": -137.67}, {"store": "宜城香港路", "current": 643.93, "previous": 999.56, "diff": -355.63}, {"store": "深圳龙华大浪", "current": 604.06, "previous": 365.17, "diff": 238.9}, {"store": "白云万象汇朵以", "current": 594.21, "previous": 621.45, "diff": -27.24}, {"store": "大朗店", "current": 579.84, "previous": 772.88, "diff": -193.04}, {"store": "潘州广场朵以", "current": 575.91, "previous": 623.25, "diff": -47.34}, {"store": "宜都清江店", "current": 568.09, "previous": 428.78, "diff": 139.31}, {"store": "高埗万和", "current": 542.76, "previous": 791.72, "diff": -248.96}, {"store": "深圳满京华店", "current": 537.96, "previous": 765.71, "diff": -227.75}, {"store": "通城朵以", "current": 529.82, "previous": 544.15, "diff": -14.33}, {"store": "乐从天佑城", "current": 520.25, "previous": 622.02, "diff": -101.77}], "客单量": [{"store": "宜城香港路", "current": 1.3, "previous": 1.08, "diff": 0.22}, {"store": "深圳龙岗坪山", "current": 1.25, "previous": 1.03, "diff": 0.23}, {"store": "东莞南城", "current": 1.2, "previous": 1.04, "diff": 0.15}, {"store": "坪地宜城店", "current": 1.19, "previous": 1.05, "diff": 0.13}, {"store": "宜都清江店", "current": 1.17, "previous": 1.01, "diff": 0.16}, {"store": "东莞黄江大道", "current": 1.14, "previous": 1.0, "diff": 0.14}, {"store": "岗顶天娱广场", "current": 1.13, "previous": 1.1, "diff": 0.03}, {"store": "萝岗万达", "current": 1.12, "previous": 1.01, "diff": 0.11}, {"store": "南村店", "current": 1.1, "previous": 1.18, "diff": -0.08}, {"store": "湛江吴川", "current": 1.1, "previous": 1.12, "diff": -0.03}, {"store": "英德朵以", "current": 1.08, "previous": 1.04, "diff": 0.04}, {"store": "通城朵以", "current": 1.07, "previous": 1.06, "diff": 0.01}, {"store": "清远城市广场", "current": 1.06, "previous": 1.02, "diff": 0.04}, {"store": "深圳龙华大浪", "current": 1.05, "previous": 0.83, "diff": 0.22}, {"store": "海珠乐峰广场", "current": 1.04, "previous": 1.06, "diff": -0.03}, {"store": "白云万象汇朵以", "current": 1.02, "previous": 1.02, "diff": 0.0}, {"store": "潘州广场朵以", "current": 1.02, "previous": 1.0, "diff": 0.02}, {"store": "乐从天佑城", "current": 1.01, "previous": 1.04, "diff": -0.03}, {"store": "广州塔广场店", "current": 1.01, "previous": 1.03, "diff": -0.01}, {"store": "大朗店", "current": 1.01, "previous": 1.11, "diff": -0.1}, {"store": "深圳满京华店", "current": 1.0, "previous": 0.83, "diff": 0.17}, {"store": "深圳宝安店", "current": 1.0, "previous": 0.33, "diff": 0.67}, {"store": "茂名印象汇", "current": 1.0, "previous": 1.0, "diff": 0.0}, {"store": "高埗万和", "current": 0.95, "previous": 1.12, "diff": -0.17}, {"store": "花都骏壹万邦", "current": 0.85, "previous": 1.0, "diff": -0.15}], "首购人数": [{"store": "萝岗万达", "current": 47, "previous": 77, "diff": -30}, {"store": "海珠乐峰广场", "current": 39, "previous": 34, "diff": 5}, {"store": "广州塔广场店", "current": 34, "previous": 112, "diff": -78}, {"store": "深圳龙华大浪", "current": 33, "previous": 3, "diff": 30}, {"store": "清远城市广场", "current": 32, "previous": 72, "diff": -40}, {"store": "潘州广场朵以", "current": 29, "previous": 8, "diff": 21}, {"store": "花都骏壹万邦", "current": 29, "previous": 23, "diff": 6}, {"store": "深圳宝安店", "current": 26, "previous": 1, "diff": 25}, {"store": "宜都清江店", "current": 26, "previous": 33, "diff": -7}, {"store": "乐从天佑城", "current": 22, "previous": 47, "diff": -25}, {"store": "通城朵以", "current": 20, "previous": 29, "diff": -9}, {"store": "白云万象汇朵以", "current": 20, "previous": 23, "diff": -3}, {"store": "大朗店", "current": 16, "previous": 7, "diff": 9}, {"store": "东莞黄江大道", "current": 16, "previous": 4, "diff": 12}, {"store": "岗顶天娱广场", "current": 15, "previous": 17, "diff": -2}, {"store": "茂名印象汇", "current": 14, "previous": 18, "diff": -4}, {"store": "深圳满京华店", "current": 13, "previous": 14, "diff": -1}, {"store": "高埗万和", "current": 13, "previous": 3, "diff": 10}, {"store": "深圳龙岗坪山", "current": 13, "previous": 8, "diff": 5}, {"store": "宜城香港路", "current": 12, "previous": 4, "diff": 8}, {"store": "湛江吴川", "current": 6, "previous": 7, "diff": -1}, {"store": "坪地宜城店", "current": 5, "previous": 3, "diff": 2}, {"store": "南村店", "current": 5, "previous": 4, "diff": 1}, {"store": "英德朵以", "current": 5, "previous": 0, "diff": 5}, {"store": "东莞南城", "current": 3, "previous": 11, "diff": -8}], "复购人数": [{"store": "清远城市广场", "current": 67, "previous": 63, "diff": 4}, {"store": "萝岗万达", "current": 54, "previous": 53, "diff": 1}, {"store": "通城朵以", "current": 42, "previous": 52, "diff": -10}, {"store": "深圳龙岗坪山", "current": 40, "previous": 48, "diff": -8}, {"store": "岗顶天娱广场", "current": 35, "previous": 35, "diff": 0}, {"store": "宜都清江店", "current": 34, "previous": 33, "diff": 1}, {"store": "海珠乐峰广场", "current": 33, "previous": 31, "diff": 2}, {"store": "潘州广场朵以", "current": 32, "previous": 69, "diff": -37}, {"store": "大朗店", "current": 32, "previous": 31, "diff": 1}, {"store": "花都骏壹万邦", "current": 32, "previous": 9, "diff": 23}, {"store": "宜城香港路", "current": 26, "previous": 21, "diff": 5}, {"store": "深圳宝安店", "current": 26, "previous": 1, "diff": 25}, {"store": "高埗万和", "current": 24, "previous": 35, "diff": -11}, {"store": "坪地宜城店", "current": 24, "previous": 23, "diff": 1}, {"store": "乐从天佑城", "current": 23, "previous": 66, "diff": -43}, {"store": "广州塔广场店", "current": 21, "previous": 12, "diff": 9}, {"store": "白云万象汇朵以", "current": 20, "previous": 8, "diff": 12}, {"store": "茂名印象汇", "current": 19, "previous": 25, "diff": -6}, {"store": "深圳满京华店", "current": 19, "previous": 6, "diff": 13}, {"store": "南村店", "current": 19, "previous": 19, "diff": 0}, {"store": "东莞南城", "current": 15, "previous": 21, "diff": -6}, {"store": "湛江吴川", "current": 15, "previous": 14, "diff": 1}, {"store": "东莞黄江大道", "current": 9, "previous": 18, "diff": -9}, {"store": "深圳龙华大浪", "current": 9, "previous": 2, "diff": 7}, {"store": "英德朵以", "current": 7, "previous": 27, "diff": -20}], "折扣率": [{"store": "深圳满京华店", "current": 96.6, "previous": 87.11, "diff": 9.48}, {"store": "深圳宝安店", "current": 93.62, "previous": 88.05, "diff": 5.58}, {"store": "海珠乐峰广场", "current": 93.36, "previous": 89.68, "diff": 3.68}, {"store": "深圳龙华大浪", "current": 92.66, "previous": 87.99, "diff": 4.67}, {"store": "萝岗万达", "current": 92.22, "previous": 88.06, "diff": 4.16}, {"store": "广州塔广场店", "current": 92.2, "previous": 89.67, "diff": 2.53}, {"store": "高埗万和", "current": 92.04, "previous": 85.71, "diff": 6.34}, {"store": "大朗店", "current": 92.01, "previous": 89.5, "diff": 2.51}, {"store": "坪地宜城店", "current": 91.86, "previous": 88.76, "diff": 3.1}, {"store": "英德朵以", "current": 91.82, "previous": 83.65, "diff": 8.17}, {"store": "花都骏壹万邦", "current": 91.76, "previous": 91.77, "diff": -0.0}, {"store": "湛江吴川", "current": 91.3, "previous": 84.28, "diff": 7.02}, {"store": "深圳龙岗坪山", "current": 90.97, "previous": 89.16, "diff": 1.81}, {"store": "清远城市广场", "current": 90.69, "previous": 86.2, "diff": 4.49}, {"store": "白云万象汇朵以", "current": 90.36, "previous": 87.35, "diff": 3.02}, {"store": "岗顶天娱广场", "current": 89.05, "previous": 86.19, "diff": 2.86}, {"store": "南村店", "current": 87.76, "previous": 81.19, "diff": 6.57}, {"store": "乐从天佑城", "current": 87.22, "previous": 84.51, "diff": 2.71}, {"store": "东莞黄江大道", "current": 86.68, "previous": 80.37, "diff": 6.31}, {"store": "宜都清江店", "current": 86.5, "previous": 87.12, "diff": -0.62}, {"store": "茂名印象汇", "current": 85.49, "previous": 95.16, "diff": -9.66}, {"store": "通城朵以", "current": 84.97, "previous": 90.43, "diff": -5.45}, {"store": "东莞南城", "current": 82.14, "previous": 81.48, "diff": 0.66}, {"store": "潘州广场朵以", "current": 81.97, "previous": 81.51, "diff": 0.46}, {"store": "宜城香港路", "current": 71.72, "previous": 83.02, "diff": -11.3}], "连带": [{"store": "英德朵以", "current": 4.1, "previous": 2.73, "diff": 1.37}, {"store": "东莞南城", "current": 3.67, "previous": 2.87, "diff": 0.8}, {"store": "岗顶天娱广场", "current": 3.26, "previous": 2.97, "diff": 0.29}, {"store": "东莞黄江大道", "current": 3.22, "previous": 4.02, "diff": -0.79}, {"store": "宜城香港路", "current": 3.04, "previous": 4.02, "diff": -0.98}, {"store": "花都骏壹万邦", "current": 2.94, "previous": 2.53, "diff": 0.41}, {"store": "广州塔广场店", "current": 2.77, "previous": 3.1, "diff": -0.33}, {"store": "深圳龙岗坪山", "current": 2.77, "previous": 2.83, "diff": -0.06}, {"store": "南村店", "current": 2.74, "previous": 3.52, "diff": -0.78}, {"store": "坪地宜城店", "current": 2.71, "previous": 2.96, "diff": -0.26}, {"store": "深圳宝安店", "current": 2.65, "previous": 4.5, "diff": -1.85}, {"store": "湛江吴川", "current": 2.62, "previous": 3.78, "diff": -1.16}, {"store": "萝岗万达", "current": 2.6, "previous": 2.76, "diff": -0.16}, {"store": "海珠乐峰广场", "current": 2.58, "previous": 3.03, "diff": -0.45}, {"store": "清远城市广场", "current": 2.48, "previous": 3.01, "diff": -0.52}, {"store": "茂名印象汇", "current": 2.34, "previous": 2.81, "diff": -0.47}, {"store": "宜都清江店", "current": 2.33, "previous": 1.68, "diff": 0.64}, {"store": "白云万象汇朵以", "current": 2.21, "previous": 2.63, "diff": -0.42}, {"store": "深圳龙华大浪", "current": 2.19, "previous": 1.8, "diff": 0.39}, {"store": "高埗万和", "current": 2.17, "previous": 3.21, "diff": -1.04}, {"store": "潘州广场朵以", "current": 2.16, "previous": 2.56, "diff": -0.4}, {"store": "大朗店", "current": 2.12, "previous": 2.93, "diff": -0.81}, {"store": "通城朵以", "current": 2.11, "previous": 2.14, "diff": -0.03}, {"store": "乐从天佑城", "current": 1.99, "previous": 2.67, "diff": -0.68}, {"store": "深圳满京华店", "current": 1.92, "previous": 3.43, "diff": -1.52}], "活跃会员数": [{"store": "萝岗万达", "current": 684, "previous": 615, "diff": 69}, {"store": "清远城市广场", "current": 569, "previous": 655, "diff": -86}, {"store": "海珠乐峰广场", "current": 434, "previous": 429, "diff": 5}, {"store": "广州塔广场店", "current": 310, "previous": 574, "diff": -264}, {"store": "深圳龙岗坪山", "current": 275, "previous": 210, "diff": 65}, {"store": "乐从天佑城", "current": 271, "previous": 520, "diff": -249}, {"store": "岗顶天娱广场", "current": 269, "previous": 259, "diff": 10}, {"store": "潘州广场朵以", "current": 261, "previous": 258, "diff": 3}, {"store": "宜都清江店", "current": 254, "previous": 479, "diff": -225}, {"store": "茂名印象汇", "current": 235, "previous": 214, "diff": 21}, {"store": "白云万象汇朵以", "current": 225, "previous": 199, "diff": 26}, {"store": "通城朵以", "current": 225, "previous": 317, "diff": -92}, {"store": "深圳龙华大浪", "current": 174, "previous": 32, "diff": 142}, {"store": "高埗万和", "current": 172, "previous": 140, "diff": 32}, {"store": "花都骏壹万邦", "current": 166, "previous": 154, "diff": 12}, {"store": "大朗店", "current": 149, "previous": 175, "diff": -26}, {"store": "深圳满京华店", "current": 147, "previous": 65, "diff": 82}, {"store": "坪地宜城店", "current": 144, "previous": 94, "diff": 50}, {"store": "深圳宝安店", "current": 144, "previous": 37, "diff": 107}, {"store": "南村店", "current": 123, "previous": 107, "diff": 16}, {"store": "宜城香港路", "current": 121, "previous": 105, "diff": 16}, {"store": "湛江吴川", "current": 112, "previous": 105, "diff": 7}, {"store": "东莞黄江大道", "current": 105, "previous": 113, "diff": -8}, {"store": "英德朵以", "current": 82, "previous": 101, "diff": -19}, {"store": "东莞南城", "current": 76, "previous": 142, "diff": -66}], "沉默会员数": [{"store": "萝岗万达", "current": 218, "previous": 163, "diff": 55}, {"store": "清远城市广场", "current": 210, "previous": 164, "diff": 46}, {"store": "海珠乐峰广场", "current": 190, "previous": 150, "diff": 40}, {"store": "广州塔广场店", "current": 185, "previous": 203, "diff": -18}, {"store": "茂名印象汇", "current": 113, "previous": 67, "diff": 46}, {"store": "通城朵以", "current": 109, "previous": 93, "diff": 16}, {"store": "潘州广场朵以", "current": 103, "previous": 73, "diff": 30}, {"store": "花都骏壹万邦", "current": 93, "previous": 33, "diff": 60}, {"store": "宜都清江店", "current": 93, "previous": 99, "diff": -6}, {"store": "湛江吴川", "current": 81, "previous": 35, "diff": 46}, {"store": "乐从天佑城", "current": 81, "previous": 115, "diff": -34}, {"store": "白云万象汇朵以", "current": 80, "previous": 69, "diff": 11}, {"store": "岗顶天娱广场", "current": 77, "previous": 86, "diff": -9}, {"store": "宜城香港路", "current": 71, "previous": 35, "diff": 36}, {"store": "深圳龙岗坪山", "current": 68, "previous": 36, "diff": 32}, {"store": "高埗万和", "current": 56, "previous": 32, "diff": 24}, {"store": "坪地宜城店", "current": 45, "previous": 17, "diff": 28}, {"store": "东莞黄江大道", "current": 39, "previous": 27, "diff": 12}, {"store": "大朗店", "current": 39, "previous": 40, "diff": -1}, {"store": "南村店", "current": 27, "previous": 35, "diff": -8}, {"store": "东莞南城", "current": 27, "previous": 34, "diff": -7}, {"store": "英德朵以", "current": 14, "previous": 29, "diff": -15}, {"store": "深圳满京华店", "current": 12, "previous": 2, "diff": 10}, {"store": "深圳宝安店", "current": 3, "previous": 10, "diff": -7}, {"store": "深圳龙华大浪", "current": 1, "previous": 0, "diff": 1}], "睡眠会员数": [{"store": "萝岗万达", "current": 612, "previous": 713, "diff": -101}, {"store": "清远城市广场", "current": 569, "previous": 634, "diff": -65}, {"store": "海珠乐峰广场", "current": 400, "previous": 606, "diff": -206}, {"store": "广州塔广场店", "current": 342, "previous": 339, "diff": 3}, {"store": "乐从天佑城", "current": 335, "previous": 563, "diff": -228}, {"store": "潘州广场朵以", "current": 333, "previous": 239, "diff": 94}, {"store": "茂名印象汇", "current": 249, "previous": 251, "diff": -2}, {"store": "通城朵以", "current": 241, "previous": 317, "diff": -76}, {"store": "深圳龙岗坪山", "current": 239, "previous": 204, "diff": 35}, {"store": "白云万象汇朵以", "current": 237, "previous": 313, "diff": -76}, {"store": "宜都清江店", "current": 228, "previous": 391, "diff": -163}, {"store": "高埗万和", "current": 227, "previous": 106, "diff": 121}, {"store": "岗顶天娱广场", "current": 200, "previous": 343, "diff": -143}, {"store": "花都骏壹万邦", "current": 194, "previous": 194, "diff": 0}, {"store": "大朗店", "current": 187, "previous": 206, "diff": -19}, {"store": "东莞黄江大道", "current": 161, "previous": 144, "diff": 17}, {"store": "南村店", "current": 135, "previous": 120, "diff": 15}, {"store": "湛江吴川", "current": 125, "previous": 161, "diff": -36}, {"store": "坪地宜城店", "current": 122, "previous": 78, "diff": 44}, {"store": "东莞南城", "current": 111, "previous": 143, "diff": -32}, {"store": "宜城香港路", "current": 96, "previous": 114, "diff": -18}, {"store": "英德朵以", "current": 75, "previous": 92, "diff": -17}, {"store": "深圳满京华店", "current": 60, "previous": 41, "diff": 19}, {"store": "深圳宝安店", "current": 21, "previous": 59, "diff": -38}, {"store": "深圳龙华大浪", "current": 3, "previous": 18, "diff": -15}], "预流失会员数": [{"store": "萝岗万达", "current": 1196, "previous": 562, "diff": 634}, {"store": "清远城市广场", "current": 1058, "previous": 756, "diff": 302}, {"store": "广州塔广场店", "current": 1026, "previous": 365, "diff": 661}, {"store": "乐从天佑城", "current": 626, "previous": 812, "diff": -186}, {"store": "海珠乐峰广场", "current": 611, "previous": 609, "diff": 2}, {"store": "宜都清江店", "current": 578, "previous": 738, "diff": -160}, {"store": "通城朵以", "current": 557, "previous": 524, "diff": 33}, {"store": "潘州广场朵以", "current": 500, "previous": 365, "diff": 135}, {"store": "岗顶天娱广场", "current": 495, "previous": 559, "diff": -64}, {"store": "白云万象汇朵以", "current": 367, "previous": 284, "diff": 83}, {"store": "茂名印象汇", "current": 363, "previous": 344, "diff": 19}, {"store": "花都骏壹万邦", "current": 304, "previous": 297, "diff": 7}, {"store": "高埗万和", "current": 259, "previous": 120, "diff": 139}, {"store": "东莞南城", "current": 256, "previous": 302, "diff": -46}, {"store": "南村店", "current": 254, "previous": 252, "diff": 2}, {"store": "东莞黄江大道", "current": 249, "previous": 277, "diff": -28}, {"store": "宜城香港路", "current": 230, "previous": 132, "diff": 98}, {"store": "大朗店", "current": 210, "previous": 213, "diff": -3}, {"store": "深圳龙岗坪山", "current": 179, "previous": 158, "diff": 21}, {"store": "湛江吴川", "current": 127, "previous": 130, "diff": -3}, {"store": "坪地宜城店", "current": 107, "previous": 242, "diff": -135}, {"store": "英德朵以", "current": 102, "previous": 89, "diff": 13}, {"store": "深圳满京华店", "current": 84, "previous": 51, "diff": 33}, {"store": "深圳龙华大浪", "current": 34, "previous": 112, "diff": -78}, {"store": "深圳宝安店", "current": 32, "previous": 97, "diff": -65}], "流失会员数": [{"store": "萝岗万达", "current": 15155, "previous": 12995, "diff": 2160}, {"store": "乐从天佑城", "current": 10465, "previous": 8524, "diff": 1941}, {"store": "宜都清江店", "current": 8723, "previous": 7505, "diff": 1218}, {"store": "岗顶天娱广场", "current": 8326, "previous": 6936, "diff": 1390}, {"store": "潘州广场朵以", "current": 7969, "previous": 7457, "diff": 512}, {"store": "广州塔广场店", "current": 7878, "previous": 6021, "diff": 1857}, {"store": "深圳满京华店", "current": 6934, "previous": 6502, "diff": 432}, {"store": "清远城市广场", "current": 6660, "previous": 4892, "diff": 1768}, {"store": "南村店", "current": 6255, "previous": 5716, "diff": 539}, {"store": "东莞南城", "current": 6129, "previous": 5494, "diff": 635}, {"store": "海珠乐峰广场", "current": 4617, "previous": 2651, "diff": 1966}, {"store": "白云万象汇朵以", "current": 4536, "previous": 3597, "diff": 939}, {"store": "茂名印象汇", "current": 4388, "previous": 3846, "diff": 542}, {"store": "大朗店", "current": 4045, "previous": 3700, "diff": 345}, {"store": "通城朵以", "current": 3905, "previous": 3120, "diff": 785}, {"store": "湛江吴川", "current": 3094, "previous": 2621, "diff": 473}, {"store": "宜城香港路", "current": 2416, "previous": 2169, "diff": 247}, {"store": "东莞黄江大道", "current": 2166, "previous": 1719, "diff": 447}, {"store": "高埗万和", "current": 1465, "previous": 1203, "diff": 262}, {"store": "花都骏壹万邦", "current": 1244, "previous": 565, "diff": 679}, {"store": "英德朵以", "current": 1089, "previous": 856, "diff": 233}, {"store": "坪地宜城店", "current": 983, "previous": 714, "diff": 269}, {"store": "深圳宝安店", "current": 870, "previous": 564, "diff": 306}, {"store": "深圳龙华大浪", "current": 682, "previous": 370, "diff": 312}, {"store": "深圳龙岗坪山", "current": 457, "previous": 212, "diff": 245}]};
+                window.customChartData = {"current": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [157, 278, 222, 207, 148, 136], "支付金额": [102619, 209591, 168625, 125253, 105795, 95807], "活跃会员数": [5208, 5356, 5494, 5609, 5685, 5727], "流失会员数": [120250, 120310, 120334, 120375, 120420, 120451], "首购人数": [51, 127, 101, 98, 66, 50], "复购人数": [103, 149, 119, 107, 83, 82], "客单价": [583.32, 758.79, 766.3, 593.88, 671.17, 618.5]}, "previous": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [149, 249, 197, 193, 160, 131], "支付金额": [112281, 182255, 145148, 153311, 117053, 84044], "活跃会员数": [5596, 5738, 5811, 5917, 6018, 6099], "流失会员数": [99790, 99824, 99845, 99881, 99915, 99949], "首购人数": [70, 124, 107, 97, 90, 74], "复购人数": [85, 126, 90, 95, 80, 59], "客单价": [602.42, 595.05, 577.36, 662.41, 557.97, 538.14]}, "trend": {"current": {"支付人数": [227.76, 213.19, 198.62, 184.05, 169.48, 154.9], "支付金额": [162387.86, 151278.71, 140169.57, 129060.43, 117951.29, 106842.14], "活跃会员数": [5249.1, 5354.72, 5460.35, 5565.98, 5671.61, 5777.24], "流失会员数": [120258.38, 120297.7, 120337.01, 120376.32, 120415.64, 120454.95], "首购人数": [95.81, 90.35, 84.9, 79.44, 73.98, 68.52], "复购人数": [129.67, 120.67, 111.67, 102.67, 93.67, 84.67], "客单价": [683.86, 676.45, 669.04, 661.63, 654.21, 646.8]}, "previous": {"支付人数": [205.62, 195.3, 184.99, 174.68, 164.36, 154.05], "支付金额": [155822.1, 146432.72, 137043.35, 127653.98, 118264.61, 108875.24], "活跃会员数": [5615.95, 5714.84, 5813.72, 5912.61, 6011.5, 6110.38], "流失会员数": [99788.48, 99820.02, 99851.56, 99883.1, 99914.65, 99946.19], "首购人数": [100.24, 97.61, 94.98, 92.35, 89.72, 87.1], "复购人数": [107.95, 100.44, 92.92, 85.41, 77.9, 70.38], "客单价": [613.72, 603.79, 593.86, 583.93, 574.0, 564.07]}}};
+                window.customStoreRankData = {"支付金额": [{"store": "萝岗万达", "current": 76529, "previous": 89771, "diff": -13242}, {"store": "清远城市广场", "current": 66983, "previous": 71416, "diff": -4433}, {"store": "花都骏壹万邦", "current": 65143, "previous": 24572, "diff": 40571}, {"store": "海珠乐峰广场", "current": 56288, "previous": 58387, "diff": -2099}, {"store": "岗顶天娱广场", "current": 45188, "previous": 39051, "diff": 6137}, {"store": "广州塔广场店", "current": 43742, "previous": 109911, "diff": -66169}, {"store": "通城朵以", "current": 38875, "previous": 48082, "diff": -9207}, {"store": "深圳宝安店", "current": 38687, "previous": 0, "diff": 38687}, {"store": "深圳龙华大浪", "current": 35979, "previous": 0, "diff": 35979}, {"store": "潘州广场朵以", "current": 35120, "previous": 39910, "diff": -4790}, {"store": "宜都清江店", "current": 34488, "previous": 32107, "diff": 2381}, {"store": "大朗店", "current": 28877, "previous": 34278, "diff": -5401}, {"store": "茂名印象汇", "current": 27635, "previous": 33931, "diff": -6296}, {"store": "高埗万和", "current": 24666, "previous": 28416, "diff": -3750}, {"store": "宜城香港路", "current": 24594, "previous": 30766, "diff": -6172}, {"store": "东莞黄江大道", "current": 22895, "previous": 18667, "diff": 4228}, {"store": "乐从天佑城", "current": 22585, "previous": 31924, "diff": -9339}, {"store": "坪地宜城店", "current": 21392, "previous": 0, "diff": 21392}, {"store": "南村店", "current": 21348, "previous": 23048, "diff": -1700}, {"store": "白云万象汇朵以", "current": 21054, "previous": 20239, "diff": 815}, {"store": "深圳满京华店", "current": 15216, "previous": 0, "diff": 15216}, {"store": "湛江吴川", "current": 14841, "previous": 18811, "diff": -3970}, {"store": "东莞南城", "current": 13145, "previous": 23238, "diff": -10093}, {"store": "英德朵以", "current": 12420, "previous": 17567, "diff": -5147}, {"store": "深圳龙岗坪山", "current": 0, "previous": 0, "diff": 0}], "支付人数": [{"store": "萝岗万达", "current": 105, "previous": 130, "diff": -25}, {"store": "清远城市广场", "current": 100, "previous": 103, "diff": -3}, {"store": "花都骏壹万邦", "current": 72, "previous": 35, "diff": 37}, {"store": "海珠乐峰广场", "current": 69, "previous": 72, "diff": -3}, {"store": "通城朵以", "current": 69, "previous": 81, "diff": -12}, {"store": "宜都清江店", "current": 64, "previous": 70, "diff": -6}, {"store": "潘州广场朵以", "current": 63, "previous": 59, "diff": 4}, {"store": "广州塔广场店", "current": 52, "previous": 118, "diff": -66}, {"store": "深圳宝安店", "current": 52, "previous": 0, "diff": 52}, {"store": "深圳龙华大浪", "current": 50, "previous": 0, "diff": 50}, {"store": "岗顶天娱广场", "current": 50, "previous": 49, "diff": 1}, {"store": "大朗店", "current": 47, "previous": 37, "diff": 10}, {"store": "乐从天佑城", "current": 42, "previous": 54, "diff": -12}, {"store": "白云万象汇朵以", "current": 39, "previous": 30, "diff": 9}, {"store": "宜城香港路", "current": 38, "previous": 28, "diff": 10}, {"store": "茂名印象汇", "current": 38, "previous": 41, "diff": -3}, {"store": "高埗万和", "current": 34, "previous": 36, "diff": -2}, {"store": "深圳满京华店", "current": 29, "previous": 0, "diff": 29}, {"store": "坪地宜城店", "current": 28, "previous": 0, "diff": 28}, {"store": "南村店", "current": 28, "previous": 27, "diff": 1}, {"store": "东莞黄江大道", "current": 26, "previous": 23, "diff": 3}, {"store": "湛江吴川", "current": 21, "previous": 21, "diff": 0}, {"store": "东莞南城", "current": 17, "previous": 34, "diff": -17}, {"store": "英德朵以", "current": 15, "previous": 31, "diff": -16}, {"store": "深圳龙岗坪山", "current": 0, "previous": 0, "diff": 0}], "客单价": [{"store": "花都骏壹万邦", "current": 904.76, "previous": 702.06, "diff": 202.71}, {"store": "岗顶天娱广场", "current": 903.76, "previous": 796.96, "diff": 106.8}, {"store": "东莞黄江大道", "current": 880.58, "previous": 811.61, "diff": 68.97}, {"store": "广州塔广场店", "current": 841.19, "previous": 931.45, "diff": -90.26}, {"store": "英德朵以", "current": 828.0, "previous": 566.68, "diff": 261.32}, {"store": "海珠乐峰广场", "current": 815.77, "previous": 810.93, "diff": 4.84}, {"store": "东莞南城", "current": 773.24, "previous": 683.47, "diff": 89.76}, {"store": "坪地宜城店", "current": 764.0, "previous": 0.0, "diff": 764.0}, {"store": "南村店", "current": 762.43, "previous": 853.63, "diff": -91.2}, {"store": "深圳宝安店", "current": 743.98, "previous": 0.0, "diff": 743.98}, {"store": "萝岗万达", "current": 728.85, "previous": 690.55, "diff": 38.3}, {"store": "茂名印象汇", "current": 727.24, "previous": 827.59, "diff": -100.35}, {"store": "高埗万和", "current": 725.47, "previous": 789.33, "diff": -63.86}, {"store": "深圳龙华大浪", "current": 719.58, "previous": 0.0, "diff": 719.58}, {"store": "湛江吴川", "current": 706.71, "previous": 895.76, "diff": -189.05}, {"store": "清远城市广场", "current": 669.83, "previous": 693.36, "diff": -23.53}, {"store": "宜城香港路", "current": 647.21, "previous": 1098.79, "diff": -451.58}, {"store": "大朗店", "current": 614.4, "previous": 926.43, "diff": -312.03}, {"store": "通城朵以", "current": 563.41, "previous": 593.6, "diff": -30.2}, {"store": "潘州广场朵以", "current": 557.46, "previous": 676.44, "diff": -118.98}, {"store": "白云万象汇朵以", "current": 539.85, "previous": 674.63, "diff": -134.79}, {"store": "宜都清江店", "current": 538.88, "previous": 458.67, "diff": 80.2}, {"store": "乐从天佑城", "current": 537.74, "previous": 591.19, "diff": -53.45}, {"store": "深圳满京华店", "current": 524.69, "previous": 0.0, "diff": 524.69}, {"store": "深圳龙岗坪山", "current": 0.0, "previous": 0.0, "diff": 0.0}], "复购人数": [{"store": "清远城市广场", "current": 67, "previous": 43, "diff": 24}, {"store": "萝岗万达", "current": 55, "previous": 47, "diff": 8}, {"store": "通城朵以", "current": 42, "previous": 45, "diff": -3}, {"store": "花都骏壹万邦", "current": 39, "previous": 8, "diff": 31}, {"store": "岗顶天娱广场", "current": 35, "previous": 31, "diff": 4}, {"store": "宜都清江店", "current": 34, "previous": 32, "diff": 2}, {"store": "潘州广场朵以", "current": 33, "previous": 52, "diff": -19}, {"store": "大朗店", "current": 31, "previous": 30, "diff": 1}, {"store": "海珠乐峰广场", "current": 30, "previous": 31, "diff": -1}, {"store": "深圳宝安店", "current": 27, "previous": 0, "diff": 27}, {"store": "宜城香港路", "current": 27, "previous": 19, "diff": 8}, {"store": "坪地宜城店", "current": 23, "previous": 0, "diff": 23}, {"store": "高埗万和", "current": 22, "previous": 30, "diff": -8}, {"store": "乐从天佑城", "current": 21, "previous": 26, "diff": -5}, {"store": "茂名印象汇", "current": 20, "previous": 21, "diff": -1}, {"store": "南村店", "current": 20, "previous": 19, "diff": 1}, {"store": "广州塔广场店", "current": 18, "previous": 8, "diff": 10}, {"store": "白云万象汇朵以", "current": 18, "previous": 7, "diff": 11}, {"store": "深圳龙华大浪", "current": 18, "previous": 0, "diff": 18}, {"store": "深圳满京华店", "current": 15, "previous": 0, "diff": 15}, {"store": "东莞南城", "current": 14, "previous": 23, "diff": -9}, {"store": "湛江吴川", "current": 14, "previous": 14, "diff": 0}, {"store": "英德朵以", "current": 11, "previous": 30, "diff": -19}, {"store": "东莞黄江大道", "current": 9, "previous": 19, "diff": -10}, {"store": "深圳龙岗坪山", "current": 0, "previous": 0, "diff": 0}], "折扣率": [{"store": "深圳满京华店", "current": 96.6, "previous": 87.11, "diff": 9.48}, {"store": "深圳宝安店", "current": 93.62, "previous": 88.05, "diff": 5.58}, {"store": "海珠乐峰广场", "current": 93.36, "previous": 89.68, "diff": 3.68}, {"store": "深圳龙华大浪", "current": 92.66, "previous": 87.99, "diff": 4.67}, {"store": "萝岗万达", "current": 92.22, "previous": 88.06, "diff": 4.16}, {"store": "广州塔广场店", "current": 92.2, "previous": 89.67, "diff": 2.53}, {"store": "高埗万和", "current": 92.04, "previous": 85.71, "diff": 6.34}, {"store": "大朗店", "current": 92.01, "previous": 89.5, "diff": 2.51}, {"store": "坪地宜城店", "current": 91.86, "previous": 88.76, "diff": 3.1}, {"store": "英德朵以", "current": 91.82, "previous": 83.65, "diff": 8.17}, {"store": "花都骏壹万邦", "current": 91.76, "previous": 91.77, "diff": -0.0}, {"store": "湛江吴川", "current": 91.3, "previous": 84.28, "diff": 7.02}, {"store": "深圳龙岗坪山", "current": 90.97, "previous": 89.16, "diff": 1.81}, {"store": "清远城市广场", "current": 90.69, "previous": 86.2, "diff": 4.49}, {"store": "白云万象汇朵以", "current": 90.36, "previous": 87.35, "diff": 3.02}, {"store": "岗顶天娱广场", "current": 89.05, "previous": 86.19, "diff": 2.86}, {"store": "南村店", "current": 87.76, "previous": 81.19, "diff": 6.57}, {"store": "乐从天佑城", "current": 87.22, "previous": 84.51, "diff": 2.71}, {"store": "东莞黄江大道", "current": 86.68, "previous": 80.37, "diff": 6.31}, {"store": "宜都清江店", "current": 86.5, "previous": 87.12, "diff": -0.62}, {"store": "茂名印象汇", "current": 85.49, "previous": 95.16, "diff": -9.66}, {"store": "通城朵以", "current": 84.97, "previous": 90.43, "diff": -5.45}, {"store": "东莞南城", "current": 82.14, "previous": 81.48, "diff": 0.66}, {"store": "潘州广场朵以", "current": 81.97, "previous": 81.51, "diff": 0.46}, {"store": "宜城香港路", "current": 71.72, "previous": 83.02, "diff": -11.3}], "连带": [{"store": "英德朵以", "current": 3.75, "previous": 2.73, "diff": 1.02}, {"store": "东莞南城", "current": 3.56, "previous": 3.02, "diff": 0.54}, {"store": "岗顶天娱广场", "current": 3.27, "previous": 3.0, "diff": 0.26}, {"store": "宜城香港路", "current": 3.11, "previous": 3.98, "diff": -0.88}, {"store": "坪地宜城店", "current": 2.78, "previous": 0.0, "diff": 2.78}, {"store": "花都骏壹万邦", "current": 2.7, "previous": 2.6, "diff": 0.1}, {"store": "东莞黄江大道", "current": 2.69, "previous": 3.98, "diff": -1.3}, {"store": "广州塔广场店", "current": 2.68, "previous": 3.05, "diff": -0.37}, {"store": "深圳宝安店", "current": 2.63, "previous": 0.0, "diff": 2.63}, {"store": "南村店", "current": 2.61, "previous": 3.55, "diff": -0.94}, {"store": "萝岗万达", "current": 2.59, "previous": 2.73, "diff": -0.14}, {"store": "海珠乐峰广场", "current": 2.56, "previous": 2.91, "diff": -0.35}, {"store": "茂名印象汇", "current": 2.55, "previous": 2.81, "diff": -0.26}, {"store": "湛江吴川", "current": 2.49, "previous": 3.58, "diff": -1.1}, {"store": "清远城市广场", "current": 2.46, "previous": 2.69, "diff": -0.23}, {"store": "宜都清江店", "current": 2.33, "previous": 1.66, "diff": 0.67}, {"store": "深圳龙华大浪", "current": 2.3, "previous": 0.0, "diff": 2.3}, {"store": "白云万象汇朵以", "current": 2.23, "previous": 2.64, "diff": -0.42}, {"store": "通城朵以", "current": 2.15, "previous": 2.12, "diff": 0.03}, {"store": "大朗店", "current": 2.11, "previous": 2.7, "diff": -0.58}, {"store": "潘州广场朵以", "current": 2.09, "previous": 2.64, "diff": -0.55}, {"store": "乐从天佑城", "current": 1.98, "previous": 2.6, "diff": -0.62}, {"store": "深圳满京华店", "current": 1.94, "previous": 0.0, "diff": 1.94}, {"store": "高埗万和", "current": 1.85, "previous": 3.11, "diff": -1.26}, {"store": "深圳龙岗坪山", "current": 0.0, "previous": 0.0, "diff": 0.0}], "活跃会员数": [{"store": "萝岗万达", "current": 684, "previous": 615, "diff": 69}, {"store": "清远城市广场", "current": 569, "previous": 655, "diff": -86}, {"store": "海珠乐峰广场", "current": 434, "previous": 429, "diff": 5}, {"store": "广州塔广场店", "current": 310, "previous": 574, "diff": -264}, {"store": "深圳龙岗坪山", "current": 275, "previous": 210, "diff": 65}, {"store": "乐从天佑城", "current": 271, "previous": 520, "diff": -249}, {"store": "岗顶天娱广场", "current": 269, "previous": 259, "diff": 10}, {"store": "潘州广场朵以", "current": 261, "previous": 258, "diff": 3}, {"store": "宜都清江店", "current": 254, "previous": 479, "diff": -225}, {"store": "茂名印象汇", "current": 235, "previous": 214, "diff": 21}, {"store": "白云万象汇朵以", "current": 225, "previous": 199, "diff": 26}, {"store": "通城朵以", "current": 225, "previous": 317, "diff": -92}, {"store": "深圳龙华大浪", "current": 174, "previous": 32, "diff": 142}, {"store": "高埗万和", "current": 172, "previous": 140, "diff": 32}, {"store": "花都骏壹万邦", "current": 166, "previous": 154, "diff": 12}, {"store": "大朗店", "current": 149, "previous": 175, "diff": -26}, {"store": "深圳满京华店", "current": 147, "previous": 65, "diff": 82}, {"store": "坪地宜城店", "current": 144, "previous": 94, "diff": 50}, {"store": "深圳宝安店", "current": 144, "previous": 37, "diff": 107}, {"store": "南村店", "current": 123, "previous": 107, "diff": 16}, {"store": "宜城香港路", "current": 121, "previous": 105, "diff": 16}, {"store": "湛江吴川", "current": 112, "previous": 105, "diff": 7}, {"store": "东莞黄江大道", "current": 105, "previous": 113, "diff": -8}, {"store": "英德朵以", "current": 82, "previous": 101, "diff": -19}, {"store": "东莞南城", "current": 76, "previous": 142, "diff": -66}], "沉默会员数": [{"store": "萝岗万达", "current": 218, "previous": 163, "diff": 55}, {"store": "清远城市广场", "current": 210, "previous": 164, "diff": 46}, {"store": "海珠乐峰广场", "current": 190, "previous": 150, "diff": 40}, {"store": "广州塔广场店", "current": 185, "previous": 203, "diff": -18}, {"store": "茂名印象汇", "current": 113, "previous": 67, "diff": 46}, {"store": "通城朵以", "current": 109, "previous": 93, "diff": 16}, {"store": "潘州广场朵以", "current": 103, "previous": 73, "diff": 30}, {"store": "花都骏壹万邦", "current": 93, "previous": 33, "diff": 60}, {"store": "宜都清江店", "current": 93, "previous": 99, "diff": -6}, {"store": "湛江吴川", "current": 81, "previous": 35, "diff": 46}, {"store": "乐从天佑城", "current": 81, "previous": 115, "diff": -34}, {"store": "白云万象汇朵以", "current": 80, "previous": 69, "diff": 11}, {"store": "岗顶天娱广场", "current": 77, "previous": 86, "diff": -9}, {"store": "宜城香港路", "current": 71, "previous": 35, "diff": 36}, {"store": "深圳龙岗坪山", "current": 68, "previous": 36, "diff": 32}, {"store": "高埗万和", "current": 56, "previous": 32, "diff": 24}, {"store": "坪地宜城店", "current": 45, "previous": 17, "diff": 28}, {"store": "东莞黄江大道", "current": 39, "previous": 27, "diff": 12}, {"store": "大朗店", "current": 39, "previous": 40, "diff": -1}, {"store": "南村店", "current": 27, "previous": 35, "diff": -8}, {"store": "东莞南城", "current": 27, "previous": 34, "diff": -7}, {"store": "英德朵以", "current": 14, "previous": 29, "diff": -15}, {"store": "深圳满京华店", "current": 12, "previous": 2, "diff": 10}, {"store": "深圳宝安店", "current": 3, "previous": 10, "diff": -7}, {"store": "深圳龙华大浪", "current": 1, "previous": 0, "diff": 1}], "睡眠会员数": [{"store": "萝岗万达", "current": 612, "previous": 713, "diff": -101}, {"store": "清远城市广场", "current": 569, "previous": 634, "diff": -65}, {"store": "海珠乐峰广场", "current": 400, "previous": 606, "diff": -206}, {"store": "广州塔广场店", "current": 342, "previous": 339, "diff": 3}, {"store": "乐从天佑城", "current": 335, "previous": 563, "diff": -228}, {"store": "潘州广场朵以", "current": 333, "previous": 239, "diff": 94}, {"store": "茂名印象汇", "current": 249, "previous": 251, "diff": -2}, {"store": "通城朵以", "current": 241, "previous": 317, "diff": -76}, {"store": "深圳龙岗坪山", "current": 239, "previous": 204, "diff": 35}, {"store": "白云万象汇朵以", "current": 237, "previous": 313, "diff": -76}, {"store": "宜都清江店", "current": 228, "previous": 391, "diff": -163}, {"store": "高埗万和", "current": 227, "previous": 106, "diff": 121}, {"store": "岗顶天娱广场", "current": 200, "previous": 343, "diff": -143}, {"store": "花都骏壹万邦", "current": 194, "previous": 194, "diff": 0}, {"store": "大朗店", "current": 187, "previous": 206, "diff": -19}, {"store": "东莞黄江大道", "current": 161, "previous": 144, "diff": 17}, {"store": "南村店", "current": 135, "previous": 120, "diff": 15}, {"store": "湛江吴川", "current": 125, "previous": 161, "diff": -36}, {"store": "坪地宜城店", "current": 122, "previous": 78, "diff": 44}, {"store": "东莞南城", "current": 111, "previous": 143, "diff": -32}, {"store": "宜城香港路", "current": 96, "previous": 114, "diff": -18}, {"store": "英德朵以", "current": 75, "previous": 92, "diff": -17}, {"store": "深圳满京华店", "current": 60, "previous": 41, "diff": 19}, {"store": "深圳宝安店", "current": 21, "previous": 59, "diff": -38}, {"store": "深圳龙华大浪", "current": 3, "previous": 18, "diff": -15}], "预流失会员数": [{"store": "萝岗万达", "current": 1196, "previous": 562, "diff": 634}, {"store": "清远城市广场", "current": 1058, "previous": 756, "diff": 302}, {"store": "广州塔广场店", "current": 1026, "previous": 365, "diff": 661}, {"store": "乐从天佑城", "current": 626, "previous": 812, "diff": -186}, {"store": "海珠乐峰广场", "current": 611, "previous": 609, "diff": 2}, {"store": "宜都清江店", "current": 578, "previous": 738, "diff": -160}, {"store": "通城朵以", "current": 557, "previous": 524, "diff": 33}, {"store": "潘州广场朵以", "current": 500, "previous": 365, "diff": 135}, {"store": "岗顶天娱广场", "current": 495, "previous": 559, "diff": -64}, {"store": "白云万象汇朵以", "current": 367, "previous": 284, "diff": 83}, {"store": "茂名印象汇", "current": 363, "previous": 344, "diff": 19}, {"store": "花都骏壹万邦", "current": 304, "previous": 297, "diff": 7}, {"store": "高埗万和", "current": 259, "previous": 120, "diff": 139}, {"store": "东莞南城", "current": 256, "previous": 302, "diff": -46}, {"store": "南村店", "current": 254, "previous": 252, "diff": 2}, {"store": "东莞黄江大道", "current": 249, "previous": 277, "diff": -28}, {"store": "宜城香港路", "current": 230, "previous": 132, "diff": 98}, {"store": "大朗店", "current": 210, "previous": 213, "diff": -3}, {"store": "深圳龙岗坪山", "current": 179, "previous": 158, "diff": 21}, {"store": "湛江吴川", "current": 127, "previous": 130, "diff": -3}, {"store": "坪地宜城店", "current": 107, "previous": 242, "diff": -135}, {"store": "英德朵以", "current": 102, "previous": 89, "diff": 13}, {"store": "深圳满京华店", "current": 84, "previous": 51, "diff": 33}, {"store": "深圳龙华大浪", "current": 34, "previous": 112, "diff": -78}, {"store": "深圳宝安店", "current": 32, "previous": 97, "diff": -65}], "流失会员数": [{"store": "萝岗万达", "current": 15155, "previous": 12995, "diff": 2160}, {"store": "乐从天佑城", "current": 10465, "previous": 8524, "diff": 1941}, {"store": "宜都清江店", "current": 8723, "previous": 7505, "diff": 1218}, {"store": "岗顶天娱广场", "current": 8326, "previous": 6936, "diff": 1390}, {"store": "潘州广场朵以", "current": 7969, "previous": 7457, "diff": 512}, {"store": "广州塔广场店", "current": 7878, "previous": 6021, "diff": 1857}, {"store": "深圳满京华店", "current": 6934, "previous": 6502, "diff": 432}, {"store": "清远城市广场", "current": 6660, "previous": 4892, "diff": 1768}, {"store": "南村店", "current": 6255, "previous": 5716, "diff": 539}, {"store": "东莞南城", "current": 6129, "previous": 5494, "diff": 635}, {"store": "海珠乐峰广场", "current": 4617, "previous": 2651, "diff": 1966}, {"store": "白云万象汇朵以", "current": 4536, "previous": 3597, "diff": 939}, {"store": "茂名印象汇", "current": 4388, "previous": 3846, "diff": 542}, {"store": "大朗店", "current": 4045, "previous": 3700, "diff": 345}, {"store": "通城朵以", "current": 3905, "previous": 3120, "diff": 785}, {"store": "湛江吴川", "current": 3094, "previous": 2621, "diff": 473}, {"store": "宜城香港路", "current": 2416, "previous": 2169, "diff": 247}, {"store": "东莞黄江大道", "current": 2166, "previous": 1719, "diff": 447}, {"store": "高埗万和", "current": 1465, "previous": 1203, "diff": 262}, {"store": "花都骏壹万邦", "current": 1244, "previous": 565, "diff": 679}, {"store": "英德朵以", "current": 1089, "previous": 856, "diff": 233}, {"store": "坪地宜城店", "current": 983, "previous": 714, "diff": 269}, {"store": "深圳宝安店", "current": 870, "previous": 564, "diff": 306}, {"store": "深圳龙华大浪", "current": 682, "previous": 370, "diff": 312}, {"store": "深圳龙岗坪山", "current": 457, "previous": 212, "diff": 245}]};
+                window.customOriginalData = {"stores": {"shenzhen": ["坪地宜城店", "深圳龙岗坪山", "深圳满京华店", "深圳龙华大浪", "深圳宝安店"], "all": ["坪地宜城店", "深圳龙岗坪山", "深圳满京华店", "深圳龙华大浪", "深圳宝安店", "通城朵以", "大朗店", "茂名印象汇", "岗顶天娱广场", "东莞南城", "南村店", "宜都清江店", "宜城香港路", "湛江吴川", "英德朵以", "高埗万和", "清远城市广场", "乐从天佑城", "海珠乐峰广场", "东莞黄江大道", "花都骏壹万邦", "白云万象汇朵以", "潘州广场朵以", "广州塔广场店", "萝岗万达"]}, "metrics": {"支付金额": {"current": 807690.0, "previous": 794092.0, "current_no_sz": 696416.0, "previous_no_sz": 794092.0}, "支付人数": {"current": 1148.0, "previous": 1079.0, "current_no_sz": 989.0, "previous_no_sz": 1079.0}, "活跃会员数": {"current": 5727.0, "previous": 6099.0, "current_no_sz": 4843.0, "previous_no_sz": 5661.0}, "沉默会员数": {"current": 2035.0, "previous": 1647.0, "current_no_sz": 1906.0, "previous_no_sz": 1582.0}, "睡眠会员数": {"current": 5502.0, "previous": 6389.0, "current_no_sz": 5057.0, "previous_no_sz": 5989.0}, "预流失会员数": {"current": 9804.0, "previous": 8390.0, "current_no_sz": 9368.0, "previous_no_sz": 7730.0}, "流失会员数": {"current": 120451.0, "previous": 99949.0, "current_no_sz": 110525.0, "previous_no_sz": 91587.0}, "首购金额(元)": {"current": 307048.0, "previous": 394458.0, "current_no_sz": 248830.0, "previous_no_sz": 372038.0}, "首购人数": {"current": 493.0, "previous": 562.0, "current_no_sz": 403.0, "previous_no_sz": 533.0}, "复购金额(元)": {"current": 481504.0, "previous": 386020.0, "current_no_sz": 419446.0, "previous_no_sz": 386020.0}, "复购人数": {"current": 643.0, "previous": 535.0, "current_no_sz": 560.0, "previous_no_sz": 535.0}, "客单价(元)": {"current": 703.5627177700349, "previous": 735.9518072289156, "current_no_sz": 704.1617795753286, "previous_no_sz": 735.9518072289156}, "客单量": {"current": 161.19, "previous": 150.85000000000002, "current_no_sz": 128.2, "previous_no_sz": 126.36000000000001}, "折扣率(%)": {"current": 89.03808219178083, "previous": 86.66708333333332, "current_no_sz": 87.9768103448276, "previous_no_sz": 86.34125}, "连带率": {"current": 2.4558, "previous": 2.3239333333333327, "current_no_sz": 2.587083333333333, "previous_no_sz": 2.904916666666667}}, "store_data": {"坪地宜城店": {"is_shenzhen": true, "支付金额": {"current": 21392.0, "previous": 0.0}, "支付人数": {"current": 28.0, "previous": 0.0}, "活跃会员数": {"current": 144.0, "previous": 94.0}, "沉默会员数": {"current": 45.0, "previous": 17.0}, "睡眠会员数": {"current": 122.0, "previous": 78.0}, "预流失会员数": {"current": 107.0, "previous": 242.0}, "流失会员数": {"current": 983.0, "previous": 714.0}, "复购金额(元)": {"current": 18801.0, "previous": 0.0}, "复购人数": {"current": 23.0, "previous": 0.0}, "客单价(元)": {"current": 4463.57, "previous": 0.0}, "客单量": {"current": 7.13, "previous": 6.33}, "折扣率(%)": {"current": 91.85666666666667, "previous": 88.75666666666666}, "连带率": {"current": 2.7783333333333338, "previous": 0.0}}, "深圳龙岗坪山": {"is_shenzhen": true, "支付金额": {"current": 0.0, "previous": 0.0}, "支付人数": {"current": 0.0, "previous": 0.0}, "活跃会员数": {"current": 275.0, "previous": 210.0}, "沉默会员数": {"current": 68.0, "previous": 36.0}, "睡眠会员数": {"current": 239.0, "previous": 204.0}, "预流失会员数": {"current": 179.0, "previous": 158.0}, "流失会员数": {"current": 457.0, "previous": 212.0}, "复购金额(元)": {"current": 0.0, "previous": 0.0}, "复购人数": {"current": 0.0, "previous": 0.0}, "客单价(元)": {"current": 0.0, "previous": 0.0}, "客单量": {"current": 7.529999999999999, "previous": 6.16}, "折扣率(%)": {"current": 90.96666666666665, "previous": 89.15666666666665}, "连带率": {"current": 0.0, "previous": 0.0}}, "深圳满京华店": {"is_shenzhen": true, "支付金额": {"current": 15216.0, "previous": 0.0}, "支付人数": {"current": 29.0, "previous": 0.0}, "活跃会员数": {"current": 147.0, "previous": 65.0}, "沉默会员数": {"current": 12.0, "previous": 2.0}, "睡眠会员数": {"current": 60.0, "previous": 41.0}, "预流失会员数": {"current": 84.0, "previous": 51.0}, "流失会员数": {"current": 6934.0, "previous": 6502.0}, "复购金额(元)": {"current": 7426.0, "previous": 0.0}, "复购人数": {"current": 15.0, "previous": 0.0}, "客单价(元)": {"current": 3082.2700000000004, "previous": 0.0}, "客单量": {"current": 6.0, "previous": 5.0}, "折扣率(%)": {"current": 96.59833333333334, "previous": 72.59499999999998}, "连带率": {"current": 1.9433333333333334, "previous": 0.0}}, "深圳龙华大浪": {"is_shenzhen": true, "支付金额": {"current": 35979.0, "previous": 0.0}, "支付人数": {"current": 50.0, "previous": 0.0}, "活跃会员数": {"current": 174.0, "previous": 32.0}, "沉默会员数": {"current": 1.0, "previous": 0.0}, "睡眠会员数": {"current": 3.0, "previous": 18.0}, "预流失会员数": {"current": 34.0, "previous": 112.0}, "流失会员数": {"current": 682.0, "previous": 370.0}, "复购金额(元)": {"current": 13426.0, "previous": 0.0}, "复购人数": {"current": 18.0, "previous": 0.0}, "客单价(元)": {"current": 4155.13, "previous": 0.0}, "客单量": {"current": 6.33, "previous": 5.0}, "折扣率(%)": {"current": 92.66333333333334, "previous": 73.32833333333333}, "连带率": {"current": 2.2983333333333333, "previous": 0.0}}, "深圳宝安店": {"is_shenzhen": true, "支付金额": {"current": 38687.0, "previous": 0.0}, "支付人数": {"current": 52.0, "previous": 0.0}, "活跃会员数": {"current": 144.0, "previous": 37.0}, "沉默会员数": {"current": 3.0, "previous": 10.0}, "睡眠会员数": {"current": 21.0, "previous": 59.0}, "预流失会员数": {"current": 32.0, "previous": 97.0}, "流失会员数": {"current": 870.0, "previous": 564.0}, "复购金额(元)": {"current": 22405.0, "previous": 0.0}, "复购人数": {"current": 27.0, "previous": 0.0}, "客单价(元)": {"current": 4470.6, "previous": 0.0}, "客单量": {"current": 6.0, "previous": 2.0}, "折扣率(%)": {"current": 93.62333333333333, "previous": 29.348333333333333}, "连带率": {"current": 2.6333333333333333, "previous": 0.0}}, "通城朵以": {"is_shenzhen": false, "支付金额": {"current": 38875.0, "previous": 48082.0}, "支付人数": {"current": 69.0, "previous": 81.0}, "活跃会员数": {"current": 225.0, "previous": 317.0}, "沉默会员数": {"current": 109.0, "previous": 93.0}, "睡眠会员数": {"current": 241.0, "previous": 317.0}, "预流失会员数": {"current": 557.0, "previous": 524.0}, "流失会员数": {"current": 3905.0, "previous": 3120.0}, "复购金额(元)": {"current": 24970.0, "previous": 29585.0}, "复购人数": {"current": 42.0, "previous": 45.0}, "客单价(元)": {"current": 3256.3500000000004, "previous": 3322.08}, "客单量": {"current": 6.3999999999999995, "previous": 6.36}, "折扣率(%)": {"current": 84.97166666666668, "previous": 90.42666666666666}, "连带率": {"current": 2.145, "previous": 2.1166666666666667}}, "大朗店": {"is_shenzhen": false, "支付金额": {"current": 28877.0, "previous": 34278.0}, "支付人数": {"current": 47.0, "previous": 37.0}, "活跃会员数": {"current": 149.0, "previous": 175.0}, "沉默会员数": {"current": 39.0, "previous": 40.0}, "睡眠会员数": {"current": 187.0, "previous": 206.0}, "预流失会员数": {"current": 210.0, "previous": 213.0}, "流失会员数": {"current": 4045.0, "previous": 3700.0}, "复购金额(元)": {"current": 18948.0, "previous": 19989.0}, "复购人数": {"current": 31.0, "previous": 30.0}, "客单价(元)": {"current": 3481.58, "previous": 4729.6900000000005}, "客单量": {"current": 6.05, "previous": 6.67}, "折扣率(%)": {"current": 92.01166666666667, "previous": 89.505}, "连带率": {"current": 2.1133333333333333, "previous": 2.6966666666666668}}, "茂名印象汇": {"is_shenzhen": false, "支付金额": {"current": 27635.0, "previous": 33931.0}, "支付人数": {"current": 38.0, "previous": 41.0}, "活跃会员数": {"current": 235.0, "previous": 214.0}, "沉默会员数": {"current": 113.0, "previous": 67.0}, "睡眠会员数": {"current": 249.0, "previous": 251.0}, "预流失会员数": {"current": 363.0, "previous": 344.0}, "流失会员数": {"current": 4388.0, "previous": 3846.0}, "复购金额(元)": {"current": 16343.0, "previous": 17593.0}, "复购人数": {"current": 20.0, "previous": 21.0}, "客单价(元)": {"current": 4372.65, "previous": 4970.61}, "客单量": {"current": 6.0, "previous": 6.0}, "折扣率(%)": {"current": 85.49166666666667, "previous": 95.15500000000002}, "连带率": {"current": 2.5516666666666663, "previous": 2.8083333333333336}}, "岗顶天娱广场": {"is_shenzhen": false, "支付金额": {"current": 45188.0, "previous": 39051.0}, "支付人数": {"current": 50.0, "previous": 49.0}, "活跃会员数": {"current": 269.0, "previous": 259.0}, "沉默会员数": {"current": 77.0, "previous": 86.0}, "睡眠会员数": {"current": 200.0, "previous": 343.0}, "预流失会员数": {"current": 495.0, "previous": 559.0}, "流失会员数": {"current": 8326.0, "previous": 6936.0}, "复购金额(元)": {"current": 33522.0, "previous": 26199.0}, "复购人数": {"current": 35.0, "previous": 31.0}, "客单价(元)": {"current": 5500.69, "previous": 4718.57}, "客单量": {"current": 6.77, "previous": 6.6}, "折扣率(%)": {"current": 89.05166666666666, "previous": 86.19}, "连带率": {"current": 3.265, "previous": 3.0033333333333325}}, "东莞南城": {"is_shenzhen": false, "支付金额": {"current": 13145.0, "previous": 23238.0}, "支付人数": {"current": 17.0, "previous": 34.0}, "活跃会员数": {"current": 76.0, "previous": 142.0}, "沉默会员数": {"current": 27.0, "previous": 34.0}, "睡眠会员数": {"current": 111.0, "previous": 143.0}, "预流失会员数": {"current": 256.0, "previous": 302.0}, "流失会员数": {"current": 6129.0, "previous": 5494.0}, "复购金额(元)": {"current": 10805.0, "previous": 17609.0}, "复购人数": {"current": 14.0, "previous": 23.0}, "客单价(元)": {"current": 4745.8, "previous": 4063.96}, "客单量": {"current": 7.17, "previous": 6.25}, "折扣率(%)": {"current": 82.135, "previous": 81.48}, "连带率": {"current": 3.561666666666667, "previous": 3.02}}, "南村店": {"is_shenzhen": false, "支付金额": {"current": 21348.0, "previous": 23048.0}, "支付人数": {"current": 28.0, "previous": 27.0}, "活跃会员数": {"current": 123.0, "previous": 107.0}, "沉默会员数": {"current": 27.0, "previous": 35.0}, "睡眠会员数": {"current": 135.0, "previous": 120.0}, "预流失会员数": {"current": 254.0, "previous": 252.0}, "流失会员数": {"current": 6255.0, "previous": 5716.0}, "复购金额(元)": {"current": 17052.0, "previous": 16291.0}, "复购人数": {"current": 20.0, "previous": 19.0}, "客单价(元)": {"current": 4630.53, "previous": 4792.45}, "客单量": {"current": 6.6, "previous": 7.06}, "折扣率(%)": {"current": 87.75500000000001, "previous": 81.18666666666667}, "连带率": {"current": 2.61, "previous": 3.5483333333333333}}, "宜都清江店": {"is_shenzhen": false, "支付金额": {"current": 34488.0, "previous": 32107.0}, "支付人数": {"current": 64.0, "previous": 70.0}, "活跃会员数": {"current": 254.0, "previous": 479.0}, "沉默会员数": {"current": 93.0, "previous": 99.0}, "睡眠会员数": {"current": 228.0, "previous": 391.0}, "预流失会员数": {"current": 578.0, "previous": 738.0}, "流失会员数": {"current": 8723.0, "previous": 7505.0}, "复购金额(元)": {"current": 19582.0, "previous": 14021.0}, "复购人数": {"current": 34.0, "previous": 32.0}, "客单价(元)": {"current": 3408.56, "previous": 2548.4300000000003}, "客单量": {"current": 7.0, "previous": 6.0600000000000005}, "折扣率(%)": {"current": 86.50333333333333, "previous": 87.12}, "连带率": {"current": 2.3299999999999996, "previous": 1.656666666666667}}, "宜城香港路": {"is_shenzhen": false, "支付金额": {"current": 24594.0, "previous": 30766.0}, "支付人数": {"current": 38.0, "previous": 28.0}, "活跃会员数": {"current": 121.0, "previous": 105.0}, "沉默会员数": {"current": 71.0, "previous": 35.0}, "睡眠会员数": {"current": 96.0, "previous": 114.0}, "预流失会员数": {"current": 230.0, "previous": 132.0}, "流失会员数": {"current": 2416.0, "previous": 2169.0}, "复购金额(元)": {"current": 20599.0, "previous": 21872.0}, "复购人数": {"current": 27.0, "previous": 19.0}, "客单价(元)": {"current": 4000.16, "previous": 6545.9}, "客单量": {"current": 7.82, "previous": 6.5}, "折扣率(%)": {"current": 71.71666666666668, "previous": 83.01833333333333}, "连带率": {"current": 3.1050000000000004, "previous": 3.981666666666667}}, "湛江吴川": {"is_shenzhen": false, "支付金额": {"current": 14841.0, "previous": 18811.0}, "支付人数": {"current": 21.0, "previous": 21.0}, "活跃会员数": {"current": 112.0, "previous": 105.0}, "沉默会员数": {"current": 81.0, "previous": 35.0}, "睡眠会员数": {"current": 125.0, "previous": 161.0}, "预流失会员数": {"current": 127.0, "previous": 130.0}, "流失会员数": {"current": 3094.0, "previous": 2621.0}, "复购金额(元)": {"current": 9868.0, "previous": 12468.0}, "复购人数": {"current": 14.0, "previous": 14.0}, "客单价(元)": {"current": 4179.41, "previous": 5069.47}, "客单量": {"current": 6.58, "previous": 6.73}, "折扣率(%)": {"current": 91.295, "previous": 84.27666666666667}, "连带率": {"current": 2.486666666666667, "previous": 3.5833333333333335}}, "英德朵以": {"is_shenzhen": false, "支付金额": {"current": 12420.0, "previous": 17567.0}, "支付人数": {"current": 15.0, "previous": 31.0}, "活跃会员数": {"current": 82.0, "previous": 101.0}, "沉默会员数": {"current": 14.0, "previous": 29.0}, "睡眠会员数": {"current": 75.0, "previous": 92.0}, "预流失会员数": {"current": 102.0, "previous": 89.0}, "流失会员数": {"current": 1089.0, "previous": 856.0}, "复购金额(元)": {"current": 10936.0, "previous": 17269.0}, "复购人数": {"current": 11.0, "previous": 30.0}, "客单价(元)": {"current": 5670.17, "previous": 3788.87}, "客单量": {"current": 6.5, "previous": 6.27}, "折扣率(%)": {"current": 76.515, "previous": 83.64833333333333}, "连带率": {"current": 3.75, "previous": 2.7349999999999994}}, "高埗万和": {"is_shenzhen": false, "支付金额": {"current": 24666.0, "previous": 28416.0}, "支付人数": {"current": 34.0, "previous": 36.0}, "活跃会员数": {"current": 172.0, "previous": 140.0}, "沉默会员数": {"current": 56.0, "previous": 32.0}, "睡眠会员数": {"current": 227.0, "previous": 106.0}, "预流失会员数": {"current": 259.0, "previous": 120.0}, "流失会员数": {"current": 1465.0, "previous": 1203.0}, "复购金额(元)": {"current": 16724.0, "previous": 24894.0}, "复购人数": {"current": 22.0, "previous": 30.0}, "客单价(元)": {"current": 3323.7900000000004, "previous": 4708.73}, "客单量": {"current": 5.7, "previous": 6.75}, "折扣率(%)": {"current": 76.70333333333333, "previous": 85.70666666666666}, "连带率": {"current": 1.8499999999999999, "previous": 3.108333333333333}}, "清远城市广场": {"is_shenzhen": false, "支付金额": {"current": 66983.0, "previous": 71416.0}, "支付人数": {"current": 100.0, "previous": 103.0}, "活跃会员数": {"current": 569.0, "previous": 655.0}, "沉默会员数": {"current": 210.0, "previous": 164.0}, "睡眠会员数": {"current": 569.0, "previous": 634.0}, "预流失会员数": {"current": 1058.0, "previous": 756.0}, "流失会员数": {"current": 6660.0, "previous": 4892.0}, "复购金额(元)": {"current": 51860.0, "previous": 30895.0}, "复购人数": {"current": 67.0, "previous": 43.0}, "客单价(元)": {"current": 4091.5200000000004, "previous": 4100.5}, "客单量": {"current": 6.379999999999999, "previous": 6.13}, "折扣率(%)": {"current": 90.68833333333333, "previous": 86.19666666666666}, "连带率": {"current": 2.4633333333333334, "previous": 2.69}}, "乐从天佑城": {"is_shenzhen": false, "支付金额": {"current": 22585.0, "previous": 31924.0}, "支付人数": {"current": 42.0, "previous": 54.0}, "活跃会员数": {"current": 271.0, "previous": 520.0}, "沉默会员数": {"current": 81.0, "previous": 115.0}, "睡眠会员数": {"current": 335.0, "previous": 563.0}, "预流失会员数": {"current": 626.0, "previous": 812.0}, "流失会员数": {"current": 10465.0, "previous": 8524.0}, "复购金额(元)": {"current": 12292.0, "previous": 15176.0}, "复购人数": {"current": 21.0, "previous": 26.0}, "客单价(元)": {"current": 3088.12, "previous": 3668.62}, "客单量": {"current": 6.08, "previous": 6.26}, "折扣率(%)": {"current": 87.22333333333334, "previous": 84.51166666666667}, "连带率": {"current": 1.9750000000000003, "previous": 2.5966666666666667}}, "海珠乐峰广场": {"is_shenzhen": false, "支付金额": {"current": 56288.0, "previous": 58387.0}, "支付人数": {"current": 69.0, "previous": 72.0}, "活跃会员数": {"current": 434.0, "previous": 429.0}, "沉默会员数": {"current": 190.0, "previous": 150.0}, "睡眠会员数": {"current": 400.0, "previous": 606.0}, "预流失会员数": {"current": 611.0, "previous": 609.0}, "流失会员数": {"current": 4617.0, "previous": 2651.0}, "复购金额(元)": {"current": 27689.0, "previous": 24407.0}, "复购人数": {"current": 30.0, "previous": 31.0}, "客单价(元)": {"current": 4864.41, "previous": 4701.2699999999995}, "客单量": {"current": 6.210000000000001, "previous": 6.37}, "折扣率(%)": {"current": 93.365, "previous": 89.68166666666666}, "连带率": {"current": 2.56, "previous": 2.908333333333333}}, "东莞黄江大道": {"is_shenzhen": false, "支付金额": {"current": 22895.0, "previous": 18667.0}, "支付人数": {"current": 26.0, "previous": 23.0}, "活跃会员数": {"current": 105.0, "previous": 113.0}, "沉默会员数": {"current": 39.0, "previous": 27.0}, "睡眠会员数": {"current": 161.0, "previous": 144.0}, "预流失会员数": {"current": 249.0, "previous": 277.0}, "流失会员数": {"current": 2166.0, "previous": 1719.0}, "复购金额(元)": {"current": 8439.0, "previous": 16203.0}, "复购人数": {"current": 9.0, "previous": 19.0}, "客单价(元)": {"current": 4366.889999999999, "previous": 5610.62}, "客单量": {"current": 6.83, "previous": 6.0}, "折扣率(%)": {"current": 72.23333333333333, "previous": 80.37333333333333}, "连带率": {"current": 2.685, "previous": 3.983333333333333}}, "花都骏壹万邦": {"is_shenzhen": false, "支付金额": {"current": 65143.0, "previous": 24572.0}, "支付人数": {"current": 72.0, "previous": 35.0}, "活跃会员数": {"current": 166.0, "previous": 154.0}, "沉默会员数": {"current": 93.0, "previous": 33.0}, "睡眠会员数": {"current": 194.0, "previous": 194.0}, "预流失会员数": {"current": 304.0, "previous": 297.0}, "流失会员数": {"current": 1244.0, "previous": 565.0}, "复购金额(元)": {"current": 37349.0, "previous": 5339.0}, "复购人数": {"current": 39.0, "previous": 8.0}, "客单价(元)": {"current": 4449.1, "previous": 3915.44}, "客单量": {"current": 5.1, "previous": 6.0}, "折扣率(%)": {"current": 76.47, "previous": 91.76666666666667}, "连带率": {"current": 2.701666666666666, "previous": 2.598333333333333}}, "白云万象汇朵以": {"is_shenzhen": false, "支付金额": {"current": 21054.0, "previous": 20239.0}, "支付人数": {"current": 39.0, "previous": 30.0}, "活跃会员数": {"current": 225.0, "previous": 199.0}, "沉默会员数": {"current": 80.0, "previous": 69.0}, "睡眠会员数": {"current": 237.0, "previous": 313.0}, "预流失会员数": {"current": 367.0, "previous": 284.0}, "流失会员数": {"current": 4536.0, "previous": 3597.0}, "复购金额(元)": {"current": 10310.0, "previous": 3502.0}, "复购人数": {"current": 18.0, "previous": 7.0}, "客单价(元)": {"current": 3560.94, "previous": 3760.54}, "客单量": {"current": 6.13, "previous": 6.13}, "折扣率(%)": {"current": 90.36000000000001, "previous": 87.34500000000001}, "连带率": {"current": 2.228333333333333, "previous": 2.643333333333333}}, "潘州广场朵以": {"is_shenzhen": false, "支付金额": {"current": 35120.0, "previous": 39910.0}, "支付人数": {"current": 63.0, "previous": 59.0}, "活跃会员数": {"current": 261.0, "previous": 258.0}, "沉默会员数": {"current": 103.0, "previous": 73.0}, "睡眠会员数": {"current": 333.0, "previous": 239.0}, "预流失会员数": {"current": 500.0, "previous": 365.0}, "流失会员数": {"current": 7969.0, "previous": 7457.0}, "复购金额(元)": {"current": 22019.0, "previous": 34980.0}, "复购人数": {"current": 33.0, "previous": 52.0}, "客单价(元)": {"current": 3358.75, "previous": 4028.4300000000003}, "客单量": {"current": 6.1, "previous": 6.0}, "折扣率(%)": {"current": 81.97166666666666, "previous": 81.50833333333333}, "连带率": {"current": 2.09, "previous": 2.6416666666666666}}, "广州塔广场店": {"is_shenzhen": false, "支付金额": {"current": 43742.0, "previous": 109911.0}, "支付人数": {"current": 52.0, "previous": 118.0}, "活跃会员数": {"current": 310.0, "previous": 574.0}, "沉默会员数": {"current": 185.0, "previous": 203.0}, "睡眠会员数": {"current": 342.0, "previous": 339.0}, "预流失会员数": {"current": 1026.0, "previous": 365.0}, "流失会员数": {"current": 7878.0, "previous": 6021.0}, "复购金额(元)": {"current": 12209.0, "previous": 8602.0}, "复购人数": {"current": 18.0, "previous": 8.0}, "客单价(元)": {"current": 4796.4, "previous": 5158.02}, "客单量": {"current": 6.07, "previous": 6.16}, "折扣率(%)": {"current": 92.19999999999999, "previous": 89.665}, "连带率": {"current": 2.6833333333333336, "previous": 3.0499999999999994}}, "萝岗万达": {"is_shenzhen": false, "支付金额": {"current": 76529.0, "previous": 89771.0}, "支付人数": {"current": 105.0, "previous": 130.0}, "活跃会员数": {"current": 684.0, "previous": 615.0}, "沉默会员数": {"current": 218.0, "previous": 163.0}, "睡眠会员数": {"current": 612.0, "previous": 713.0}, "预流失会员数": {"current": 1196.0, "previous": 562.0}, "流失会员数": {"current": 15155.0, "previous": 12995.0}, "复购金额(元)": {"current": 37930.0, "previous": 29126.0}, "复购人数": {"current": 55.0, "previous": 47.0}, "客单价(元)": {"current": 4482.2, "previous": 4131.71}, "客单量": {"current": 6.710000000000001, "previous": 6.0600000000000005}, "折扣率(%)": {"current": 92.22333333333334, "previous": 88.06333333333333}, "连带率": {"current": 2.5866666666666664, "previous": 2.7283333333333335}}}, "num_days": 6, "num_stores": 25, "num_stores_no_sz": 20};
             </script>
             
                 </div>
@@ -5703,18 +5823,6 @@
                                 </th>
                                 <th class="value-column multi-col-header" colspan="2">
                                     <div class="rank-header-with-tooltip">
-                                        <span>客单量</span>
-                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，平均每位客户的支付订单数</span></span>
-                                    </div>
-                                </th>
-                                <th class="value-column multi-col-header" colspan="2">
-                                    <div class="rank-header-with-tooltip">
-                                        <span>首购人数</span>
-                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">历史从未有过消费的客户，在统计时间内产生首次消费的人数</span></span>
-                                    </div>
-                                </th>
-                                <th class="value-column multi-col-header" colspan="2">
-                                    <div class="rank-header-with-tooltip">
                                         <span>复购人数</span>
                                         <span class="rank-info-icon">?<span class="rank-tooltip-text">历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）</span></span>
                                     </div>
@@ -5740,10 +5848,6 @@
                                 <th class="value-column sortable" data-key="支付人数_diff" onclick="sortRankTable('normal', '支付人数_diff')">同比<span class="sort-icon">▼</span></th>
                                 <th class="value-column sortable" data-key="客单价_current" onclick="sortRankTable('normal', '客单价_current')">本期<span class="sort-icon">▼</span></th>
                                 <th class="value-column sortable" data-key="客单价_diff" onclick="sortRankTable('normal', '客单价_diff')">同比<span class="sort-icon">▼</span></th>
-                                <th class="value-column sortable" data-key="客单量_current" onclick="sortRankTable('normal', '客单量_current')">本期<span class="sort-icon">▼</span></th>
-                                <th class="value-column sortable" data-key="客单量_diff" onclick="sortRankTable('normal', '客单量_diff')">同比<span class="sort-icon">▼</span></th>
-                                <th class="value-column sortable" data-key="首购人数_current" onclick="sortRankTable('normal', '首购人数_current')">本期<span class="sort-icon">▼</span></th>
-                                <th class="value-column sortable" data-key="首购人数_diff" onclick="sortRankTable('normal', '首购人数_diff')">同比<span class="sort-icon">▼</span></th>
                                 <th class="value-column sortable" data-key="复购人数_current" onclick="sortRankTable('normal', '复购人数_current')">本期<span class="sort-icon">▼</span></th>
                                 <th class="value-column sortable" data-key="复购人数_diff" onclick="sortRankTable('normal', '复购人数_diff')">同比<span class="sort-icon">▼</span></th>
                                 <th class="value-column sortable" data-key="折扣率_current" onclick="sortRankTable('normal', '折扣率_current')">本期<span class="sort-icon">▼</span></th>
@@ -6076,7 +6180,7 @@
             
             const config = currentSortConfig[mode];
             const metricKeys = mode === 'normal' 
-                ? ['支付金额', '支付人数', '客单价', '客单量', '首购人数', '复购人数', '折扣率', '连带']
+                ? ['支付金额', '支付人数', '客单价', '复购人数', '折扣率', '连带']
                 : ['活跃会员数', '沉默会员数', '睡眠会员数', '预流失会员数', '流失会员数'];
             
             // 获取所有门店数据
@@ -6282,22 +6386,106 @@
             }
         });
 
+        // 导航项点击波纹效果
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+
+            const existingRipple = button.querySelector('.ripple');
+            if (existingRipple) {
+                existingRipple.remove();
+            }
+
+            button.appendChild(ripple);
+        }
+
+        // 为所有导航项添加波纹效果
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!this.classList.contains('active')) {
+                    createRipple(e);
+                }
+            });
+        });
+
+        // 键盘导航支持
+        document.addEventListener('keydown', function(e) {
+            // 仅在非输入框聚焦时响应
+            if (document.activeElement.tagName === 'INPUT' || 
+                document.activeElement.tagName === 'TEXTAREA' ||
+                document.activeElement.tagName === 'SELECT') {
+                return;
+            }
+
+            const navItems = document.querySelectorAll('.nav-item');
+            let currentIndex = -1;
+            navItems.forEach((item, index) => {
+                if (item.classList.contains('active')) {
+                    currentIndex = index;
+                }
+            });
+
+            // 左箭头 - 切换到上一个
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                e.preventDefault();
+                navItems[currentIndex - 1].click();
+                navItems[currentIndex - 1].focus();
+            }
+
+            // 右箭头 - 切换到下一个
+            if (e.key === 'ArrowRight' && currentIndex < navItems.length - 1) {
+                e.preventDefault();
+                navItems[currentIndex + 1].click();
+                navItems[currentIndex + 1].focus();
+            }
+
+            // Home键 - 切换到第一个
+            if (e.key === 'Home') {
+                e.preventDefault();
+                navItems[0].click();
+                navItems[0].focus();
+            }
+
+            // End键 - 切换到最后一个
+            if (e.key === 'End') {
+                e.preventDefault();
+                navItems[navItems.length - 1].click();
+                navItems[navItems.length - 1].focus();
+            }
+        });
+
         function switchPage(pageId) {
-            // 隐藏所有页面
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
+            // 获取当前活动的导航项索引
+            const navItems = document.querySelectorAll('.nav-item');
+            let currentIndex = -1;
+            navItems.forEach((item, index) => {
+                if (item.classList.contains('active')) {
+                    currentIndex = index;
+                }
+            });
+
+            // 隐藏所有页面，带滑出动画
+            document.querySelectorAll('.page.active').forEach(page => {
+                page.style.animation = 'slideOutLeft 0.2s ease forwards';
+                setTimeout(() => {
+                    page.classList.remove('active');
+                    page.style.animation = '';
+                }, 200);
             });
 
             // 移除所有导航项的active状态
-            document.querySelectorAll('.nav-item').forEach(item => {
+            navItems.forEach(item => {
                 item.classList.remove('active');
             });
-
-            // 显示目标页面
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) {
-                targetPage.classList.add('active');
-            }
 
             // 设置对应导航项为active
             const activeItem = document.querySelector(`.nav-item[onclick="switchPage('${pageId}')"]`);
@@ -6312,6 +6500,18 @@
                 }
             }
 
+            // 显示目标页面，带滑入动画
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                    targetPage.style.animation = 'slideInRight 0.3s ease forwards';
+                    setTimeout(() => {
+                        targetPage.style.animation = '';
+                    }, 300);
+                }, 100);
+            }
+
             // 如果切换到大盘运营情况页面，重新调整图表大小并触发数字动画
             if (pageId === 'page-dashboard') {
                 setTimeout(() => {
@@ -6322,7 +6522,7 @@
 
                     // 触发数字动画
                     initNumberAnimations();
-                }, 100);
+                }, 150);
             }
 
             // 如果切换到自定义分析页面，初始化折线图和门店排名
@@ -6333,11 +6533,186 @@
                         customStoreRankData = window.customStoreRankData;
                         switchRankMode('normal');
                     }
-                }, 100);
+                }, 150);
             }
 
-            // 滚动到顶部
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            // 滚动到导航栏位置
+            const navWrapper = document.querySelector('.nav-bar-wrapper');
+            if (navWrapper) {
+                navWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // 页面切换动画样式
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            @keyframes slideOutLeft {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // 排除深圳门店开关
+        let excludeShenzhen = false;
+        if (document.getElementById('excludeShenzhenToggle')) {
+            document.getElementById('excludeShenzhenToggle').addEventListener('change', function() {
+                excludeShenzhen = this.checked;
+                updateCustomMetrics();
+                updateCustomStoreRank();
+            });
+        }
+
+        // 更新指标卡数据
+        function updateCustomMetrics() {
+            if (!window.customOriginalData) return;
+            
+            const data = window.customOriginalData;
+            const cards = document.querySelectorAll('.custom-metric-card');
+            
+            cards.forEach(card => {
+                const nameEl = card.querySelector('.custom-metric-name');
+                if (!nameEl) return;
+                
+                const name = nameEl.textContent.trim();
+                let metricKey = name;
+                
+                // 映射显示名称到数据键
+                const nameMap = {
+                    '支付金额': '支付金额',
+                    '支付人数': '支付人数',
+                    '活跃会员数': '活跃会员数',
+                    '复购金额': '复购金额(元)',
+                    '复购人数': '复购人数',
+                    '客单价': '客单价(元)',
+                    '折扣率': '折扣率(%)',
+                    '平均连带': '连带率'
+                };
+                
+                metricKey = nameMap[name] || name;
+                
+                if (!data.metrics[metricKey]) return;
+                
+                const m = data.metrics[metricKey];
+                let currentVal, previousVal, diff;
+                
+                if (excludeShenzhen) {
+                    currentVal = m.current_no_sz;
+                    previousVal = m.previous_no_sz;
+                } else {
+                    currentVal = m.current;
+                    previousVal = m.previous;
+                }
+                
+                diff = currentVal - previousVal;
+                
+                // 更新显示值
+                const valueEl = card.querySelector('.custom-metric-value');
+                const diffEl = card.querySelector('.custom-metric-diff');
+                
+                if (valueEl) {
+                    let displayValue;
+                    if (metricKey === '支付金额' || metricKey === '复购金额(元)') {
+                        displayValue = Math.round(currentVal).toLocaleString();
+                    } else if (metricKey === '客单价(元)') {
+                        displayValue = Math.round(currentVal).toLocaleString();
+                    } else if (metricKey === '折扣率(%)') {
+                        displayValue = currentVal.toFixed(2) + '%';
+                    } else if (metricKey === '客单量') {
+                        displayValue = currentVal.toFixed(2);
+                    } else if (metricKey === '连带率') {
+                        displayValue = currentVal.toFixed(2);
+                    } else {
+                        displayValue = Math.round(currentVal).toLocaleString();
+                    }
+                    valueEl.textContent = displayValue;
+                }
+                
+                if (diffEl) {
+                    const diffClass = diff >= 0 ? 'up' : 'down';
+                    const arrow = diff >= 0 ? '↑' : '↓';
+                    diffEl.className = `custom-metric-diff ${diffClass}`;
+                    const diffStr = metricKey === '折扣率(%)' ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
+                    diffEl.textContent = `同比 ${arrow}${diffStr}`;
+                }
+                
+                // 更新子内容（日均）
+                const subEl = card.querySelector('.custom-metric-sub');
+                if (subEl && (metricKey === '复购人数')) {
+                    const numDays = excludeShenzhen ? data.num_stores_no_sz : data.num_stores;
+                    const dailyAvg = currentVal / (data.num_days * numDays);
+                    subEl.textContent = `每日店均 ${dailyAvg.toFixed(2)} 人`;
+                }
+                if (subEl && (metricKey === '复购金额(元)')) {
+                    const numDays = excludeShenzhen ? data.num_stores_no_sz : data.num_stores;
+                    const dailyAvg = currentVal / (data.num_days * numDays);
+                    subEl.textContent = `日均复购金额 ${dailyAvg.toLocaleString()}`;
+                }
+            });
+        }
+
+        // 更新门店排名
+        function updateCustomStoreRank() {
+            if (!window.customOriginalData) return;
+            
+            const data = window.customOriginalData;
+            const shenzhenStores = data.stores.shenzhen;
+            
+            // 过滤门店数据
+            const filteredStores = {};
+            for (const store in data.store_data) {
+                if (excludeShenzhen && data.store_data[store].is_shenzhen) {
+                    continue;
+                }
+                filteredStores[store] = data.store_data[store];
+            }
+            
+            // 重新计算排序
+            const mode = currentRankMode || 'normal';
+            const metricKeys = mode === 'normal' 
+                ? ['支付金额', '支付人数', '客单价(元)', '复购人数', '折扣率(%)', '连带率']
+                : ['活跃会员数', '沉默会员数', '睡眠会员数', '预流失会员数', '流失会员数'];
+            
+            const newRankData = {};
+            for (const metric of metricKeys) {
+                const sorted = Object.keys(filteredStores)
+                    .map(store => ({
+                        store: store,
+                        current: filteredStores[store][metric].current,
+                        previous: filteredStores[store][metric].previous,
+                        diff: filteredStores[store][metric].current - filteredStores[store][metric].previous
+                    }))
+                    .sort((a, b) => b.current - a.current);
+                
+                newRankData[metric] = sorted;
+            }
+            
+            // 更新全局数据
+            customStoreRankData = newRankData;
+            
+            // 重新渲染表格
+            const currentSort = currentSortConfig[mode];
+            if (currentSort) {
+                renderCustomRankTable(mode, currentSort.key, currentSort.asc);
+            } else {
+                renderCustomRankTable(mode);
+            }
         }
 
         // 区域切换
