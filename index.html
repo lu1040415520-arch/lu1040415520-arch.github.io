@@ -1069,6 +1069,166 @@
             color: #67c23a;
         }
 
+        /* 自定义分析页面样式 */
+        .custom-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 1024px) {
+            .custom-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 640px) {
+            .custom-metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .custom-metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .custom-metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(44, 95, 151, 0.15);
+            border-color: #8b5cf6;
+        }
+        .custom-metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .custom-metric-name {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        .metric-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #e8eaed;
+            color: #666;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .metric-info-icon:hover {
+            background: #8b5cf6;
+            color: #fff;
+        }
+        .metric-tooltip-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            background: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 280px;
+            white-space: normal;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .metric-tooltip-content::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-bottom-color: #333;
+        }
+        .metric-info-icon:hover + .metric-tooltip-content {
+            display: block;
+        }
+        .custom-metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2C5F97;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        .custom-metric-sub {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 6px;
+        }
+        .custom-metric-diff {
+            font-size: 13px;
+            color: #666;
+        }
+        .custom-metric-diff.up {
+            color: #f56c6c;
+        }
+        .custom-metric-diff.down {
+            color: #67c23a;
+        }
+
+        /* 自定义分析折线图 */
+        .custom-chart-section {
+            grid-column: 1 / -1;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+        }
+        .custom-chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .custom-chart-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2C5F97;
+        }
+        .custom-metric-select {
+            padding: 8px 16px;
+            border: 1px solid #e0e6ed;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            background: #fff;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .custom-metric-select:hover,
+        .custom-metric-select:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+        }
+        .custom-chart {
+            width: 100%;
+            height: 350px;
+        }
+
         /* 核心发现 */
         .findings-box {
             background: #fff8f0;
@@ -3078,6 +3238,261 @@
             font-size: 14px;
         }
 
+        /* 自定义分析-门店排名 */
+        .custom-rank-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .custom-rank-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .custom-rank-tab {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .custom-rank-tab:hover {
+            border-color: #2C5F97;
+            color: #2C5F97;
+        }
+        .custom-rank-tab.active {
+            background: #2C5F97;
+            color: #fff;
+            border-color: #2C5F97;
+        }
+        .custom-rank-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .custom-rank-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .custom-rank-table th {
+            background: #f5f7fa;
+            padding: 10px 12px;
+            text-align: center;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .custom-rank-table td {
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+        .custom-rank-table td.rank-column,
+        .custom-rank-table td.store-column {
+            text-align: center;
+            font-weight: 500;
+        }
+        .custom-rank-table td.value-column {
+            text-align: center;
+        }
+        .custom-rank-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+        .custom-rank-table th.multi-col-header {
+            text-align: center;
+            background: #f0f2f5;
+            border: 1px solid #dee2e6;
+        }
+        .custom-rank-table th.rank-column,
+        .custom-rank-table th.store-column {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .custom-rank-table th.value-column {
+            text-align: center;
+            vertical-align: middle !important;
+            border: 1px solid #dee2e6;
+        }
+        .custom-rank-table th {
+            text-align: center;
+            vertical-align: middle !important;
+            padding: 10px 6px;
+        }
+        .custom-rank-table thead th {
+            text-align: center !important;
+            vertical-align: middle !important;
+            font-weight: bold;
+        }
+        .custom-rank-table .multi-col-header {
+            vertical-align: middle !important;
+        }
+        .custom-rank-table .rank-header-with-tooltip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .custom-rank-table .rank-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #adb5bd;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .custom-rank-table .rank-info-icon:hover {
+            background: #e64980;
+        }
+        .custom-rank-table .rank-info-icon .rank-tooltip-text {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 12px;
+            background: rgba(33, 37, 41, 0.95);
+            color: white;
+            font-size: 12px;
+            font-weight: normal;
+            border-radius: 6px;
+            z-index: 1000;
+            white-space: normal;
+            text-align: left;
+            min-width: 180px;
+            max-width: 280px;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .custom-rank-table .rank-info-icon .rank-tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(33, 37, 41, 0.95);
+        }
+        .custom-rank-table .rank-info-icon:hover .rank-tooltip-text {
+            display: block;
+        }
+        .custom-rank-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+            background: #f8f9fa;
+        }
+        .custom-rank-table th.sortable:hover {
+            background: #e9ecef;
+        }
+        .custom-rank-table th.sortable .sort-icon {
+            font-size: 10px;
+            margin-left: 4px;
+            color: #adb5bd;
+        }
+        .custom-rank-table th.sortable.active .sort-icon {
+            color: #007bff;
+        }
+        .rank-column {
+            width: 60px;
+            text-align: center !important;
+        }
+        .store-column {
+            text-align: left;
+        }
+        .value-column {
+            text-align: right !important;
+        }
+        .current-column {
+            color: #f56c6c;
+        }
+        .previous-column {
+            color: #67c23a;
+        }
+        .diff-column {
+            color: #666;
+        }
+        .rank-badge {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .rank-badge.top3 {
+            background: linear-gradient(135deg, #ffd700, #ffb800);
+            color: #fff;
+        }
+        .rank-badge.normal {
+            background: #e8e8e8;
+            color: #666;
+        }
+        .diff-positive {
+            color: #f56c6c;
+        }
+        .diff-negative {
+            color: #67c23a;
+        }
+        
+        /* 模式切换按钮 */
+        .rank-mode-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .rank-mode-btn {
+            padding: 6px 14px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .rank-mode-btn:hover {
+            border-color: #2C5F97;
+            color: #2C5F97;
+        }
+        .rank-mode-btn.active {
+            background: #2C5F97;
+            color: #fff;
+            border-color: #2C5F97;
+        }
+        
+        /* 可排序列 */
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        .sortable:hover {
+            background: #e8ecf1 !important;
+        }
+        .sort-icon {
+            margin-left: 4px;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+        .sortable.asc .sort-icon,
+        .sortable.desc .sort-icon {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .test-layout {
                 flex-direction: column;
@@ -3104,6 +3519,7 @@
                 <button class="nav-item" onclick="switchPage('page-regions')">区域分析</button>
                 <button class="nav-item" onclick="switchPage('page-stores')">各门店详细分析</button>
                 <button class="nav-item" onclick="switchPage('page-problems')">问题归因参谋</button>
+                <button class="nav-item" onclick="switchPage('page-custom')">自定义分析</button>
                 <button class="nav-item" onclick="openPasswordModal()">其它功能</button>
             </div>
         </div>
@@ -3122,7 +3538,7 @@
                     <div class="tooltip-content">门店累计注册的会员总人数，反映门店会员资产规模</div>
                 </div>
                 <div class="metric-value">143,465</div>
-                <span class="metric-change up">↑+1.0%</span>
+                <span class="metric-change up">↑+1.0%丨+595</span>
             </div><div class="metric-card">
                 <div class="metric-name-wrapper">
                     <div class="metric-name">有效会员数</div>
@@ -3130,7 +3546,7 @@
                     <div class="tooltip-content">近360天内有消费记录的会员人数，代表门店具备经营价值的会员资产</div>
                 </div>
                 <div class="metric-value">21,375</div>
-                <span class="metric-change up">↑+6.3%</span>
+                <span class="metric-change up">↑+6.3%丨+46</span>
             </div><div class="metric-card">
                 <div class="metric-name-wrapper">
                     <div class="metric-name">平均客单价</div>
@@ -3181,8 +3597,8 @@
                     <span class="tooltip-trigger">?</span>
                     <div class="tooltip-content">有效会员中，累计支付金额3百元以下或累计支付金额5百元以下且支付次数仅1次</div>
                 </div>
-                <div class="metric-value">126,385</div>
-                <span class="metric-change up">↑+0.5%丨+602</span>
+                <div class="metric-value">5,728</div>
+                <span class="metric-change up">↑+6.7%丨+358</span>
             </div></div></div><div class="lifecycle-section">
             <div class="lifecycle-header">
                 <span class="lifecycle-badge">会员生命周期</span>
@@ -3352,8 +3768,8 @@
                         <li>会员流失风险处于高危状态，沉默+睡眠+预流失会员占比81.5%（共17,412人），其中沉默会员占比9.9%，睡眠会员占比25.6%，预流失会员占比46.0%，需紧急干预</li>
 <li>流失会员占比处于极高水平（83.9%，共120,376人），超过70%的会员已进入流失状态，会员池质量严重下降</li>
 <li>高价值会员占比不足（2.6%），核心VIP839人占比0.6%，重要会员2,842人，价值结构需优化</li>
-<li>初级会员占比过高（88.1%，共126,385人），会员价值分层呈现金字塔底座过大特征，需要重点培养初级会员升级</li>
 <li>会员复购频率偏低（1.18次/人），会员忠诚度和粘性不足，复购驱动机制需加强</li>
+<li>会员运营健康度评分中等（55分/100分），关键指标处于及格水平，有优化空间</li>
                     </ul>
                 </div>
 
@@ -5149,6 +5565,254 @@
             </div>
         </div>
 
+        <!-- 页面5：自定义分析 -->
+        <div id="page-custom" class="page">
+            <div class="section">
+                <h2 class="section-title">五、自定义分析</h2>
+                <div class="custom-metrics-grid" id="custom-metrics-grid">
+                    <div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">支付人数</div>
+                    <span class="metric-info-icon" title="统计时间内，指定客群的支付人数">?</span>
+                    <div class="metric-tooltip-content">统计时间内，指定客群的支付人数</div>
+                </div>
+                <div class="custom-metric-value">1,181</div>
+                
+                <div class="custom-metric-diff down">同比 -113</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">活跃会员数</div>
+                    <span class="metric-info-icon" title="统计时间内，近60天内最后一次购买的会员人数">?</span>
+                    <div class="metric-tooltip-content">统计时间内，近60天内最后一次购买的会员人数</div>
+                </div>
+                <div class="custom-metric-value">5,727</div>
+                
+                <div class="custom-metric-diff down">同比 -372</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">首购人数</div>
+                    <span class="metric-info-icon" title="统计时间内，历史从未有过消费的客户，在统计时间内产生首次消费的人数">?</span>
+                    <div class="metric-tooltip-content">统计时间内，历史从未有过消费的客户，在统计时间内产生首次消费的人数</div>
+                </div>
+                <div class="custom-metric-value">493</div>
+                <div class="custom-metric-sub">每日店均 3.29 人</div>
+                <div class="custom-metric-diff down">同比 -69</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">复购人数</div>
+                    <span class="metric-info-icon" title="统计时间内，历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）">?</span>
+                    <div class="metric-tooltip-content">统计时间内，历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）</div>
+                </div>
+                <div class="custom-metric-value">677</div>
+                <div class="custom-metric-sub">每日店均 4.51 人</div>
+                <div class="custom-metric-diff down">同比 -45</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">客单价</div>
+                    <span class="metric-info-icon" title="统计时间内，平均每位客户购买的金额">?</span>
+                    <div class="metric-tooltip-content">统计时间内，平均每位客户购买的金额</div>
+                </div>
+                <div class="custom-metric-value">686.97</div>
+                
+                <div class="custom-metric-diff down">同比 -10.11</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">客单量</div>
+                    <span class="metric-info-icon" title="统计时间内，平均每位客户的支付订单数">?</span>
+                    <div class="metric-tooltip-content">统计时间内，平均每位客户的支付订单数</div>
+                </div>
+                <div class="custom-metric-value">1.07</div>
+                
+                <div class="custom-metric-diff up">同比 +0.07</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">折扣率</div>
+                    <span class="metric-info-icon" title="统计时间内，平均折扣率">?</span>
+                    <div class="metric-tooltip-content">统计时间内，平均折扣率</div>
+                </div>
+                <div class="custom-metric-value">89.04%</div>
+                <div class="custom-metric-sub">未叠加储值卡折扣计算</div>
+                <div class="custom-metric-diff up">同比 +2.37%</div>
+            </div><div class="custom-metric-card">
+                <div class="custom-metric-header">
+                    <div class="custom-metric-name">平均连带</div>
+                    <span class="metric-info-icon" title="统计时间内，平均每笔支付订单购买商品的件数">?</span>
+                    <div class="metric-tooltip-content">统计时间内，平均每笔支付订单购买商品的件数</div>
+                </div>
+                <div class="custom-metric-value">2.61</div>
+                
+                <div class="custom-metric-diff down">同比 -0.33</div>
+            </div>
+            <div class="custom-chart-section">
+                <div class="custom-chart-header">
+                    <h3>趋势分析</h3>
+                    <select id="custom-metric-select" class="custom-metric-select">
+                        <option value="支付人数">支付人数</option>
+                        <option value="支付金额">支付金额</option>
+                        <option value="活跃会员数">活跃会员数</option>
+                        <option value="流失会员数">流失会员数</option>
+                        <option value="首购人数">首购人数</option>
+                        <option value="复购人数">复购人数</option>
+                        <option value="客单价">客单价</option>
+                    </select>
+                </div>
+                <div id="custom-chart" class="custom-chart"></div>
+            </div>
+            <script>
+                window.customChartData = {"current": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [162, 289, 234, 207, 153, 136], "支付金额": [105633, 212018, 175281, 126283, 111086, 96891], "活跃会员数": [5208, 5356, 5494, 5609, 5685, 5727], "流失会员数": [120250, 120310, 120334, 120375, 120420, 120451], "首购人数": [51, 127, 101, 98, 66, 50], "复购人数": [107, 160, 130, 110, 86, 84], "客单价": [584.53, 776.16, 775.53, 629.9, 719.56, 636.14]}, "previous": {"dates": ["04-30", "05-01", "05-02", "05-03", "05-04", "05-05"], "支付人数": [186, 303, 228, 221, 198, 158], "支付金额": [128321, 220867, 166743, 168069, 143757, 96347], "活跃会员数": [5596, 5738, 5811, 5917, 6018, 6099], "流失会员数": [99790, 99824, 99845, 99881, 99915, 99949], "首购人数": [70, 124, 107, 97, 90, 74], "复购人数": [114, 176, 120, 123, 108, 81], "客单价": [703.22, 681.46, 709.86, 750.94, 723.66, 613.35]}, "trend": {"current": {"支付人数": [237.19, 221.05, 204.9, 188.76, 172.62, 156.48], "支付金额": [166115.62, 154815.5, 143515.39, 132215.28, 120915.16, 109615.05], "活跃会员数": [5249.1, 5354.72, 5460.35, 5565.98, 5671.61, 5777.24], "流失会员数": [120258.38, 120297.7, 120337.01, 120376.32, 120415.64, 120454.95], "首购人数": [95.81, 90.35, 84.9, 79.44, 73.98, 68.52], "复购人数": [138.33, 128.13, 117.93, 107.73, 97.53, 87.33], "客单价": [691.07, 689.43, 687.79, 686.15, 684.51, 682.87]}, "previous": {"支付人数": [248.67, 235.47, 222.27, 209.07, 195.87, 182.67], "支付金额": [181865.48, 170726.22, 159586.96, 148447.7, 137308.45, 126169.19], "活跃会员数": [5615.95, 5714.84, 5813.72, 5912.61, 6011.5, 6110.38], "流失会员数": [99788.48, 99820.02, 99851.56, 99883.1, 99914.65, 99946.19], "首购人数": [100.24, 97.61, 94.98, 92.35, 89.72, 87.1], "复购人数": [146.48, 136.02, 125.56, 115.1, 104.65, 94.19], "客单价": [717.2, 709.15, 701.11, 693.06, 685.01, 676.97]}}};
+                window.customStoreRankData = {"支付金额": [{"store": "萝岗万达", "current": 75775, "previous": 91870, "diff": -16095}, {"store": "清远城市广场", "current": 66405, "previous": 102544, "diff": -36139}, {"store": "海珠乐峰广场", "current": 58176, "previous": 51758, "diff": 6418}, {"store": "花都骏壹万邦", "current": 55387, "previous": 21437, "diff": 33950}, {"store": "广州塔广场店", "current": 46062, "previous": 103168, "diff": -57106}, {"store": "岗顶天娱广场", "current": 45295, "previous": 39973, "diff": 5322}, {"store": "深圳宝安店", "current": 37758, "previous": 2026, "diff": 35732}, {"store": "深圳龙岗坪山", "current": 37023, "previous": 43187, "diff": -6164}, {"store": "潘州广场朵以", "current": 35294, "previous": 49888, "diff": -14594}, {"store": "通城朵以", "current": 35181, "previous": 47531, "diff": -12350}, {"store": "宜都清江店", "current": 34488, "previous": 30297, "diff": 4191}, {"store": "深圳龙华大浪", "current": 29646, "previous": 2191, "diff": 27455}, {"store": "大朗店", "current": 29584, "previous": 26477, "diff": 3107}, {"store": "高埗万和", "current": 25593, "previous": 30743, "diff": -5150}, {"store": "乐从天佑城", "current": 24478, "previous": 68727, "diff": -44249}, {"store": "宜城香港路", "current": 23429, "previous": 28012, "diff": -4583}, {"store": "东莞黄江大道", "current": 22895, "previous": 18369, "diff": 4526}, {"store": "茂名印象汇", "current": 22158, "previous": 33663, "diff": -11505}, {"store": "坪地宜城店", "current": 22141, "previous": 16167, "diff": 5974}, {"store": "白云万象汇朵以", "current": 22061, "previous": 20598, "diff": 1463}, {"store": "南村店", "current": 20780, "previous": 21837, "diff": -1057}, {"store": "深圳满京华店", "current": 18162, "previous": 17812, "diff": 350}, {"store": "湛江吴川", "current": 15359, "previous": 18683, "diff": -3324}, {"store": "东莞南城", "current": 14241, "previous": 21465, "diff": -7224}, {"store": "英德朵以", "current": 9821, "previous": 15681, "diff": -5860}], "支付人数": [{"store": "萝岗万达", "current": 104, "previous": 130, "diff": -26}, {"store": "清远城市广场", "current": 98, "previous": 135, "diff": -37}, {"store": "海珠乐峰广场", "current": 72, "previous": 65, "diff": 7}, {"store": "宜都清江店", "current": 64, "previous": 67, "diff": -3}, {"store": "花都骏壹万邦", "current": 63, "previous": 34, "diff": 29}, {"store": "通城朵以", "current": 63, "previous": 83, "diff": -20}, {"store": "潘州广场朵以", "current": 61, "previous": 78, "diff": -17}, {"store": "广州塔广场店", "current": 56, "previous": 124, "diff": -68}, {"store": "深圳龙岗坪山", "current": 53, "previous": 56, "diff": -3}, {"store": "深圳宝安店", "current": 52, "previous": 2, "diff": 50}, {"store": "岗顶天娱广场", "current": 50, "previous": 52, "diff": -2}, {"store": "大朗店", "current": 48, "previous": 38, "diff": 10}, {"store": "乐从天佑城", "current": 45, "previous": 113, "diff": -68}, {"store": "深圳龙华大浪", "current": 42, "previous": 5, "diff": 37}, {"store": "白云万象汇朵以", "current": 41, "previous": 31, "diff": 10}, {"store": "宜城香港路", "current": 37, "previous": 26, "diff": 11}, {"store": "高埗万和", "current": 36, "previous": 39, "diff": -3}, {"store": "茂名印象汇", "current": 33, "previous": 43, "diff": -10}, {"store": "深圳满京华店", "current": 32, "previous": 20, "diff": 12}, {"store": "坪地宜城店", "current": 29, "previous": 26, "diff": 3}, {"store": "南村店", "current": 26, "previous": 25, "diff": 1}, {"store": "东莞黄江大道", "current": 26, "previous": 22, "diff": 4}, {"store": "湛江吴川", "current": 21, "previous": 21, "diff": 0}, {"store": "东莞南城", "current": 18, "previous": 32, "diff": -14}, {"store": "英德朵以", "current": 11, "previous": 27, "diff": -16}], "客单价": [{"store": "岗顶天娱广场", "current": 924.02, "previous": 759.9, "diff": 164.12}, {"store": "英德朵以", "current": 843.25, "previous": 626.53, "diff": 216.72}, {"store": "海珠乐峰广场", "current": 808.35, "previous": 803.24, "diff": 5.12}, {"store": "东莞南城", "current": 806.58, "previous": 652.88, "diff": 153.71}, {"store": "南村店", "current": 805.78, "previous": 800.97, "diff": 4.82}, {"store": "广州塔广场店", "current": 805.63, "previous": 842.09, "diff": -36.46}, {"store": "萝岗万达", "current": 746.41, "previous": 700.35, "diff": 46.06}, {"store": "深圳龙岗坪山", "current": 744.16, "previous": 732.32, "diff": 11.85}, {"store": "坪地宜城店", "current": 735.35, "previous": 683.37, "diff": 51.98}, {"store": "深圳宝安店", "current": 731.1, "previous": 337.67, "diff": 393.43}, {"store": "花都骏壹万邦", "current": 729.59, "previous": 614.38, "diff": 115.21}, {"store": "东莞黄江大道", "current": 727.81, "previous": 949.9, "diff": -222.09}, {"store": "湛江吴川", "current": 723.1, "previous": 844.91, "diff": -121.82}, {"store": "清远城市广场", "current": 687.84, "previous": 747.78, "diff": -59.94}, {"store": "茂名印象汇", "current": 658.46, "previous": 796.13, "diff": -137.67}, {"store": "宜城香港路", "current": 643.93, "previous": 999.56, "diff": -355.63}, {"store": "深圳龙华大浪", "current": 604.06, "previous": 365.17, "diff": 238.9}, {"store": "白云万象汇朵以", "current": 594.21, "previous": 621.45, "diff": -27.24}, {"store": "大朗店", "current": 579.84, "previous": 772.88, "diff": -193.04}, {"store": "潘州广场朵以", "current": 575.91, "previous": 623.25, "diff": -47.34}, {"store": "宜都清江店", "current": 568.09, "previous": 428.78, "diff": 139.31}, {"store": "高埗万和", "current": 542.76, "previous": 791.72, "diff": -248.96}, {"store": "深圳满京华店", "current": 537.96, "previous": 765.71, "diff": -227.75}, {"store": "通城朵以", "current": 529.82, "previous": 544.15, "diff": -14.33}, {"store": "乐从天佑城", "current": 520.25, "previous": 622.02, "diff": -101.77}], "客单量": [{"store": "宜城香港路", "current": 1.3, "previous": 1.08, "diff": 0.22}, {"store": "深圳龙岗坪山", "current": 1.25, "previous": 1.03, "diff": 0.23}, {"store": "东莞南城", "current": 1.2, "previous": 1.04, "diff": 0.15}, {"store": "坪地宜城店", "current": 1.19, "previous": 1.05, "diff": 0.13}, {"store": "宜都清江店", "current": 1.17, "previous": 1.01, "diff": 0.16}, {"store": "东莞黄江大道", "current": 1.14, "previous": 1.0, "diff": 0.14}, {"store": "岗顶天娱广场", "current": 1.13, "previous": 1.1, "diff": 0.03}, {"store": "萝岗万达", "current": 1.12, "previous": 1.01, "diff": 0.11}, {"store": "南村店", "current": 1.1, "previous": 1.18, "diff": -0.08}, {"store": "湛江吴川", "current": 1.1, "previous": 1.12, "diff": -0.03}, {"store": "英德朵以", "current": 1.08, "previous": 1.04, "diff": 0.04}, {"store": "通城朵以", "current": 1.07, "previous": 1.06, "diff": 0.01}, {"store": "清远城市广场", "current": 1.06, "previous": 1.02, "diff": 0.04}, {"store": "深圳龙华大浪", "current": 1.05, "previous": 0.83, "diff": 0.22}, {"store": "海珠乐峰广场", "current": 1.04, "previous": 1.06, "diff": -0.03}, {"store": "白云万象汇朵以", "current": 1.02, "previous": 1.02, "diff": 0.0}, {"store": "潘州广场朵以", "current": 1.02, "previous": 1.0, "diff": 0.02}, {"store": "乐从天佑城", "current": 1.01, "previous": 1.04, "diff": -0.03}, {"store": "广州塔广场店", "current": 1.01, "previous": 1.03, "diff": -0.01}, {"store": "大朗店", "current": 1.01, "previous": 1.11, "diff": -0.1}, {"store": "深圳满京华店", "current": 1.0, "previous": 0.83, "diff": 0.17}, {"store": "深圳宝安店", "current": 1.0, "previous": 0.33, "diff": 0.67}, {"store": "茂名印象汇", "current": 1.0, "previous": 1.0, "diff": 0.0}, {"store": "高埗万和", "current": 0.95, "previous": 1.12, "diff": -0.17}, {"store": "花都骏壹万邦", "current": 0.85, "previous": 1.0, "diff": -0.15}], "首购人数": [{"store": "萝岗万达", "current": 47, "previous": 77, "diff": -30}, {"store": "海珠乐峰广场", "current": 39, "previous": 34, "diff": 5}, {"store": "广州塔广场店", "current": 34, "previous": 112, "diff": -78}, {"store": "深圳龙华大浪", "current": 33, "previous": 3, "diff": 30}, {"store": "清远城市广场", "current": 32, "previous": 72, "diff": -40}, {"store": "潘州广场朵以", "current": 29, "previous": 8, "diff": 21}, {"store": "花都骏壹万邦", "current": 29, "previous": 23, "diff": 6}, {"store": "深圳宝安店", "current": 26, "previous": 1, "diff": 25}, {"store": "宜都清江店", "current": 26, "previous": 33, "diff": -7}, {"store": "乐从天佑城", "current": 22, "previous": 47, "diff": -25}, {"store": "通城朵以", "current": 20, "previous": 29, "diff": -9}, {"store": "白云万象汇朵以", "current": 20, "previous": 23, "diff": -3}, {"store": "大朗店", "current": 16, "previous": 7, "diff": 9}, {"store": "东莞黄江大道", "current": 16, "previous": 4, "diff": 12}, {"store": "岗顶天娱广场", "current": 15, "previous": 17, "diff": -2}, {"store": "茂名印象汇", "current": 14, "previous": 18, "diff": -4}, {"store": "深圳满京华店", "current": 13, "previous": 14, "diff": -1}, {"store": "高埗万和", "current": 13, "previous": 3, "diff": 10}, {"store": "深圳龙岗坪山", "current": 13, "previous": 8, "diff": 5}, {"store": "宜城香港路", "current": 12, "previous": 4, "diff": 8}, {"store": "湛江吴川", "current": 6, "previous": 7, "diff": -1}, {"store": "坪地宜城店", "current": 5, "previous": 3, "diff": 2}, {"store": "南村店", "current": 5, "previous": 4, "diff": 1}, {"store": "英德朵以", "current": 5, "previous": 0, "diff": 5}, {"store": "东莞南城", "current": 3, "previous": 11, "diff": -8}], "复购人数": [{"store": "清远城市广场", "current": 67, "previous": 63, "diff": 4}, {"store": "萝岗万达", "current": 54, "previous": 53, "diff": 1}, {"store": "通城朵以", "current": 42, "previous": 52, "diff": -10}, {"store": "深圳龙岗坪山", "current": 40, "previous": 48, "diff": -8}, {"store": "岗顶天娱广场", "current": 35, "previous": 35, "diff": 0}, {"store": "宜都清江店", "current": 34, "previous": 33, "diff": 1}, {"store": "海珠乐峰广场", "current": 33, "previous": 31, "diff": 2}, {"store": "潘州广场朵以", "current": 32, "previous": 69, "diff": -37}, {"store": "大朗店", "current": 32, "previous": 31, "diff": 1}, {"store": "花都骏壹万邦", "current": 32, "previous": 9, "diff": 23}, {"store": "宜城香港路", "current": 26, "previous": 21, "diff": 5}, {"store": "深圳宝安店", "current": 26, "previous": 1, "diff": 25}, {"store": "高埗万和", "current": 24, "previous": 35, "diff": -11}, {"store": "坪地宜城店", "current": 24, "previous": 23, "diff": 1}, {"store": "乐从天佑城", "current": 23, "previous": 66, "diff": -43}, {"store": "广州塔广场店", "current": 21, "previous": 12, "diff": 9}, {"store": "白云万象汇朵以", "current": 20, "previous": 8, "diff": 12}, {"store": "茂名印象汇", "current": 19, "previous": 25, "diff": -6}, {"store": "深圳满京华店", "current": 19, "previous": 6, "diff": 13}, {"store": "南村店", "current": 19, "previous": 19, "diff": 0}, {"store": "东莞南城", "current": 15, "previous": 21, "diff": -6}, {"store": "湛江吴川", "current": 15, "previous": 14, "diff": 1}, {"store": "东莞黄江大道", "current": 9, "previous": 18, "diff": -9}, {"store": "深圳龙华大浪", "current": 9, "previous": 2, "diff": 7}, {"store": "英德朵以", "current": 7, "previous": 27, "diff": -20}], "折扣率": [{"store": "深圳满京华店", "current": 96.6, "previous": 87.11, "diff": 9.48}, {"store": "深圳宝安店", "current": 93.62, "previous": 88.05, "diff": 5.58}, {"store": "海珠乐峰广场", "current": 93.36, "previous": 89.68, "diff": 3.68}, {"store": "深圳龙华大浪", "current": 92.66, "previous": 87.99, "diff": 4.67}, {"store": "萝岗万达", "current": 92.22, "previous": 88.06, "diff": 4.16}, {"store": "广州塔广场店", "current": 92.2, "previous": 89.67, "diff": 2.53}, {"store": "高埗万和", "current": 92.04, "previous": 85.71, "diff": 6.34}, {"store": "大朗店", "current": 92.01, "previous": 89.5, "diff": 2.51}, {"store": "坪地宜城店", "current": 91.86, "previous": 88.76, "diff": 3.1}, {"store": "英德朵以", "current": 91.82, "previous": 83.65, "diff": 8.17}, {"store": "花都骏壹万邦", "current": 91.76, "previous": 91.77, "diff": -0.0}, {"store": "湛江吴川", "current": 91.3, "previous": 84.28, "diff": 7.02}, {"store": "深圳龙岗坪山", "current": 90.97, "previous": 89.16, "diff": 1.81}, {"store": "清远城市广场", "current": 90.69, "previous": 86.2, "diff": 4.49}, {"store": "白云万象汇朵以", "current": 90.36, "previous": 87.35, "diff": 3.02}, {"store": "岗顶天娱广场", "current": 89.05, "previous": 86.19, "diff": 2.86}, {"store": "南村店", "current": 87.76, "previous": 81.19, "diff": 6.57}, {"store": "乐从天佑城", "current": 87.22, "previous": 84.51, "diff": 2.71}, {"store": "东莞黄江大道", "current": 86.68, "previous": 80.37, "diff": 6.31}, {"store": "宜都清江店", "current": 86.5, "previous": 87.12, "diff": -0.62}, {"store": "茂名印象汇", "current": 85.49, "previous": 95.16, "diff": -9.66}, {"store": "通城朵以", "current": 84.97, "previous": 90.43, "diff": -5.45}, {"store": "东莞南城", "current": 82.14, "previous": 81.48, "diff": 0.66}, {"store": "潘州广场朵以", "current": 81.97, "previous": 81.51, "diff": 0.46}, {"store": "宜城香港路", "current": 71.72, "previous": 83.02, "diff": -11.3}], "连带": [{"store": "英德朵以", "current": 4.1, "previous": 2.73, "diff": 1.37}, {"store": "东莞南城", "current": 3.67, "previous": 2.87, "diff": 0.8}, {"store": "岗顶天娱广场", "current": 3.26, "previous": 2.97, "diff": 0.29}, {"store": "东莞黄江大道", "current": 3.22, "previous": 4.02, "diff": -0.79}, {"store": "宜城香港路", "current": 3.04, "previous": 4.02, "diff": -0.98}, {"store": "花都骏壹万邦", "current": 2.94, "previous": 2.53, "diff": 0.41}, {"store": "广州塔广场店", "current": 2.77, "previous": 3.1, "diff": -0.33}, {"store": "深圳龙岗坪山", "current": 2.77, "previous": 2.83, "diff": -0.06}, {"store": "南村店", "current": 2.74, "previous": 3.52, "diff": -0.78}, {"store": "坪地宜城店", "current": 2.71, "previous": 2.96, "diff": -0.26}, {"store": "深圳宝安店", "current": 2.65, "previous": 4.5, "diff": -1.85}, {"store": "湛江吴川", "current": 2.62, "previous": 3.78, "diff": -1.16}, {"store": "萝岗万达", "current": 2.6, "previous": 2.76, "diff": -0.16}, {"store": "海珠乐峰广场", "current": 2.58, "previous": 3.03, "diff": -0.45}, {"store": "清远城市广场", "current": 2.48, "previous": 3.01, "diff": -0.52}, {"store": "茂名印象汇", "current": 2.34, "previous": 2.81, "diff": -0.47}, {"store": "宜都清江店", "current": 2.33, "previous": 1.68, "diff": 0.64}, {"store": "白云万象汇朵以", "current": 2.21, "previous": 2.63, "diff": -0.42}, {"store": "深圳龙华大浪", "current": 2.19, "previous": 1.8, "diff": 0.39}, {"store": "高埗万和", "current": 2.17, "previous": 3.21, "diff": -1.04}, {"store": "潘州广场朵以", "current": 2.16, "previous": 2.56, "diff": -0.4}, {"store": "大朗店", "current": 2.12, "previous": 2.93, "diff": -0.81}, {"store": "通城朵以", "current": 2.11, "previous": 2.14, "diff": -0.03}, {"store": "乐从天佑城", "current": 1.99, "previous": 2.67, "diff": -0.68}, {"store": "深圳满京华店", "current": 1.92, "previous": 3.43, "diff": -1.52}], "活跃会员数": [{"store": "萝岗万达", "current": 684, "previous": 615, "diff": 69}, {"store": "清远城市广场", "current": 569, "previous": 655, "diff": -86}, {"store": "海珠乐峰广场", "current": 434, "previous": 429, "diff": 5}, {"store": "广州塔广场店", "current": 310, "previous": 574, "diff": -264}, {"store": "深圳龙岗坪山", "current": 275, "previous": 210, "diff": 65}, {"store": "乐从天佑城", "current": 271, "previous": 520, "diff": -249}, {"store": "岗顶天娱广场", "current": 269, "previous": 259, "diff": 10}, {"store": "潘州广场朵以", "current": 261, "previous": 258, "diff": 3}, {"store": "宜都清江店", "current": 254, "previous": 479, "diff": -225}, {"store": "茂名印象汇", "current": 235, "previous": 214, "diff": 21}, {"store": "白云万象汇朵以", "current": 225, "previous": 199, "diff": 26}, {"store": "通城朵以", "current": 225, "previous": 317, "diff": -92}, {"store": "深圳龙华大浪", "current": 174, "previous": 32, "diff": 142}, {"store": "高埗万和", "current": 172, "previous": 140, "diff": 32}, {"store": "花都骏壹万邦", "current": 166, "previous": 154, "diff": 12}, {"store": "大朗店", "current": 149, "previous": 175, "diff": -26}, {"store": "深圳满京华店", "current": 147, "previous": 65, "diff": 82}, {"store": "坪地宜城店", "current": 144, "previous": 94, "diff": 50}, {"store": "深圳宝安店", "current": 144, "previous": 37, "diff": 107}, {"store": "南村店", "current": 123, "previous": 107, "diff": 16}, {"store": "宜城香港路", "current": 121, "previous": 105, "diff": 16}, {"store": "湛江吴川", "current": 112, "previous": 105, "diff": 7}, {"store": "东莞黄江大道", "current": 105, "previous": 113, "diff": -8}, {"store": "英德朵以", "current": 82, "previous": 101, "diff": -19}, {"store": "东莞南城", "current": 76, "previous": 142, "diff": -66}], "沉默会员数": [{"store": "萝岗万达", "current": 218, "previous": 163, "diff": 55}, {"store": "清远城市广场", "current": 210, "previous": 164, "diff": 46}, {"store": "海珠乐峰广场", "current": 190, "previous": 150, "diff": 40}, {"store": "广州塔广场店", "current": 185, "previous": 203, "diff": -18}, {"store": "茂名印象汇", "current": 113, "previous": 67, "diff": 46}, {"store": "通城朵以", "current": 109, "previous": 93, "diff": 16}, {"store": "潘州广场朵以", "current": 103, "previous": 73, "diff": 30}, {"store": "花都骏壹万邦", "current": 93, "previous": 33, "diff": 60}, {"store": "宜都清江店", "current": 93, "previous": 99, "diff": -6}, {"store": "湛江吴川", "current": 81, "previous": 35, "diff": 46}, {"store": "乐从天佑城", "current": 81, "previous": 115, "diff": -34}, {"store": "白云万象汇朵以", "current": 80, "previous": 69, "diff": 11}, {"store": "岗顶天娱广场", "current": 77, "previous": 86, "diff": -9}, {"store": "宜城香港路", "current": 71, "previous": 35, "diff": 36}, {"store": "深圳龙岗坪山", "current": 68, "previous": 36, "diff": 32}, {"store": "高埗万和", "current": 56, "previous": 32, "diff": 24}, {"store": "坪地宜城店", "current": 45, "previous": 17, "diff": 28}, {"store": "东莞黄江大道", "current": 39, "previous": 27, "diff": 12}, {"store": "大朗店", "current": 39, "previous": 40, "diff": -1}, {"store": "南村店", "current": 27, "previous": 35, "diff": -8}, {"store": "东莞南城", "current": 27, "previous": 34, "diff": -7}, {"store": "英德朵以", "current": 14, "previous": 29, "diff": -15}, {"store": "深圳满京华店", "current": 12, "previous": 2, "diff": 10}, {"store": "深圳宝安店", "current": 3, "previous": 10, "diff": -7}, {"store": "深圳龙华大浪", "current": 1, "previous": 0, "diff": 1}], "睡眠会员数": [{"store": "萝岗万达", "current": 612, "previous": 713, "diff": -101}, {"store": "清远城市广场", "current": 569, "previous": 634, "diff": -65}, {"store": "海珠乐峰广场", "current": 400, "previous": 606, "diff": -206}, {"store": "广州塔广场店", "current": 342, "previous": 339, "diff": 3}, {"store": "乐从天佑城", "current": 335, "previous": 563, "diff": -228}, {"store": "潘州广场朵以", "current": 333, "previous": 239, "diff": 94}, {"store": "茂名印象汇", "current": 249, "previous": 251, "diff": -2}, {"store": "通城朵以", "current": 241, "previous": 317, "diff": -76}, {"store": "深圳龙岗坪山", "current": 239, "previous": 204, "diff": 35}, {"store": "白云万象汇朵以", "current": 237, "previous": 313, "diff": -76}, {"store": "宜都清江店", "current": 228, "previous": 391, "diff": -163}, {"store": "高埗万和", "current": 227, "previous": 106, "diff": 121}, {"store": "岗顶天娱广场", "current": 200, "previous": 343, "diff": -143}, {"store": "花都骏壹万邦", "current": 194, "previous": 194, "diff": 0}, {"store": "大朗店", "current": 187, "previous": 206, "diff": -19}, {"store": "东莞黄江大道", "current": 161, "previous": 144, "diff": 17}, {"store": "南村店", "current": 135, "previous": 120, "diff": 15}, {"store": "湛江吴川", "current": 125, "previous": 161, "diff": -36}, {"store": "坪地宜城店", "current": 122, "previous": 78, "diff": 44}, {"store": "东莞南城", "current": 111, "previous": 143, "diff": -32}, {"store": "宜城香港路", "current": 96, "previous": 114, "diff": -18}, {"store": "英德朵以", "current": 75, "previous": 92, "diff": -17}, {"store": "深圳满京华店", "current": 60, "previous": 41, "diff": 19}, {"store": "深圳宝安店", "current": 21, "previous": 59, "diff": -38}, {"store": "深圳龙华大浪", "current": 3, "previous": 18, "diff": -15}], "预流失会员数": [{"store": "萝岗万达", "current": 1196, "previous": 562, "diff": 634}, {"store": "清远城市广场", "current": 1058, "previous": 756, "diff": 302}, {"store": "广州塔广场店", "current": 1026, "previous": 365, "diff": 661}, {"store": "乐从天佑城", "current": 626, "previous": 812, "diff": -186}, {"store": "海珠乐峰广场", "current": 611, "previous": 609, "diff": 2}, {"store": "宜都清江店", "current": 578, "previous": 738, "diff": -160}, {"store": "通城朵以", "current": 557, "previous": 524, "diff": 33}, {"store": "潘州广场朵以", "current": 500, "previous": 365, "diff": 135}, {"store": "岗顶天娱广场", "current": 495, "previous": 559, "diff": -64}, {"store": "白云万象汇朵以", "current": 367, "previous": 284, "diff": 83}, {"store": "茂名印象汇", "current": 363, "previous": 344, "diff": 19}, {"store": "花都骏壹万邦", "current": 304, "previous": 297, "diff": 7}, {"store": "高埗万和", "current": 259, "previous": 120, "diff": 139}, {"store": "东莞南城", "current": 256, "previous": 302, "diff": -46}, {"store": "南村店", "current": 254, "previous": 252, "diff": 2}, {"store": "东莞黄江大道", "current": 249, "previous": 277, "diff": -28}, {"store": "宜城香港路", "current": 230, "previous": 132, "diff": 98}, {"store": "大朗店", "current": 210, "previous": 213, "diff": -3}, {"store": "深圳龙岗坪山", "current": 179, "previous": 158, "diff": 21}, {"store": "湛江吴川", "current": 127, "previous": 130, "diff": -3}, {"store": "坪地宜城店", "current": 107, "previous": 242, "diff": -135}, {"store": "英德朵以", "current": 102, "previous": 89, "diff": 13}, {"store": "深圳满京华店", "current": 84, "previous": 51, "diff": 33}, {"store": "深圳龙华大浪", "current": 34, "previous": 112, "diff": -78}, {"store": "深圳宝安店", "current": 32, "previous": 97, "diff": -65}], "流失会员数": [{"store": "萝岗万达", "current": 15155, "previous": 12995, "diff": 2160}, {"store": "乐从天佑城", "current": 10465, "previous": 8524, "diff": 1941}, {"store": "宜都清江店", "current": 8723, "previous": 7505, "diff": 1218}, {"store": "岗顶天娱广场", "current": 8326, "previous": 6936, "diff": 1390}, {"store": "潘州广场朵以", "current": 7969, "previous": 7457, "diff": 512}, {"store": "广州塔广场店", "current": 7878, "previous": 6021, "diff": 1857}, {"store": "深圳满京华店", "current": 6934, "previous": 6502, "diff": 432}, {"store": "清远城市广场", "current": 6660, "previous": 4892, "diff": 1768}, {"store": "南村店", "current": 6255, "previous": 5716, "diff": 539}, {"store": "东莞南城", "current": 6129, "previous": 5494, "diff": 635}, {"store": "海珠乐峰广场", "current": 4617, "previous": 2651, "diff": 1966}, {"store": "白云万象汇朵以", "current": 4536, "previous": 3597, "diff": 939}, {"store": "茂名印象汇", "current": 4388, "previous": 3846, "diff": 542}, {"store": "大朗店", "current": 4045, "previous": 3700, "diff": 345}, {"store": "通城朵以", "current": 3905, "previous": 3120, "diff": 785}, {"store": "湛江吴川", "current": 3094, "previous": 2621, "diff": 473}, {"store": "宜城香港路", "current": 2416, "previous": 2169, "diff": 247}, {"store": "东莞黄江大道", "current": 2166, "previous": 1719, "diff": 447}, {"store": "高埗万和", "current": 1465, "previous": 1203, "diff": 262}, {"store": "花都骏壹万邦", "current": 1244, "previous": 565, "diff": 679}, {"store": "英德朵以", "current": 1089, "previous": 856, "diff": 233}, {"store": "坪地宜城店", "current": 983, "previous": 714, "diff": 269}, {"store": "深圳宝安店", "current": 870, "previous": 564, "diff": 306}, {"store": "深圳龙华大浪", "current": 682, "previous": 370, "diff": 312}, {"store": "深圳龙岗坪山", "current": 457, "previous": 212, "diff": 245}]};
+            </script>
+            
+                </div>
+            </div>
+            
+            <!-- 门店排名 -->
+            <div class="section">
+                <h3 class="section-subtitle">门店排名</h3>
+                <div class="custom-rank-container">
+                    <!-- 模式切换 -->
+                    <div class="rank-mode-toggle">
+                        <button class="rank-mode-btn active" data-mode="normal" onclick="switchRankMode('normal')">常规经营</button>
+                        <button class="rank-mode-btn" data-mode="lifecycle" onclick="switchRankMode('lifecycle')">会员生命周期</button>
+                    </div>
+                    
+                    <!-- 常规经营模式表头 -->
+                    <table class="custom-rank-table" id="custom-rank-table-normal" data-mode="normal">
+                        <thead id="custom-rank-thead-normal">
+                            <!-- 第一行：指标名称（带tooltip） -->
+                            <tr class="rank-header-row1">
+                                <th class="rank-column" rowspan="2">排名</th>
+                                <th class="store-column" rowspan="2">门店</th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>支付金额</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，指定客群的支付金额总和</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>支付人数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，指定客群的支付人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>客单价</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，平均每位客户购买的金额</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>客单量</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，平均每位客户的支付订单数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>首购人数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">历史从未有过消费的客户，在统计时间内产生首次消费的人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>复购人数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">历史有消费，在统计时间内再次或多次消费的会员人数（1小时内多次购买不算复购）</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>折扣率</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，平均折扣率（未叠加储值卡折扣计算）</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>连带</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">统计时间内，平均每笔支付订单购买商品的件数</span></span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <!-- 第二行：本期、同比，都可排序 -->
+                            <tr class="rank-header-row2">
+                                <th class="value-column sortable" data-key="支付金额_current" onclick="sortRankTable('normal', '支付金额_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="支付金额_diff" onclick="sortRankTable('normal', '支付金额_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="支付人数_current" onclick="sortRankTable('normal', '支付人数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="支付人数_diff" onclick="sortRankTable('normal', '支付人数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="客单价_current" onclick="sortRankTable('normal', '客单价_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="客单价_diff" onclick="sortRankTable('normal', '客单价_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="客单量_current" onclick="sortRankTable('normal', '客单量_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="客单量_diff" onclick="sortRankTable('normal', '客单量_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="首购人数_current" onclick="sortRankTable('normal', '首购人数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="首购人数_diff" onclick="sortRankTable('normal', '首购人数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="复购人数_current" onclick="sortRankTable('normal', '复购人数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="复购人数_diff" onclick="sortRankTable('normal', '复购人数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="折扣率_current" onclick="sortRankTable('normal', '折扣率_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="折扣率_diff" onclick="sortRankTable('normal', '折扣率_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="连带_current" onclick="sortRankTable('normal', '连带_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="连带_diff" onclick="sortRankTable('normal', '连带_diff')">同比<span class="sort-icon">▼</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-rank-tbody-normal"></tbody>
+                    </table>
+                    
+                    <!-- 会员生命周期模式表头 -->
+                    <table class="custom-rank-table" id="custom-rank-table-lifecycle" data-mode="lifecycle" style="display:none;">
+                        <thead id="custom-rank-thead-lifecycle">
+                            <!-- 第一行：指标名称（带tooltip） -->
+                            <tr class="rank-header-row1">
+                                <th class="rank-column" rowspan="2">排名</th>
+                                <th class="store-column" rowspan="2">门店</th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>活跃会员数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">近60天内有购买行为的会员人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>沉默会员数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">超过180天未消费的会员人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>睡眠会员数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">91-180天未消费的会员人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>预流失会员数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">61-90天未消费的会员人数</span></span>
+                                    </div>
+                                </th>
+                                <th class="value-column multi-col-header" colspan="2">
+                                    <div class="rank-header-with-tooltip">
+                                        <span>流失会员数</span>
+                                        <span class="rank-info-icon">?<span class="rank-tooltip-text">超过180天未消费的会员人数（已流失）</span></span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <!-- 第二行：本期、同比，都可排序 -->
+                            <tr class="rank-header-row2">
+                                <th class="value-column sortable" data-key="活跃会员数_current" onclick="sortRankTable('lifecycle', '活跃会员数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="活跃会员数_diff" onclick="sortRankTable('lifecycle', '活跃会员数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="沉默会员数_current" onclick="sortRankTable('lifecycle', '沉默会员数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="沉默会员数_diff" onclick="sortRankTable('lifecycle', '沉默会员数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="睡眠会员数_current" onclick="sortRankTable('lifecycle', '睡眠会员数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="睡眠会员数_diff" onclick="sortRankTable('lifecycle', '睡眠会员数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="预流失会员数_current" onclick="sortRankTable('lifecycle', '预流失会员数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="预流失会员数_diff" onclick="sortRankTable('lifecycle', '预流失会员数_diff')">同比<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="流失会员数_current" onclick="sortRankTable('lifecycle', '流失会员数_current')">本期<span class="sort-icon">▼</span></th>
+                                <th class="value-column sortable" data-key="流失会员数_diff" onclick="sortRankTable('lifecycle', '流失会员数_diff')">同比<span class="sort-icon">▼</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-rank-tbody-lifecycle"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
     <!-- 回到顶部按钮 -->
     <button id="back-to-top" class="back-to-top" onclick="scrollToTop()" aria-label="回到顶部">
@@ -5199,6 +5863,293 @@
                     animateValue(element, 0, endValue, 1500);
                 }
             });
+        }
+
+        // 初始化自定义分析折线图
+        let customChart = null;
+        function initCustomChart() {
+            const chartDom = document.getElementById('custom-chart');
+            if (!chartDom || !window.customChartData) return;
+
+            if (customChart) {
+                customChart.dispose();
+            }
+            customChart = echarts.init(chartDom);
+            updateCustomChart('支付人数');
+
+            // 下拉菜单切换
+            document.getElementById('custom-metric-select').addEventListener('change', function() {
+                updateCustomChart(this.value);
+            });
+
+            // 响应式
+            window.addEventListener('resize', function() {
+                if (customChart) customChart.resize();
+            });
+        }
+
+        function updateCustomChart(metricName) {
+            if (!customChart || !window.customChartData) return;
+
+            const data = window.customChartData;
+            const currentData = data.current[metricName] || [];
+            const previousData = data.previous[metricName] || [];
+            const dates = data.current.dates || [];
+            const prevDates = data.previous.dates || [];
+            const currentTrend = data.trend.current[metricName] || [];
+            const previousTrend = data.trend.previous[metricName] || [];
+
+            // 判断是否需要格式化（金额）
+            const isAmount = metricName === '支付金额' || metricName === '客单价';
+            const formatter = isAmount ? function(v) {
+                if (v >= 10000) return (v / 10000).toFixed(1) + '万';
+                return v.toFixed(0);
+            } : function(v) { return v; };
+
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(50, 50, 50, 0.95)',
+                    borderColor: '#333',
+                    textStyle: { color: '#fff' },
+                    formatter: function(params) {
+                        let result = params[0].axisValue + '<br/>';
+                        params.forEach(function(item) {
+                            if (item.seriesName !== '本期趋势' && item.seriesName !== '同期趋势') {
+                                result += item.marker + ' ' + item.seriesName + ': ' + formatter(item.value) + '<br/>';
+                            }
+                        });
+                        return result;
+                    }
+                },
+                legend: {
+                    data: ['本期', '同期', '本期趋势', '同期趋势'],
+                    bottom: 0,
+                    textStyle: { color: '#666' }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: dates,
+                    axisLine: { lineStyle: { color: '#e0e0e0' } },
+                    axisLabel: { color: '#666' }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: { show: false },
+                    splitLine: { lineStyle: { color: '#f0f0f0' } },
+                    axisLabel: {
+                        color: '#666',
+                        formatter: formatter
+                    }
+                },
+                series: [
+                    {
+                        name: '本期',
+                        type: 'line',
+                        data: currentData,
+                        smooth: true,
+                        symbol: 'circle',
+                        symbolSize: 8,
+                        lineStyle: { color: '#f56c6c', width: 3 },
+                        itemStyle: { color: '#f56c6c' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(245, 108, 108, 0.3)' },
+                                { offset: 1, color: 'rgba(245, 108, 108, 0.05)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: '同期',
+                        type: 'line',
+                        data: previousData,
+                        smooth: true,
+                        symbol: 'circle',
+                        symbolSize: 8,
+                        lineStyle: { color: '#67c23a', width: 3 },
+                        itemStyle: { color: '#67c23a' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(103, 194, 58, 0.3)' },
+                                { offset: 1, color: 'rgba(103, 194, 58, 0.05)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: '本期趋势',
+                        type: 'line',
+                        data: currentTrend,
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: { color: 'rgba(245, 108, 108, 0.3)', width: 2, type: 'dashed' }
+                    },
+                    {
+                        name: '同期趋势',
+                        type: 'line',
+                        data: previousTrend,
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: { color: 'rgba(103, 194, 58, 0.3)', width: 2, type: 'dashed' }
+                    }
+                ]
+            };
+
+            customChart.setOption(option, true);
+        }
+
+        // 门店排名相关
+        let customStoreRankData = {};
+        let currentRankMode = 'normal';
+        let currentSortConfig = {
+            normal: { key: '支付金额_current', direction: 'desc' },
+            lifecycle: { key: '活跃会员数_current', direction: 'desc' }
+        };
+
+        // 模式切换
+        function switchRankMode(mode) {
+            currentRankMode = mode;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.rank-mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            
+            // 切换表格显示
+            document.getElementById('custom-rank-table-normal').style.display = mode === 'normal' ? '' : 'none';
+            document.getElementById('custom-rank-table-lifecycle').style.display = mode === 'lifecycle' ? '' : 'none';
+            
+            // 重置排序
+            currentSortConfig[mode] = { key: mode === 'normal' ? '支付金额_current' : '活跃会员数_current', direction: 'desc' };
+            updateSortIcons(mode);
+            
+            // 渲染表格
+            renderCustomRankTable(mode);
+        }
+
+        // 排序功能
+        function sortRankTable(mode, key) {
+            // 切换排序方向
+            if (currentSortConfig[mode].key === key) {
+                currentSortConfig[mode].direction = currentSortConfig[mode].direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortConfig[mode].key = key;
+                currentSortConfig[mode].direction = 'desc';
+            }
+            
+            updateSortIcons(mode);
+            renderCustomRankTable(mode);
+        }
+
+        // 更新排序图标
+        function updateSortIcons(mode) {
+            const config = currentSortConfig[mode];
+            const theadId = mode === 'normal' ? 'custom-rank-thead-normal' : 'custom-rank-thead-lifecycle';
+            const thead = document.getElementById(theadId);
+            if (!thead) return;
+            
+            thead.querySelectorAll('.sortable').forEach(th => {
+                const thKey = th.dataset.key;
+                if (thKey === config.key) {
+                    th.classList.remove('asc', 'desc');
+                    th.classList.add(config.direction);
+                    th.querySelector('.sort-icon').textContent = config.direction === 'asc' ? '▲' : '▼';
+                } else {
+                    th.classList.remove('asc', 'desc');
+                    th.querySelector('.sort-icon').textContent = '▼';
+                }
+            });
+        }
+
+        // 渲染排名表格
+        function renderCustomRankTable(mode) {
+            const tbodyId = mode === 'normal' ? 'custom-rank-tbody-normal' : 'custom-rank-tbody-lifecycle';
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            
+            const config = currentSortConfig[mode];
+            const metricKeys = mode === 'normal' 
+                ? ['支付金额', '支付人数', '客单价', '客单量', '首购人数', '复购人数', '折扣率', '连带']
+                : ['活跃会员数', '沉默会员数', '睡眠会员数', '预流失会员数', '流失会员数'];
+            
+            // 获取所有门店数据
+            const stores = customStoreRankData[metricKeys[0]] ? 
+                customStoreRankData[metricKeys[0]].map(item => item.store) : [];
+            
+            // 构建完整数据行
+            const rowsData = stores.map(storeName => {
+                const row = { store: storeName };
+                metricKeys.forEach(key => {
+                    if (customStoreRankData[key]) {
+                        const item = customStoreRankData[key].find(i => i.store === storeName);
+                        if (item) {
+                            row[key] = item;
+                        }
+                    }
+                });
+                return row;
+            });
+            
+            // 排序（从key中提取指标名和类型，如"支付金额_current" -> "支付金额", "current"）
+            const sortParts = config.key.split('_');
+            const sortMetric = sortParts.slice(0, -1).join('_');
+            const sortType = sortParts[sortParts.length - 1]; // 'current' 或 'diff'
+            rowsData.sort((a, b) => {
+                const aItem = a[sortMetric] || {};
+                const bItem = b[sortMetric] || {};
+                const aVal = sortType === 'diff' ? (aItem.diff || 0) : (aItem.current || 0);
+                const bVal = sortType === 'diff' ? (bItem.diff || 0) : (bItem.current || 0);
+                return config.direction === 'asc' ? aVal - bVal : bVal - aVal;
+            });
+            
+            // 生成HTML（不显示同期值，只显示本期和同比）
+            let html = '';
+            rowsData.forEach((row, index) => {
+                const rank = index + 1;
+                const rankClass = rank <= 3 ? 'top3' : 'normal';
+                
+                let cellsHtml = `<td class="rank-column"><span class="rank-badge ${rankClass}">${rank}</span></td><td class="store-column">${row.store}</td>`;
+                
+                metricKeys.forEach(key => {
+                    const item = row[key];
+                    const current = item ? item.current : 0;
+                    const diff = item ? item.diff : 0;
+                    
+                    // 本期格式化
+                    let formattedVal = current;
+                    if (key === '客单价' || key === '客单量' || key === '连带') {
+                        formattedVal = current.toFixed(2);
+                    } else if (key === '折扣率') {
+                        formattedVal = current.toFixed(2) + '%';
+                    } else {
+                        formattedVal = Math.round(current).toLocaleString();
+                    }
+                    
+                    // 同比格式化
+                    let diffFormatted = diff > 0 ? '+' + diff.toFixed(2) : diff.toFixed(2);
+                    if (key === '折扣率') {
+                        diffFormatted = diff > 0 ? '+' + diff.toFixed(2) + '%' : diff.toFixed(2) + '%';
+                    } else if (key !== '客单价' && key !== '客单量' && key !== '连带') {
+                        diffFormatted = diff > 0 ? '+' + Math.round(diff).toLocaleString() : Math.round(diff).toLocaleString();
+                    }
+                    
+                    const diffClass = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : '';
+                    
+                    cellsHtml += `<td class="value-column current-column">${formattedVal}</td>`;
+                    cellsHtml += `<td class="value-column ${diffClass}">${diffFormatted}</td>`;
+                });
+                
+                html += `<tr>${cellsHtml}</tr>`;
+            });
+            
+            tbody.innerHTML = html;
         }
 
         function sortTable(columnName) {
@@ -5371,6 +6322,17 @@
 
                     // 触发数字动画
                     initNumberAnimations();
+                }, 100);
+            }
+
+            // 如果切换到自定义分析页面，初始化折线图和门店排名
+            if (pageId === 'page-custom' && window.customChartData) {
+                setTimeout(() => {
+                    initCustomChart();
+                    if (window.customStoreRankData) {
+                        customStoreRankData = window.customStoreRankData;
+                        switchRankMode('normal');
+                    }
                 }, 100);
             }
 
