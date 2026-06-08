@@ -238,6 +238,67 @@
 </head>
 <body>
 
+<!-- 登录验证弹窗 -->
+<div id="auth-overlay" style="position:fixed;inset:0;z-index:9999;background:var(--brand-bg);display:flex;align-items:center;justify-content:center;">
+    <div style="background:var(--white);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.12);padding:48px 40px;text-align:center;max-width:380px;width:90%;">
+        <img src="https://claw.youzan.com/api/oss/download/yz-4b2089587ca52842/reports/assets/2026/06/07/80bf43a3-9ecc-43b2-8d2b-748cf89a7463.png" style="height:36px;margin-bottom:20px;object-fit:contain;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--brand);margin-bottom:6px;">会员运营周报</h2>
+        <p style="font-size:13px;color:var(--text-sec);margin-bottom:28px;">请输入密钥验证身份</p>
+        <input id="auth-input" type="password" placeholder="输入密钥" style="width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;transition:border-color 0.2s;text-align:center;letter-spacing:2px;" onkeydown="if(event.key==='Enter')doAuth()">
+        <div id="auth-error" style="font-size:12px;color:var(--red);margin-top:8px;height:18px;"></div>
+        <button onclick="doAuth()" style="width:100%;padding:12px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;transition:background 0.2s;">验证登录</button>
+    </div>
+</div>
+
+<!-- 水印层 -->
+<div id="watermark-layer" style="position:fixed;inset:0;z-index:9998;pointer-events:none;display:none;"></div>
+
+<script>
+var AUTH_KEYS = {
+    "dy7714": "陈祝利",
+    "dy1445": "赖月平",
+    "dy6312": "会员资产组",
+    "dy4706": "鲜于浩",
+    "dy7742": "李硕果",
+    "dy8512": "古欢欢",
+    "dy5669": "彭苑婷"
+};
+
+function doAuth() {
+    var input = document.getElementById('auth-input').value.trim().toLowerCase();
+    var errEl = document.getElementById('auth-error');
+    if (AUTH_KEYS[input]) {
+        var userName = AUTH_KEYS[input];
+        document.getElementById('auth-overlay').style.display = 'none';
+        createWatermark(userName);
+        document.getElementById('watermark-layer').style.display = 'block';
+    } else {
+        errEl.textContent = '密钥无效，请重新输入';
+        document.getElementById('auth-input').style.borderColor = 'var(--red)';
+        setTimeout(function() { errEl.textContent = ''; document.getElementById('auth-input').style.borderColor = 'var(--border)'; }, 2000);
+    }
+}
+
+function createWatermark(text) {
+    var canvas = document.createElement('canvas');
+    canvas.width = 300;
+    canvas.height = 200;
+    var ctx = canvas.getContext('2d');
+    ctx.rotate(-20 * Math.PI / 180);
+    ctx.font = '14px -apple-system, PingFang SC, sans-serif';
+    ctx.fillStyle = 'rgba(26, 58, 107, 0.06)';
+    ctx.textAlign = 'center';
+    ctx.fillText(text, 100, 120);
+    ctx.fillText(new Date().toLocaleDateString(), 100, 140);
+    var dataUrl = canvas.toDataURL();
+    document.getElementById('watermark-layer').style.backgroundImage = 'url(' + dataUrl + ')';
+    document.getElementById('watermark-layer').style.backgroundRepeat = 'repeat';
+}
+
+// 页面加载时聚焦输入框
+window.addEventListener('load', function() { document.getElementById('auth-input').focus(); });
+</script>
+
 <div class="top-bar">
     <div class="top-bar-inner">
         <div class="logo-area">
