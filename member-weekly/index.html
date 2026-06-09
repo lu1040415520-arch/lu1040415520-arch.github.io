@@ -322,7 +322,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--red)"></div>本周关键变化</div>
             <div class="change-item"><div class="change-dot red"></div><div class="change-text">
-        <div class="ct-title">17家门店标记为紧急</div>
+        <div class="ct-title">18家门店标记为紧急</div>
         <div class="ct-desc">需要立即关注和干预</div></div></div><div class="change-item"><div class="change-dot red"></div><div class="change-text">
         <div class="ct-title">储值沉积问题普遍（19家门店）</div>
         <div class="ct-desc">非活跃储值占比均值31.2%，大量储值余额沉睡</div></div></div><div class="change-item"><div class="change-dot yellow"></div><div class="change-text">
@@ -341,7 +341,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div></div><div class="action-item">
         <span class="action-pri p0">P0</span>
         <div class="action-content">
-            <div class="ac-title">紧急门店专项干预（17家）</div>
+            <div class="ac-title">紧急门店专项干预（18家）</div>
             <div class="ac-meta">负责人：待配置 · 截止6/14 · 目标到店率提升</div>
         </div></div><div class="action-item">
         <span class="action-pri p1">P1</span>
@@ -565,8 +565,8 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 <!-- ===== 第四页：门店诊断 ===== -->
 <div id="page-stores" class="page">
     <div class="page-summary">
-        从<strong>问题归因</strong>出发看门店。本周17家门店标记为紧急。
-        <br>基准线：活跃率30.4% · 流失率70.8% · 连带2.23 · 客单¥628
+        从<strong>问题归因</strong>出发看门店。本周18家门店标记为紧急。
+        <br>基准线：活跃率30.4% · 流失风险率70.1% · 连带2.23 · 客单¥628
     </div>
 
     <div class="filter-bar">
@@ -590,22 +590,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">26.1%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:52.2%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.1%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:73.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">74.5%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:74.5%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.33</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:58.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥648</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:54.0%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -625,22 +625,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">25.7%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:51.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.9%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:73.9%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">76.0%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:76.0%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">1.98</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:49.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥530</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:44.2%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -660,22 +660,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">18.1%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:36.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">78.7%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:78.7%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">83.8%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:83.8%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">3.16</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:79.0%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥922</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:76.8%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -695,22 +695,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">27.2%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:54.4%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">79.3%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:79.3%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">73.7%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:73.7%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.25</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:56.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥666</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:55.5%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -730,22 +730,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">20.6%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:41.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">86.5%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:86.5%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">79.9%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:79.9%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.38</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:59.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥631</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:52.6%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -765,22 +765,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">22.8%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:45.6%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.5%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:73.5%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">78.0%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:78.0%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">3.17</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:79.2%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥748</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:62.3%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -800,22 +800,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">30.6%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:61.2%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">77.4%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:77.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">70.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:70.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">1.72</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥427</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:35.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -835,22 +835,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">26.8%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:53.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">85.5%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:85.5%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">73.4%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:73.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">1.67</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:41.8%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥388</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:32.3%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -870,22 +870,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">27.8%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:55.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">82.4%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:82.4%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">73.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:73.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">3.5</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:87.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥951</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:79.2%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -905,22 +905,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">22.9%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:45.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">74.6%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:74.6%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">77.1%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:77.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.53</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:63.2%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥742</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:61.8%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -940,22 +940,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">24.7%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:49.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">74.2%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:74.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">76.4%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:76.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.41</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:60.2%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥668</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:55.7%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -975,28 +975,63 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">26.4%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:52.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">72.2%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:72.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">74.1%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:74.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.52</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:63.0%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥845</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:70.4%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
                 <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">流失+储值沉积双重夹击——预流失占比38.2%，334名储值会员中79%非活跃（有余额不来花），但来客质量高（客单¥845）</div></div>
                 <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">储值客户到店专项（余额提醒+专属到店礼），优先触达334名储值非活跃会员，目标激活到店16人</div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card" data-type="D A B C E" data-level="urgent">
+        <div class="store-card-header">
+            <div class="sc-name">高埗万和（有效740人）</div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">23.9%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:47.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">76.4%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:76.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">1.72</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">¥451</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:37.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">流失+储值沉积双重夹击——预流失占比39.6%，78名储值会员中77%非活跃（有余额不来花）</div></div>
+                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">储值客户到店专项（余额提醒+专属到店礼），优先触达78名储值非活跃会员，目标激活到店10人</div></div>
             </div>
         </div>
     </div>
@@ -1010,22 +1045,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">22.4%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:44.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">79.3%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:79.3%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">78.6%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:78.6%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.18</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:54.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥561</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:46.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1045,22 +1080,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">17.7%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:35.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">75.9%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:75.9%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">83.5%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:83.5%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.42</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:60.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥614</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:51.2%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1080,22 +1115,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">25.2%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:50.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">72.5%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:72.5%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">75.9%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:75.9%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.0</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:50.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥522</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1115,22 +1150,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">17.6%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:35.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">86.8%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:86.8%;background:var(--red);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">84.0%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:84.0%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.63</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:65.8%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥657</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:54.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1150,22 +1185,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">29.9%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:59.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.1%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:73.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">70.8%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:70.8%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">2.5</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:62.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">¥704</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:58.7%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1176,37 +1211,37 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D B C E" data-level="attention">
+    <div class="store-card" data-type="normal" data-level="attention">
         <div class="store-card-header">
-            <div class="sc-name">高埗万和（有效740人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=B+C+E</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-name">深圳龙岗坪山（有效780人）</div>
+            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag attention">🟡 关注</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">23.9%</div>
-            <div class="scm-label">活跃率</div>
-            <div class="scm-bar"><div class="fill" style="width:47.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+            <div class="scm-value" style="color:var(--green);">33.1%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:66.2%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">62.6%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:62.6%;background:var(--green);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--green);">67.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:67.2%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">1.72</div>
-            <div class="scm-label">连带率</div>
-            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">0</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:0.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥451</div>
-            <div class="scm-label">客单价</div>
-            <div class="scm-bar"><div class="fill" style="width:37.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+            <div class="scm-value" style="color:var(--red);">¥0</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:0.0%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">储值沉积+活跃萎缩——78名储值会员77%不活跃，整体活跃率仅23.9%</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">储值余额提醒+专属到店礼，刺激78名储值会员消耗余额</div></div>
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">运营状态正常，各项指标在基准线附近</div></div>
+                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">维持现有运营节奏，关注指标变化趋势</div></div>
             </div>
         </div>
     </div>
@@ -1220,22 +1255,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">28.9%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:57.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.1%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:73.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">72.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:72.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.33</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:58.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥600</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:50.0%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1255,63 +1290,63 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">28.1%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:56.2%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">72.1%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:72.1%;background:var(--orange);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">71.6%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:71.6%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.31</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:57.8%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥525</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:43.8%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">流失率72.1%显著高于基准70.8%，预流失42.2%的会员即将流失</div></div>
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">流失风险率71.6%显著高于基准70.1%，预流失42.2%的会员即将流失</div></div>
                 <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">精准派券给沉默/预流失人群拉人到店，满439减43券，目标回店15人</div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card" data-type="normal" data-level="attention">
+    <div class="store-card" data-type="A" data-level="attention">
         <div class="store-card-header">
             <div class="sc-name">坪地宜城店（有效432人）</div>
-            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-tags"><span class="sc-tag type-a">A型·流失激活</span><span class="sc-tag attention">🟡 关注</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">26.9%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:53.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">68.0%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:68.0%;background:var(--green);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--orange);">71.8%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:71.8%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.34</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:58.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">¥610</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:50.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">运营状态正常，各项指标在基准线附近</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">维持现有运营节奏，关注指标变化趋势</div></div>
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">流失风险率高但复购好——人来了会买（连带2.34、客单¥610），但来的人太少</div></div>
+                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">精准派券给沉默/预流失人群拉人到店，满439减43券，目标回店12人</div></div>
             </div>
         </div>
     </div>
@@ -1325,22 +1360,22 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="sc-metrics">
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--green);">49.9%</div>
-            <div class="scm-label">活跃率</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
             <div class="scm-bar"><div class="fill" style="width:99.8%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">42.9%</div>
-            <div class="scm-label">流失率</div>
-            <div class="scm-bar"><div class="fill" style="width:42.9%;background:var(--green);"></div><div class="benchmark" style="left:70.8%;"></div></div>
+            <div class="scm-value" style="color:var(--green);">49.9%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:49.9%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--orange);">2.24</div>
-            <div class="scm-label">连带率</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
             <div class="scm-bar"><div class="fill" style="width:56.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
             <div class="scm-value" style="color:var(--red);">¥522</div>
-            <div class="scm-label">客单价</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
             <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
@@ -1373,7 +1408,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <td>6/11</td>
     </tr><tr>
         <td><span class="pri-badge p0">P0</span></td>
-        <td>紧急门店专项干预（17家）</td>
+        <td>紧急门店专项干预（18家）</td>
         <td>问题门店会员</td>
         <td>萝岗万达、广州塔广场店、潘州广场朵以</td>
         <td>待配置</td>
