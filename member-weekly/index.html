@@ -172,8 +172,9 @@
         }
         /* 门店概况美化 */
         #so-health-table { border-collapse:separate;border-spacing:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow); }
-        #so-health-table thead th { background:var(--brand);color:#fff;padding:10px 12px;font-size:11px;font-weight:600;text-align:center;border:none;position:sticky;top:0;position:relative; }
-        #so-health-table thead th .tip-text { color:#fff;background:#1e293b; }
+        #so-health-table thead th { background:var(--brand);color:#fff;padding:10px 12px;font-size:11px;font-weight:600;text-align:center;border:none;position:relative; }
+        #so-health-table thead th .tip-text { color:#fff;background:#1e293b;z-index:20;max-width:240px; }
+        #so-health-table thead th .tip-text::after { border-top-color:#1e293b; }
         #so-health-table thead th:first-child { border-radius:var(--radius) 0 0 0; }
         #so-health-table thead th:last-child { border-radius:0 var(--radius) 0 0; }
         #so-health-table tbody tr { transition:background 0.15s; }
@@ -443,8 +444,8 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 
     <div class="card section-gap">
         <div class="card-title"><div class="dot" style="background:var(--brand)"></div>门店健康度一览 <span style="font-size:11px;color:var(--text-tri);font-weight:400;">（点击表头排序）</span></div>
-        <div style="overflow-x:auto;border-radius:var(--radius);">
-            <table id="so-health-table" style="width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;">
+        <div style="overflow-x:auto;">
+            <table id="so-health-table" style="width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;border-radius:var(--radius);">
                 <thead id="so-health-thead"></thead>
                 <tbody id="so-health-tbody"></tbody>
             </table>
