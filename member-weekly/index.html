@@ -97,15 +97,19 @@
         .insight-card .ic-tag { font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:6px;background:var(--brand-lighter);color:var(--brand); }
         .insight-card .ic-text { font-size:13px;color:var(--text);line-height:1.7; }
         .insight-card .ic-text strong { color:var(--red); }
-        .filter-bar { display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap; }
+        .filter-bar { display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:12px 0;z-index:10; }
         .filter-btn { padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--white);color:var(--text-sec);cursor:pointer;transition:all 0.2s; }
         .filter-btn:hover { border-color:var(--brand);color:var(--brand); }
         .filter-btn.active { background:var(--brand);color:#fff;border-color:var(--brand); }
-        .store-card { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;transition:box-shadow 0.2s; }
+        .store-card { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:12px;transition:box-shadow 0.2s; }
         .store-card:hover { box-shadow:var(--shadow-md); }
-        .store-card-header { display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border); }
+        .store-card.collapsed .store-card-body { display:none; }
+        .store-card.collapsed .store-card-header { border-bottom:none; }
+        .store-card-header { display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none; }
         .store-card-header .sc-name { font-size:15px;font-weight:600;color:var(--text); }
-        .store-card-header .sc-tags { display:flex;gap:6px; }
+        .store-card-header .sc-tags { display:flex;gap:6px;align-items:center; }
+        .sc-expand-icon { font-size:10px;color:var(--text-tri);transition:transform 0.2s;margin-left:4px; }
+        .store-card:not(.collapsed) .sc-expand-icon { transform:rotate(90deg); }
         .sc-tag { font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px; }
         .sc-tag.type-a { background:#fef3c7;color:#92400e; } .sc-tag.type-b { background:#dbeafe;color:#1e40af; }
         .sc-tag.type-c { background:#fce7f3;color:#9d174d; } .sc-tag.type-d { background:#f3e8ff;color:#7c3aed; }
@@ -261,7 +265,7 @@ function createWatermark(text) {
     var ctx = canvas.getContext('2d');
     ctx.rotate(-20 * Math.PI / 180);
     ctx.font = '14px -apple-system, PingFang SC, sans-serif';
-    ctx.fillStyle = 'rgba(26, 58, 107, 0.06)';
+    ctx.fillStyle = 'rgba(26, 58, 107, 0.20)';
     ctx.textAlign = 'center';
     ctx.fillText(text, 100, 120);
     ctx.fillText(new Date().toLocaleDateString(), 100, 140);
@@ -567,9 +571,19 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <div class="page-summary">
         从<strong>问题归因</strong>出发看门店。本周18家门店标记为紧急。
         <br>基准线：活跃率30.4% · 流失风险率70.1% · 连带2.23 · 客单¥628
+        <br><span style="font-size:11px;color:#94a3b8;">取值依据：全店（25家门店）过去360天整体均值，代表朵以品牌正常经营水平。高于基准=优于平均，低于基准=需关注。</span>
     </div>
 
     <div class="filter-bar">
+        <select id="region-filter" onchange="filterStoreByRegion(this.value)" style="padding:6px 12px;border-radius:6px;font-size:12px;border:1px solid var(--border);background:var(--white);color:var(--text-sec);cursor:pointer;">
+            <option value="all">全部区域</option>
+            <option value="鲜于浩">鲜于浩</option>
+            <option value="彭苑婷">彭苑婷</option>
+            <option value="李硕果">李硕果</option>
+            <option value="赖月平">赖月平</option>
+            <option value="古欢欢">古欢欢</option>
+            <option value="陈祝利">陈祝利</option>
+        </select>
         <button class="filter-btn active" onclick="filterStore('all',this)">全部</button>
         <button class="filter-btn" onclick="filterStore('A',this)">A型·流失激活</button>
         <button class="filter-btn" onclick="filterStore('B',this)">B型·储值沉积</button>
@@ -578,13 +592,15 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <button class="filter-btn" onclick="filterStore('D',this)">D型·复合</button>
         <button class="filter-btn" onclick="filterStore('urgent',this)">🔴 紧急</button>
         <button class="filter-btn" onclick="filterStore('highlight',this)">🟢 亮点</button>
+        <button class="filter-btn" onclick="toggleAllCards(this)" style="margin-left:auto;">展开全部</button>
     </div>
 
+    <div class="store-cards-container" style="max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px;">
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="赖月平">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">萝岗万达（有效2663人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -616,10 +632,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="陈祝利">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">清远城市广场（有效2329人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -651,10 +667,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">广州塔广场店（有效1780人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -686,10 +702,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">海珠乐峰广场（有效1684人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -721,10 +737,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">乐从天佑城（有效1210人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -756,10 +772,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">潘州广场朵以（有效1178人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -791,10 +807,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B C" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B C" data-level="urgent" data-region="鲜于浩">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">通城朵以（有效1149人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -826,10 +842,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B C" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B C" data-level="urgent" data-region="鲜于浩">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">宜都清江店（有效1129人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -861,10 +877,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">岗顶天娱广场（有效999人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -896,10 +912,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">茂名印象汇（有效951人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -931,10 +947,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">白云万象汇朵以（有效910人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -966,10 +982,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="赖月平">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">花都骏壹万邦（有效800人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1001,10 +1017,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B C E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B C E" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">高埗万和（有效740人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1036,10 +1052,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">南村店（有效527人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1071,10 +1087,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">东莞黄江大道（有效521人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1106,10 +1122,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">湛江吴川（有效453人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1141,10 +1157,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B E" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B E" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">东莞南城（有效443人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+E</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1176,10 +1192,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="urgent">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">英德朵以（有效271人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1211,10 +1227,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="normal" data-level="attention">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="normal" data-level="attention" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">深圳龙岗坪山（有效780人）</div>
-            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1246,10 +1262,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="D A B" data-level="attention">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="D A B" data-level="attention" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">大朗店（有效582人）</div>
-            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1281,10 +1297,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="A" data-level="attention">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="A" data-level="attention" data-region="鲜于浩">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">宜城香港路（有效531人）</div>
-            <div class="sc-tags"><span class="sc-tag type-a">A型·流失激活</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-tags"><span class="sc-tag type-a">A型·流失激活</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1316,10 +1332,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="A" data-level="attention">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="A" data-level="attention" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">坪地宜城店（有效432人）</div>
-            <div class="sc-tags"><span class="sc-tag type-a">A型·流失激活</span><span class="sc-tag attention">🟡 关注</span></div>
+            <div class="sc-tags"><span class="sc-tag type-a">A型·流失激活</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1351,10 +1367,10 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
-    <div class="store-card" data-type="highlight" data-level="highlight">
-        <div class="store-card-header">
+    <div class="store-card collapsed" data-type="highlight" data-level="highlight" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">深圳满京华店（有效335人）</div>
-            <div class="sc-tags"><span class="sc-tag normal">亮点门店</span><span class="sc-tag normal">🟢 亮点</span></div>
+            <div class="sc-tags"><span class="sc-tag normal">亮点门店</span><span class="sc-tag normal">🟢 亮点</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1386,6 +1402,77 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
     
+    <div class="store-card collapsed" data-type="normal" data-level="normal" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">深圳龙华大浪（有效299人）</div>
+            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag normal"></span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">78.6%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:100%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">18.1%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:18.1%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">1.93</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:48.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥560</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:46.7%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">运营状态正常，各项指标在基准线附近</div></div>
+                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">维持现有运营节奏，关注指标变化趋势</div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="normal" data-level="normal" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">深圳宝安店（有效295人）</div>
+            <div class="sc-tags"><span class="sc-tag type-a">normal</span><span class="sc-tag normal"></span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">79.3%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:100%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">21.4%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:21.4%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">2.11</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:52.8%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥587</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:48.9%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">运营状态正常，各项指标在基准线附近</div></div>
+                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">维持现有运营节奏，关注指标变化趋势</div></div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
 </div>
 
 <!-- ===== 第五页：行动计划 ===== -->
@@ -1477,17 +1564,56 @@ function switchPage(id) {
     if (id==='store-overview') initStoreOverview();
 }
 
+var _storeTypeFilter = 'all';
+var _storeRegionFilter = 'all';
+
 function filterStore(type, el) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    if (el) el.classList.add('active');
-    document.querySelectorAll('.store-card').forEach(card => {
-        if (type==='all') { card.style.display=''; return; }
-        if (type==='urgent' || type==='highlight') {
-            card.style.display = card.dataset.level===type ? '' : 'none';
-        } else {
-            card.style.display = card.dataset.type.includes(type) ? '' : 'none';
-        }
+    document.querySelectorAll('.filter-bar .filter-btn').forEach(b => {
+        if (b.textContent !== '展开全部' && b.textContent !== '收起全部') b.classList.remove('active');
     });
+    if (el) el.classList.add('active');
+    _storeTypeFilter = type;
+    applyStoreFilters();
+}
+
+function filterStoreByRegion(region) {
+    _storeRegionFilter = region;
+    applyStoreFilters();
+}
+
+function applyStoreFilters() {
+    document.querySelectorAll('.store-card').forEach(card => {
+        var showType = true;
+        var showRegion = true;
+        // 类型筛选
+        if (_storeTypeFilter !== 'all') {
+            if (_storeTypeFilter === 'urgent' || _storeTypeFilter === 'highlight') {
+                showType = card.dataset.level === _storeTypeFilter;
+            } else {
+                showType = card.dataset.type.includes(_storeTypeFilter);
+            }
+        }
+        // 区域筛选
+        if (_storeRegionFilter !== 'all') {
+            showRegion = card.dataset.region === _storeRegionFilter;
+        }
+        card.style.display = (showType && showRegion) ? '' : 'none';
+    });
+}
+
+function toggleStoreCard(header) {
+    var card = header.closest('.store-card');
+    card.classList.toggle('collapsed');
+}
+
+function toggleAllCards(btn) {
+    var cards = document.querySelectorAll('.store-card');
+    var allExpanded = Array.from(cards).every(c => !c.classList.contains('collapsed'));
+    cards.forEach(c => {
+        if (allExpanded) c.classList.add('collapsed');
+        else c.classList.remove('collapsed');
+    });
+    btn.textContent = allExpanded ? '展开全部' : '收起全部';
 }
 
 var _trendInited = false;
@@ -1539,7 +1665,7 @@ function initTrendCharts() {
 var _matrixInited = false;
 var _matrixChart = null;
 var MATRIX_DATA = {"大盘": {"人数": [[598, 106, 157, 44], [1248, 317, 1041, 546], [3293, 1033, 3947, 6427], [1765, 596, 1136, 3494]], "近360天消费金额": [[5408571, 771467, 992395, 272173], [3704158, 928985, 2882273, 1422666], [3307723, 1039870, 4053854, 4625865], [531412, 188672, 344675, 1134751]], "客单价": [[850, 957, 1039, 1039], [747, 810, 1011, 1063], [612, 629, 751, 736], [308, 316, 307, 324]], "连带": [[2.82, 3.17, 3.07, 3.66], [2.57, 2.69, 2.76, 3.62], [2.24, 2.34, 2.04, 2.63], [1.25, 1.33, 1.17, 1.33]], "消费订单数": [[6361, 806, 955, 262], [4957, 1147, 2852, 1338], [5406, 1654, 5399, 6287], [1728, 598, 1123, 3502]], "历史累计消费金额": [[10725786, 1615152, 1915081, 531177], [7253138, 1780822, 5262925, 2392432], [6578707, 2014153, 7284620, 7956609], [1151043, 444763, 896748, 3105193]]}, "高埗万和": {"人数": [[25, 2, 7, 2], [38, 13, 55, 23], [82, 28, 133, 193], [31, 14, 18, 73]], "近360天消费金额": [[85839, 6376, 18759, 0], [68838, 20098, 100903, 0], [78841, 16947, 106617, 0], [10076, 4162, 4118, 0]], "客单价": [[687, 1275, 987, 0], [682, 773, 1097, 0], [551, 484, 606, 0], [325, 297, 275, 0]], "连带": [[2.2, 2.4, 2.21, 0.0], [2.27, 2.5, 2.54, 0.0], [1.92, 1.97, 1.51, 0.0], [1.03, 1.29, 1.07, 0.0]], "消费订单数": [[125, 5, 19, 0], [101, 26, 92, 0], [143, 35, 176, 0], [31, 14, 15, 0]], "历史累计消费金额": [[458334, 59493, 65998, 0], [225178, 85624, 190804, 0], [177785, 42684, 231630, 0], [10076, 6103, 19161, 0]]}, "广州塔广场店": {"人数": [[20, 3, 4, 8], [54, 13, 48, 73], [175, 62, 273, 584], [72, 43, 92, 241]], "近360天消费金额": [[113727, 7099, 12556, 0], [100771, 25424, 73170, 0], [161583, 53111, 213207, 0], [22655, 13328, 24454, 0]], "客单价": [[989, 1775, 1395, 0], [1172, 1271, 1330, 0], [773, 718, 870, 0], [328, 317, 322, 0]], "连带": [[3.02, 5.25, 3.67, 0.0], [3.66, 4.2, 3.13, 0.0], [2.77, 2.49, 2.44, 0.0], [1.38, 1.29, 1.16, 0.0]], "消费订单数": [[115, 4, 9, 0], [86, 20, 55, 0], [209, 74, 245, 0], [69, 42, 76, 0]], "历史累计消费金额": [[304265, 16146, 24184, 0], [166123, 31162, 107678, 0], [351992, 62979, 259793, 0], [32279, 13328, 37132, 0]]}, "深圳龙岗坪山": {"人数": [[27, 8, 3, 1], [47, 20, 47, 5], [108, 39, 145, 92], [74, 34, 56, 63]], "近360天消费金额": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "客单价": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "连带": [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], "消费订单数": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "历史累计消费金额": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]}, "乐从天佑城": {"人数": [[10, 2, 6, 1], [40, 8, 59, 18], [124, 45, 186, 310], [71, 31, 55, 225]], "近360天消费金额": [[30784, 7984, 9035, 0], [62917, 13860, 49430, 0], [92729, 31952, 116162, 0], [23285, 10241, 14652, 0]], "客单价": [[716, 798, 1129, 0], [715, 1066, 1009, 0], [598, 603, 780, 0], [319, 320, 319, 0]], "连带": [[2.26, 2.5, 1.75, 0.0], [2.55, 2.92, 2.02, 0.0], [2.12, 2.36, 1.99, 0.0], [1.27, 1.41, 1.15, 0.0]], "消费订单数": [[43, 10, 8, 0], [88, 13, 49, 0], [155, 53, 149, 0], [73, 32, 46, 0]], "历史累计消费金额": [[160824, 13570, 9035, 0], [195025, 22186, 138832, 0], [252108, 80609, 223302, 0], [51717, 45886, 23119, 0]]}, "宜城香港路": {"人数": [[28, 3, 5, 1], [25, 6, 33, 10], [58, 16, 80, 127], [33, 4, 9, 79]], "近360天消费金额": [[125743, 8394, 8738, 0], [48892, 19210, 67894, 0], [51104, 15346, 70573, 0], [7950, 1185, 1271, 0]], "客单价": [[953, 839, 971, 0], [627, 835, 1257, 0], [623, 667, 743, 0], [215, 296, 159, 0]], "连带": [[2.36, 1.5, 1.78, 0.0], [2.17, 1.61, 2.44, 0.0], [2.5, 2.22, 1.72, 0.0], [1.35, 1.25, 1.0, 0.0]], "消费订单数": [[132, 10, 9, 0], [78, 23, 54, 0], [82, 23, 95, 0], [37, 4, 8, 0]], "历史累计消费金额": [[556512, 45279, 80151, 0], [177380, 24935, 159097, 0], [177020, 31133, 121092, 0], [20740, 1185, 1271, 0]]}, "岗顶天娱广场": {"人数": [[62, 9, 19, 5], [77, 20, 51, 46], [114, 33, 96, 311], [25, 9, 22, 90]], "近360天消费金额": [[362365, 19651, 57520, 0], [191436, 38763, 108538, 0], [107233, 29463, 92521, 0], [5746, 2292, 5974, 0]], "客单价": [[1129, 1310, 1338, 0], [952, 1077, 1340, 0], [740, 755, 890, 0], [302, 327, 314, 0]], "连带": [[3.7, 4.6, 3.98, 0.0], [3.46, 3.83, 3.47, 0.0], [2.75, 3.15, 2.84, 0.0], [1.26, 1.14, 1.11, 0.0]], "消费订单数": [[321, 15, 43, 0], [201, 36, 81, 0], [145, 39, 104, 0], [19, 7, 19, 0]], "历史累计消费金额": [[1049537, 116803, 263895, 0], [587386, 151231, 316977, 0], [226802, 89358, 263331, 0], [25228, 5133, 46136, 0]]}, "湛江吴川": {"人数": [[18, 1, 8, 0], [29, 7, 23, 9], [46, 17, 80, 84], [19, 14, 34, 57]], "近360天消费金额": [[73955, 2819, 18677, 0], [62511, 12811, 44592, 0], [42008, 13512, 64910, 0], [6252, 3484, 8935, 0]], "客单价": [[860, 940, 1038, 0], [801, 915, 1115, 0], [656, 587, 729, 0], [260, 232, 279, 0]], "连带": [[2.85, 3.33, 2.72, 0.0], [2.51, 2.64, 2.95, 0.0], [2.39, 2.39, 2.16, 0.0], [1.12, 1.07, 1.03, 0.0]], "消费订单数": [[86, 3, 18, 0], [78, 14, 40, 0], [64, 23, 89, 0], [24, 15, 32, 0]], "历史累计消费金额": [[305440, 12982, 141312, 0], [131371, 28220, 151751, 0], [97644, 47690, 135268, 0], [7877, 10622, 13269, 0]]}, "通城朵以": {"人数": [[32, 0, 9, 5], [68, 12, 51, 22], [148, 13, 151, 298], [101, 3, 27, 199]], "近360天消费金额": [[145748, 0, 19942, 0], [110144, 20590, 104379, 0], [135141, 15896, 162518, 0], [28682, 836, 7292, 0]], "客单价": [[775, 0, 831, 0], [612, 858, 870, 0], [583, 723, 829, 0], [287, 279, 260, 0]], "连带": [[2.27, 0.0, 1.62, 0.0], [1.94, 2.25, 1.78, 0.0], [2.19, 2.41, 1.59, 0.0], [1.27, 1.33, 1.04, 0.0]], "消费订单数": [[188, 0, 24, 0], [180, 24, 120, 0], [232, 22, 196, 0], [100, 3, 28, 0]], "历史累计消费金额": [[793629, 0, 122327, 0], [411713, 62116, 265382, 0], [450173, 35595, 310084, 0], [75696, 5911, 29759, 0]]}, "深圳满京华店": {"人数": [[15, 1, 2, 0], [29, 10, 8, 5], [67, 20, 36, 58], [54, 8, 4, 12]], "近360天消费金额": [[41006, 0, 0, 0], [38767, 0, 0, 0], [52422, 2990, 0, 0], [11383, 886, 0, 0]], "客单价": [[586, 0, 0, 0], [692, 0, 0, 0], [603, 997, 0, 0], [265, 295, 0, 0]], "连带": [[2.19, 0.0, 0.0, 0.0], [2.5, 0.0, 0.0, 0.0], [2.21, 3.0, 0.0, 0.0], [1.26, 1.33, 0.0, 0.0]], "消费订单数": [[70, 0, 0, 0], [56, 0, 0, 0], [87, 3, 0, 0], [43, 3, 0, 0]], "历史累计消费金额": [[101111, 0, 0, 0], [82225, 0, 0, 0], [69980, 3289, 0, 0], [14292, 886, 0, 0]]}, "白云万象汇朵以": {"人数": [[7, 0, 3, 0], [24, 8, 20, 8], [109, 48, 155, 172], [84, 21, 73, 169]], "近360天消费金额": [[25156, 0, 2926, 0], [47902, 15557, 33254, 0], [86808, 42402, 116642, 0], [26054, 5919, 19541, 0]], "客单价": [[699, 0, 2926, 0], [798, 915, 1330, 0], [643, 695, 799, 0], [343, 348, 331, 0]], "连带": [[2.42, 0.0, 3.0, 0.0], [2.42, 3.06, 2.88, 0.0], [2.23, 2.54, 1.99, 0.0], [1.26, 1.24, 1.1, 0.0]], "消费订单数": [[36, 0, 1, 0], [60, 17, 25, 0], [135, 61, 146, 0], [76, 17, 59, 0]], "历史累计消费金额": [[46477, 0, 5852, 0], [74555, 34104, 65080, 0], [106535, 68996, 179332, 0], [32785, 6476, 27890, 0]]}, "坪地宜城店": {"人数": [[18, 4, 6, 0], [23, 11, 25, 3], [41, 29, 82, 67], [34, 16, 20, 44]], "近360天消费金额": [[79386, 1555, 0, 0], [33069, 0, 0, 0], [28888, 706, 0, 0], [8007, 149, 0, 0]], "客单价": [[749, 778, 0, 0], [636, 0, 0, 0], [545, 353, 0, 0], [222, 149, 0, 0]], "连带": [[2.75, 2.5, 0.0, 0.0], [2.37, 0.0, 0.0, 0.0], [2.28, 2.0, 0.0, 0.0], [1.19, 1.0, 0.0, 0.0]], "消费订单数": [[106, 2, 0, 0], [52, 0, 0, 0], [53, 2, 0, 0], [36, 1, 0, 0]], "历史累计消费金额": [[283386, 14018, 0, 0], [132163, 0, 0, 0], [70189, 3738, 0, 0], [17402, 149, 0, 0]]}, "花都骏壹万邦": {"人数": [[10, 5, 2, 1], [33, 4, 37, 10], [131, 39, 148, 219], [35, 17, 32, 68]], "近360天消费金额": [[50124, 10778, 5996, 0], [94368, 8048, 59733, 0], [122706, 35360, 130431, 0], [13310, 5673, 10796, 0]], "客单价": [[946, 829, 999, 0], [1060, 1006, 1244, 0], [718, 693, 847, 0], [391, 334, 348, 0]], "连带": [[3.19, 2.92, 2.0, 0.0], [3.25, 4.0, 2.62, 0.0], [2.53, 2.61, 2.27, 0.0], [1.53, 1.29, 1.1, 0.0]], "消费订单数": [[53, 13, 6, 0], [89, 8, 48, 0], [171, 51, 154, 0], [34, 17, 31, 0]], "历史累计消费金额": [[144711, 40376, 18263, 0], [204178, 10072, 128580, 0], [175810, 41678, 181668, 0], [28539, 9473, 22607, 0]]}, "英德朵以": {"人数": [[15, 1, 7, 1], [27, 2, 26, 10], [28, 10, 30, 78], [10, 8, 2, 14]], "近360天消费金额": [[125086, 4771, 28428, 0], [65117, 3947, 56054, 0], [27211, 11704, 32441, 0], [3727, 2759, 467, 0]], "客单价": [[1009, 795, 1496, 0], [814, 658, 1808, 0], [698, 780, 954, 0], [311, 345, 234, 0]], "连带": [[2.97, 2.67, 2.37, 0.0], [2.44, 1.83, 2.97, 0.0], [2.44, 2.8, 1.82, 0.0], [1.08, 1.25, 1.0, 0.0]], "消费订单数": [[124, 6, 19, 0], [80, 6, 31, 0], [39, 15, 34, 0], [12, 8, 2, 0]], "历史累计消费金额": [[323827, 9316, 63597, 0], [233118, 18172, 139776, 0], [47586, 37662, 61640, 0], [8081, 4854, 1365, 0]]}, "深圳宝安店": {"人数": [[19, 0, 0, 0], [27, 5, 6, 1], [93, 2, 11, 33], [89, 2, 0, 2]], "近360天消费金额": [[68203, 0, 0, 0], [52626, 0, 0, 0], [88551, 1932, 0, 0], [25957, 388, 0, 0]], "客单价": [[909, 0, 0, 0], [940, 0, 0, 0], [703, 1932, 0, 0], [282, 194, 0, 0]], "连带": [[3.04, 0.0, 0.0, 0.0], [3.36, 0.0, 0.0, 0.0], [2.38, 8.0, 0.0, 0.0], [1.23, 1.0, 0.0, 0.0]], "消费订单数": [[75, 0, 0, 0], [56, 0, 0, 0], [126, 1, 0, 0], [92, 2, 0, 0]], "历史累计消费金额": [[417983, 0, 0, 0], [143996, 0, 0, 0], [144822, 2792, 0, 0], [37647, 388, 0, 0]]}, "海珠乐峰广场": {"人数": [[29, 11, 11, 2], [84, 22, 77, 45], [210, 76, 258, 378], [132, 45, 110, 171]], "近360天消费金额": [[133025, 29121, 29220, 0], [174832, 46401, 119166, 1892], [188417, 68033, 202846, 0], [40129, 14583, 31578, 0]], "客单价": [[943, 939, 1082, 0], [955, 1132, 1310, 631], [700, 709, 802, 0], [318, 310, 326, 0]], "连带": [[3.02, 3.1, 3.0, 0.0], [3.04, 3.54, 3.59, 2.33], [2.36, 2.55, 2.39, 0.0], [1.21, 1.32, 1.24, 0.0]], "消费订单数": [[141, 31, 27, 0], [183, 41, 91, 3], [269, 96, 253, 0], [126, 47, 97, 0]], "历史累计消费金额": [[346261, 104767, 94375, 0], [420200, 93241, 272549, 11372], [294487, 113231, 353134, 0], [68157, 20698, 74994, 0]]}, "茂名印象汇": {"人数": [[23, 4, 2, 2], [49, 20, 45, 18], [114, 35, 182, 255], [32, 17, 39, 106]], "近360天消费金额": [[110322, 14238, 1365, 0], [87171, 31211, 89101, 0], [105562, 31285, 155044, 0], [11279, 6878, 13406, 0]], "客单价": [[897, 1582, 682, 0], [830, 800, 1310, 0], [690, 652, 825, 0], [342, 362, 394, 0]], "连带": [[3.1, 4.89, 2.0, 0.0], [2.85, 2.69, 3.32, 0.0], [2.35, 2.4, 2.43, 0.0], [1.55, 1.74, 1.41, 0.0]], "消费订单数": [[123, 9, 2, 0], [105, 39, 68, 0], [153, 48, 188, 0], [33, 19, 34, 0]], "历史累计消费金额": [[487066, 77525, 28607, 0], [280242, 124049, 303181, 0], [212146, 85003, 262631, 0], [23826, 24680, 16573, 0]]}, "深圳龙华大浪": {"人数": [[3, 2, 0, 0], [14, 1, 0, 1], [129, 11, 2, 22], [87, 11, 0, 3]], "近360天消费金额": [[32266, 0, 0, 0], [37652, 0, 0, 0], [143667, 4961, 0, 0], [29152, 2725, 0, 0]], "客单价": [[1041, 0, 0, 0], [1046, 0, 0, 0], [722, 709, 0, 0], [292, 341, 0, 0]], "连带": [[3.29, 0.0, 0.0, 0.0], [3.22, 0.0, 0.0, 0.0], [2.53, 2.57, 0.0, 0.0], [1.19, 1.88, 0.0, 0.0]], "消费订单数": [[31, 0, 0, 0], [36, 0, 0, 0], [199, 7, 0, 0], [100, 8, 0, 0]], "历史累计消费金额": [[103484, 0, 0, 0], [58030, 0, 0, 0], [199296, 5469, 0, 0], [39065, 6701, 0, 0]]}, "清远城市广场": {"人数": [[43, 7, 13, 3], [110, 21, 73, 37], [269, 92, 340, 523], [174, 67, 157, 371]], "近360天消费金额": [[208648, 29814, 32564, 1066], [194703, 28529, 121679, 0], [218740, 80685, 273574, 916], [54038, 21734, 42450, 0]], "客单价": [[944, 1242, 1551, 1066], [667, 815, 1323, 0], [594, 656, 860, 458], [314, 315, 312, 0]], "连带": [[2.89, 3.88, 3.67, 5.0], [2.1, 2.4, 2.59, 0.0], [2.06, 2.2, 1.87, 2.0], [1.17, 1.28, 1.08, 0.0]], "消费订单数": [[221, 24, 21, 1], [292, 35, 92, 0], [368, 123, 318, 2], [172, 69, 136, 0]], "历史累计消费金额": [[533736, 59019, 83028, 12111], [576093, 80459, 353250, 0], [513848, 184309, 580239, 3379], [106874, 44138, 70948, 0]]}, "南村店": {"人数": [[16, 3, 4, 4], [25, 9, 19, 10], [56, 21, 77, 159], [22, 3, 14, 81]], "近360天消费金额": [[148088, 7789, 2517, 0], [42374, 15068, 31018, 0], [51273, 13811, 65555, 0], [8330, 518, 3837, 0]], "客单价": [[705, 708, 839, 0], [785, 753, 1723, 0], [649, 658, 923, 0], [347, 259, 349, 0]], "连带": [[2.35, 2.73, 2.67, 0.0], [2.57, 2.1, 3.39, 0.0], [2.18, 2.52, 1.83, 0.0], [1.25, 1.0, 1.18, 0.0]], "消费订单数": [[210, 11, 3, 0], [54, 20, 18, 0], [79, 21, 71, 0], [24, 2, 11, 0]], "历史累计消费金额": [[410365, 46497, 31478, 0], [139399, 78838, 91739, 0], [109610, 26515, 107400, 0], [32418, 518, 4296, 0]]}, "东莞南城": {"人数": [[20, 7, 9, 1], [16, 7, 26, 14], [34, 11, 58, 142], [5, 3, 3, 83]], "近360天消费金额": [[113481, 34242, 33249, 0], [26018, 9641, 38605, 0], [30882, 8816, 47024, 706], [836, 677, 612, 0]], "客单价": [[788, 1007, 1147, 0], [703, 876, 1135, 0], [671, 551, 811, 706], [279, 226, 306, 0]], "连带": [[3.02, 3.71, 3.24, 0.0], [2.73, 3.64, 3.15, 0.0], [2.96, 2.44, 2.79, 4.0], [1.33, 1.0, 2.0, 0.0]], "消费订单数": [[144, 34, 29, 0], [37, 11, 34, 0], [46, 16, 58, 1], [3, 3, 2, 0]], "历史累计消费金额": [[513949, 104235, 93177, 0], [118151, 69026, 87770, 0], [93185, 12487, 115649, 1561], [1800, 5831, 612, 0]]}, "萝岗万达": {"人数": [[49, 9, 11, 3], [141, 34, 83, 59], [368, 126, 427, 717], [127, 65, 92, 292]], "近360天消费金额": [[207190, 14630, 24032, 1123], [267783, 56029, 129784, 2143], [322556, 111219, 357970, 1336], [44008, 23498, 23422, 0]], "客单价": [[1063, 914, 1202, 562], [905, 889, 1109, 1072], [662, 732, 842, 1336], [364, 356, 321, 0]], "连带": [[3.31, 3.06, 2.7, 2.0], [2.99, 2.78, 2.88, 3.5], [2.37, 2.56, 2.15, 4.0], [1.31, 1.38, 1.18, 0.0]], "消费订单数": [[195, 16, 20, 2], [296, 63, 117, 2], [487, 152, 425, 1], [121, 66, 73, 0]], "历史累计消费金额": [[758534, 60850, 124941, 6624], [558806, 168755, 286157, 5670], [573869, 184406, 593023, 1874], [92170, 28221, 52362, 0]]}, "潘州广场朵以": {"人数": [[19, 5, 12, 1], [50, 9, 62, 32], [138, 34, 164, 311], [60, 35, 68, 163]], "近360天消费金额": [[49993, 10410, 24994, 0], [66655, 11096, 40576, 0], [113668, 23371, 100439, 0], [18195, 7603, 18163, 0]], "客单价": [[694, 946, 676, 0], [687, 584, 944, 0], [661, 599, 707, 0], [268, 230, 308, 0]], "连带": [[2.32, 3.0, 2.24, 0.0], [2.43, 1.68, 2.7, 0.0], [2.53, 2.51, 2.31, 0.0], [1.19, 1.12, 1.15, 0.0]], "消费订单数": [[72, 11, 37, 0], [97, 19, 43, 0], [172, 39, 142, 0], [68, 33, 59, 0]], "历史累计消费金额": [[397021, 130604, 144689, 0], [434723, 31103, 197375, 0], [366796, 124484, 196681, 0], [42347, 20668, 38718, 0]]}, "东莞黄江大道": {"人数": [[13, 4, 2, 2], [19, 4, 23, 10], [58, 29, 115, 192], [2, 1, 4, 41]], "近360天消费金额": [[102441, 22099, 1386, 0], [51841, 9170, 46382, 0], [51586, 30474, 97878, 0], [578, 259, 926, 0]], "客单价": [[966, 1105, 693, 0], [798, 764, 1160, 0], [549, 535, 657, 0], [289, 259, 309, 0]], "连带": [[2.71, 2.55, 2.0, 0.0], [2.62, 2.08, 2.25, 0.0], [2.14, 2.05, 1.7, 0.0], [1.0, 1.0, 1.0, 0.0]], "消费订单数": [[106, 20, 2, 0], [65, 12, 40, 0], [94, 57, 149, 0], [2, 1, 3, 0]], "历史累计消费金额": [[174250, 37050, 7506, 0], [105401, 20358, 58846, 0], [68043, 44724, 136326, 0], [578, 259, 926, 0]]}, "大朗店": {"人数": [[19, 1, 5, 0], [39, 9, 37, 21], [72, 20, 122, 126], [37, 8, 9, 48]], "近360天消费金额": [[115696, 3012, 25654, 0], [72168, 19956, 63703, 0], [63159, 22189, 112426, 0], [13547, 2152, 1315, 0]], "客单价": [[911, 1506, 2138, 0], [869, 798, 1554, 0], [694, 888, 1041, 0], [366, 307, 329, 0]], "连带": [[2.83, 4.0, 4.17, 0.0], [2.73, 2.08, 3.71, 0.0], [2.62, 3.48, 2.18, 0.0], [1.22, 1.14, 1.25, 0.0]], "消费订单数": [[127, 2, 12, 0], [83, 25, 41, 0], [91, 25, 108, 0], [37, 7, 4, 0]], "历史累计消费金额": [[419040, 17307, 52090, 0], [342189, 47474, 188101, 0], [240982, 84670, 253084, 0], [51720, 7990, 5807, 0]]}, "宜都清江店": {"人数": [[14, 2, 1, 0], [39, 6, 26, 15], [138, 29, 166, 299], [110, 14, 22, 229]], "近360天消费金额": [[63154, 9483, 1426, 0], [60201, 6657, 34972, 0], [93135, 21081, 126864, 468], [28256, 3455, 4259, 1524]], "客单价": [[679, 1054, 713, 0], [596, 666, 1128, 0], [470, 620, 746, 468], [269, 266, 237, 508]], "连带": [[2.17, 3.0, 2.0, 0.0], [1.93, 2.3, 1.94, 0.0], [1.79, 2.32, 1.59, 2.0], [1.2, 1.15, 1.17, 2.0]], "消费订单数": [[93, 9, 2, 0], [101, 10, 31, 0], [198, 34, 170, 1], [105, 13, 18, 3]], "历史累计消费金额": [[287714, 37457, 85357, 0], [238184, 51820, 93477, 0], [296706, 61260, 326848, 1544], [74377, 5164, 9202, 1972]]}, "鲜于浩(合计)": {"人数": [[74, 5, 15, 6], [132, 24, 110, 47], [344, 58, 397, 724], [244, 21, 58, 507]], "近360天消费金额": [[334645, 17877, 30106, 0], [219237, 46457, 207245, 0], [279380, 52323, 359955, 468], [64888, 5476, 12822, 1524]], "客单价": [[810, 941, 860, 0], [611, 815, 1011, 0], [546, 662, 781, 468], [268, 274, 237, 508]], "连带": [[2.28, 2.21, 1.69, 0.0], [1.99, 2.0, 1.98, 0.0], [2.09, 2.32, 1.62, 2.0], [1.25, 1.2, 1.07, 2.0]], "消费订单数": [[413, 19, 35, 0], [359, 57, 205, 0], [512, 79, 461, 1], [242, 20, 54, 3]], "历史累计消费金额": [[1637855, 82736, 287835, 0], [827277, 138871, 517956, 0], [923899, 127988, 758024, 1544], [170813, 12260, 40232, 1972]]}, "彭苑婷(合计)": {"人数": [[160, 28, 44, 17], [327, 92, 278, 211], [794, 274, 1086, 1826], [382, 143, 345, 825]], "近360天消费金额": [[860291, 73121, 129241, 0], [674280, 177312, 486932, 1892], [712762, 246483, 892686, 0], [119410, 45152, 96268, 0]], "客单价": [[997, 1199, 1375, 0], [939, 996, 1349, 631], [711, 719, 855, 0], [332, 325, 333, 0]], "连带": [[3.23, 3.9, 3.64, 0.0], [3.12, 3.24, 3.41, 2.33], [2.5, 2.65, 2.37, 0.0], [1.29, 1.34, 1.2, 0.0]], "消费订单数": [[863, 61, 94, 0], [718, 178, 361, 3], [1002, 343, 1044, 0], [360, 139, 289, 0]], "历史累计消费金额": [[2652646, 332548, 469003, 0], [1870695, 481261, 1253566, 11372], [1432944, 504237, 1571305, 0], [233995, 78305, 208532, 0]]}, "李硕果(合计)": {"人数": [[82, 15, 11, 1], [140, 47, 86, 15], [438, 101, 276, 272], [338, 71, 80, 124]], "近360天消费金额": [[220861, 1555, 0, 0], [162114, 0, 0, 0], [313528, 10589, 0, 0], [74499, 4148, 0, 0]], "客单价": [[783, 778, 0, 0], [811, 0, 0, 0], [674, 815, 0, 0], [275, 296, 0, 0]], "连带": [[2.74, 2.5, 0.0, 0.0], [2.83, 0.0, 0.0, 0.0], [2.4, 3.0, 0.0, 0.0], [1.21, 1.57, 0.0, 0.0]], "消费订单数": [[282, 2, 0, 0], [200, 0, 0, 0], [465, 13, 0, 0], [271, 14, 0, 0]], "历史累计消费金额": [[905964, 14018, 0, 0], [416414, 0, 0, 0], [484287, 15288, 0, 0], [108406, 8124, 0, 0]]}, "赖月平(合计)": {"人数": [[59, 14, 13, 4], [174, 38, 120, 69], [499, 165, 575, 936], [162, 82, 124, 360]], "近360天消费金额": [[257314, 25408, 30028, 1123], [362151, 64077, 189517, 2143], [445262, 146579, 488401, 1336], [57318, 29171, 34218, 0]], "客单价": [[1038, 876, 1155, 562], [941, 902, 1149, 1072], [677, 722, 844, 1336], [370, 351, 329, 0]], "连带": [[3.28, 3.0, 2.54, 2.0], [3.05, 2.92, 2.81, 3.5], [2.41, 2.57, 2.18, 4.0], [1.36, 1.36, 1.15, 0.0]], "消费订单数": [[248, 29, 26, 2], [385, 71, 165, 2], [658, 203, 579, 1], [155, 83, 104, 0]], "历史累计消费金额": [[903245, 101226, 143204, 6624], [762984, 178827, 414737, 5670], [749679, 226084, 774691, 1874], [120709, 37694, 74969, 0]]}, "古欢欢(合计)": {"人数": [[136, 25, 55, 12], [244, 59, 293, 126], [566, 195, 843, 1469], [220, 109, 198, 737]], "近360天消费金额": [[729667, 96490, 137045, 0], [446271, 95691, 407560, 0], [488198, 150587, 631026, 706], [71279, 29703, 51710, 0]], "客单价": [[802, 965, 1015, 0], [744, 791, 1175, 0], [616, 581, 727, 706], [301, 275, 304, 0]], "连带": [[2.6, 3.03, 2.51, 0.0], [2.48, 2.4, 2.64, 0.0], [2.27, 2.31, 1.94, 4.0], [1.19, 1.22, 1.13, 0.0]], "消费订单数": [[910, 100, 135, 0], [600, 121, 347, 0], [792, 259, 868, 1], [237, 108, 170, 0]], "历史累计消费金额": [[2744010, 413747, 556792, 0], [1582366, 353527, 1056893, 0], [1212757, 416855, 1207896, 1561], [154894, 94741, 101466, 0]]}, "陈祝利(合计)": {"人数": [[43, 7, 13, 3], [110, 21, 73, 37], [269, 92, 340, 523], [174, 67, 157, 371]], "近360天消费金额": [[208648, 29814, 32564, 1066], [194703, 28529, 121679, 0], [218740, 80685, 273574, 916], [54038, 21734, 42450, 0]], "客单价": [[944, 1242, 1551, 1066], [667, 815, 1323, 0], [594, 656, 860, 458], [314, 315, 312, 0]], "连带": [[2.89, 3.88, 3.67, 5.0], [2.1, 2.4, 2.59, 0.0], [2.06, 2.2, 1.87, 2.0], [1.17, 1.28, 1.08, 0.0]], "消费订单数": [[221, 24, 21, 1], [292, 35, 92, 0], [368, 123, 318, 2], [172, 69, 136, 0]], "历史累计消费金额": [[533736, 59019, 83028, 12111], [576093, 80459, 353250, 0], [513848, 184309, 580239, 3379], [106874, 44138, 70948, 0]]}};
-var REGION_MAP = {"鲜于浩": ["宜都清江店", "通城朵以", "宜城香港路"], "彭苑婷": ["岗顶天娱广场", "海珠乐峰广场", "白云万象汇朵以", "广州塔广场店", "茂名印象汇", "湛江吴川"], "李硕果": ["深圳满京华店", "坪地宜城店", "深圳龙岗坪山", "深圳宝安店", "深圳龙华大浪"], "赖月平": ["萝岗万达", "花都骏壹万邦"], "古欢欢": ["大朗店", "高埗万和", "南村店", "东莞南城", "东莞黄江大道", "潘州广场朵以", "乐从天佑城", "英德朵以"], "陈祝利": ["清远城市广场"]};
+var REGION_MAP = {"鲜于浩": ["宜都清江店", "通城朵以", "宜城香港路"], "彭苑婷": ["岗顶天娱广场", "海珠乐峰广场", "白云万象汇朵以", "广州塔广场店", "南村店", "茂名印象汇", "湛江吴川", "潘州广场朵以"], "李硕果": ["深圳满京华店", "坪地宜城店", "深圳龙岗坪山", "深圳宝安店", "深圳龙华大浪"], "赖月平": ["萝岗万达", "花都骏壹万邦"], "古欢欢": ["大朗店", "高埗万和", "东莞南城", "东莞黄江大道", "乐从天佑城", "英德朵以"], "陈祝利": ["清远城市广场"]};
 var TIERS = ["核心VIP", "重要客户", "普通客户", "初级客户"];
 var STAGES = ["活跃", "沉默", "睡眠", "预流失"];
 var METRIC_UNITS = {"人数":"人","历史累计消费金额":"元","近360天消费金额":"元","连带":"件/单","客单价":"元","消费订单数":"单"};
