@@ -93,10 +93,12 @@
         .heat-0 { background:#f0f4f8;color:var(--text-sec); } .heat-1 { background:#dce6f2;color:var(--text); }
         .heat-2 { background:#b8cde4;color:var(--text); } .heat-3 { background:#8baed0;color:#fff; }
         .heat-4 { background:var(--brand);color:#fff; } .heat-5 { background:#0f1d33;color:#fff; }
-        .insight-card { background:var(--white);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:var(--shadow);border-left:3px solid var(--brand);margin-bottom:12px; }
+        .insight-card { background:var(--white);border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow);border-left:3px solid var(--brand);margin-bottom:0; }
         .insight-card .ic-tag { font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:6px;background:var(--brand-lighter);color:var(--brand); }
-        .insight-card .ic-text { font-size:13px;color:var(--text);line-height:1.7; }
+        .insight-card .ic-text { font-size:12px;color:var(--text);line-height:1.6; }
         .insight-card .ic-text strong { color:var(--red); }
+        .insights-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px; }
+        .insights-grid .card { margin-bottom:0; }
         .filter-bar { display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:12px 0;z-index:10; }
         .filter-btn { padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--white);color:var(--text-sec);cursor:pointer;transition:all 0.2s; }
         .filter-btn:hover { border-color:var(--brand);color:var(--brand); }
@@ -520,7 +522,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
 
-    <div class="grid-2 section-gap">
+    <div class="section-gap">
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--brand)"></div><span id="matrix-title">会员二维矩阵（人数）</span></div>
             <table class="matrix-table" id="matrix-table">
@@ -532,32 +534,32 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 颜色越深 = 人数越多 · 另有流失会员 39,995 人（已脱离分层体系，不纳入矩阵）
             </div>
         </div>
-        <div><div class="card" style="margin-bottom:16px;">
+        <div class="insights-grid"><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--red);">
             <div class="ic-tag" style="color:var(--red);background:var(--red-bg);">最高优先</div>
             <div class="ic-text"><strong>核心VIP沉默池：106人</strong><br>这106人是最高价值的即将流失群体,建议本周导��1V1电话回访。</div>
         </div>
-    </div><div class="card" style="margin-bottom:16px;">
+    </div><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--red);">
             <div class="ic-tag" style="color:var(--red);background:var(--red-bg);">浓度告警</div>
             <div class="ic-text"><strong>异常浓度格子: 3个</strong><br>普通客户x预流失 6,427人(全盘25.0%); 普通客户x睡眠 3,947人(全盘15.3%); 初级客户x预流失 3,494人(全盘13.6%)。人数过度集中在非活跃区域,需重点干预。</div>
         </div>
-    </div><div class="card" style="margin-bottom:16px;">
+    </div><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--orange);">
             <div class="ic-tag" style="color:var(--orange);background:var(--orange-bg);">储值沉睡</div>
             <div class="ic-text"><strong>全盘7,752名储值会员,79%处于非活跃</strong><br>6,120人有余额却不消费,是最容易唤醒的群体,白云万象汇朵以储值296人中非活跃占90%建议优先触达。</div>
         </div>
-    </div><div class="card" style="margin-bottom:16px;">
+    </div><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--green);">
             <div class="ic-tag" style="color:var(--green);background:var(--green-bg);">最佳机会</div>
             <div class="ic-text"><strong>沉默期合计2,052人可唤醒</strong><br>沉默会员离活跃最近,一次触达即可拉回。核心VIP106人建议1V1回访,重要客户317人建议批量券触达。</div>
         </div>
-    </div><div class="card" style="margin-bottom:16px;">
+    </div><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--orange);">
             <div class="ic-tag" style="color:var(--orange);background:var(--orange-bg);">最大池</div>
             <div class="ic-text"><strong>普通客户预流失池：6,427人</strong><br>人数最多的待挽回群体,建议批量短信+优惠券触达。</div>
         </div>
-    </div><div class="card" style="margin-bottom:16px;">
+    </div><div class="card">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--green);">
             <div class="ic-tag" style="color:var(--green);background:var(--green-bg);">亮点</div>
             <div class="ic-text"><strong>核心VIP活跃率66.1%</strong><br>598人在活跃期,是全矩阵最健康的格子,建议推储值加赠锁定长期价值。</div>
