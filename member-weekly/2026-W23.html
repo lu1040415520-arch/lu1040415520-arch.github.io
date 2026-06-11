@@ -125,10 +125,19 @@
         .sc-metric .scm-bar { height:3px;border-radius:2px;background:var(--border);margin-top:4px;position:relative; }
         .sc-metric .scm-bar .fill { position:absolute;left:0;top:0;height:100%;border-radius:2px; }
         .sc-metric .scm-bar .benchmark { position:absolute;top:-3px;width:2px;height:9px;background:var(--text-tri);border-radius:1px; }
-        .sc-bottom { display:flex;gap:20px;padding-top:12px;border-top:1px dashed var(--border); }
+        .sc-bottom { display:flex;flex-direction:column;gap:14px;padding-top:12px;border-top:1px dashed var(--border); }
         .sc-bottom .scb-item { flex:1; }
-        .sc-bottom .scb-label { font-size:11px;color:var(--text-tri);margin-bottom:2px; }
-        .sc-bottom .scb-text { font-size:13px;color:var(--text); }
+        .sc-bottom .scb-label { font-size:12px;font-weight:600;color:var(--text-sec);margin-bottom:6px; }
+        .sc-bottom .scb-text { font-size:13px;color:var(--text);line-height:1.6; }
+        .sc-bottom .scb-text p { margin:0; }
+        .ai-points { margin:0;padding:0;list-style:none; }
+        .ai-points li { position:relative;padding-left:14px;margin-bottom:4px;font-size:13px;line-height:1.5; }
+        .ai-points li::before { content:"•";position:absolute;left:0;color:var(--red);font-weight:700; }
+        .ai-action { display:flex;flex-direction:column;gap:6px; }
+        .ai-act-row { display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:1.5; }
+        .ai-act-icon { flex-shrink:0;width:18px;text-align:center; }
+        .ai-act-label { flex-shrink:0;font-weight:600;color:var(--text-sec);min-width:32px; }
+        .ai-act-val { color:var(--brand-dark);flex:1; }
         .plan-table { width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow); }
         .plan-table th { font-size:12px;font-weight:600;color:var(--text-sec);background:var(--brand-lighter);padding:12px 14px;text-align:left; }
         .plan-table td { font-size:13px;padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top; }
@@ -526,17 +535,17 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div><div class="card" style="margin-bottom:16px;">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--red);">
             <div class="ic-tag" style="color:var(--red);background:var(--red-bg);">最高优先</div>
-            <div class="ic-text"><strong>核心VIP沉默池：106人</strong><br>这106人是最高价值的即将流失群体，建议本周导购1V1电话回访。</div>
+            <div class="ic-text"><strong>核心VIP沉默池：106人</strong><br>这106人是最高价值的即将流失群体,建议本周导购1V1电话回访。</div>
         </div>
     </div><div class="card" style="margin-bottom:16px;">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--orange);">
             <div class="ic-tag" style="color:var(--orange);background:var(--orange-bg);">最大池</div>
-            <div class="ic-text"><strong>普通客户预流失池：6,427人</strong><br>人数最多的待挽回群体，建议批量短信+优惠券触达。</div>
+            <div class="ic-text"><strong>普通客户预流失池：6,427人</strong><br>人数最多的待挽回群体,建议批量短信+优惠券触达。</div>
         </div>
     </div><div class="card" style="margin-bottom:16px;">
         <div class="insight-card" style="box-shadow:none;margin-bottom:0;border-left-color:var(--green);">
             <div class="ic-tag" style="color:var(--green);background:var(--green-bg);">亮点</div>
-            <div class="ic-text"><strong>核心VIP活跃率66.1%</strong><br>598人在活跃期，是全矩阵最健康的格子，建议推储值加赠锁定长期价值。</div>
+            <div class="ic-text"><strong>核心VIP活跃率66.1%</strong><br>598人在活跃期,是全矩阵最健康的格子,建议推储值加赠锁定长期价值。</div>
         </div>
     </div></div>
     </div>
@@ -626,8 +635,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅26.1%（低于基准30.4%），2663名有效会员中预流失高达1132人（占42.5%），流失风险率74.5%远超基准70.1%。储值会员1173人中80%（约938人）处于非活跃状态，这批已有储值余额的会员未被有效激活是核心痛点——她们有消费能力和品牌认可度，却正在加速流失。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对938名非活跃储值会员发送专属满减券：满500减80（储值叠加后实付约(500-80)×0.8=336元，件单价312×2件=624>500可触发，折扣率336/624=53.8%——需调整为满800减100，实付(800-100)×0.8=560元，对应连带3件936>800，折扣率560/936=59.8%——仍低于75%红线。调整为满900减80，实付(900-80)×0.8=656元，对应3件936，折扣率656/936=70%——等于换季红线可行），最终方案：向938名非活跃储值会员推送满900减80券，引导到店消费3件连带（件单价312×3=936元），储值叠加后实付约685元，折扣率685/936=73.2%≥70%换季红线，预期唤醒15%即约140人到店，贡献约96,000元业绩。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率74.5%远超基准70.1%，预流失会员达1132人占总会员42.5%，沉默+睡眠+预流失合计1985人占74.5%，会员池严重老化</li><li>储值会员1173人中非活跃占比80%（约938人），大量已充值会员未到店消费，储值资金沉淀未转化为业绩</li><li>活跃率仅26.1%低于基准30.4%，本周98笔订单对应2663名有效会员，周到店转化率不足3.7%，客流严重不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">938名非活跃储值会员（优先触达其中319名重要层级储值会员）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付820×0.8=656元，折扣率约73%，合规），短信+企微定向推送，强调储值余额即将届满提醒</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约140人到店，按客单价648元估算贡献约90,720元，活跃率提升至29%接近基准水平</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -661,8 +674,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店流失风险率76%远超基准70.1%，预流失会员988人占比42%，是最大隐患；连带率1.98低于基准2.23，客单价¥530较基准¥628低¥98，说明顾客购买深度严重不足；储值会员969人中80%（约775人）非活跃，大量已储值顾客未被有效激活，业绩连续两周在¥49K-¥56K间波动且本周回落。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对969名非活跃储值会员发送满件券'购2件减80元'（储值叠加后实付约¥312×2×0.8-80=¥419，件单价仍≥¥210满足75折红线），通过企微1对1触达，重点圈选最近60-120天未到店的储值客户约400人，目标激活到店60人，提升连带至2件以上，预计带动增量业绩约¥25,000。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率76.0%远超基准70.1%，预流失+睡眠会员合计1579人占总会员67.8%，会员资产严重流失</li><li>客单价¥530较基准¥628低15.6%，连带率1.98低于基准2.23，近3周客单从¥606跌至¥530，搭配销售能力持续恶化</li><li>储值会员969人中非活跃占比80%（约775人），大量已储值会员未被激活消费，储值资金沉淀未转化为业绩</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">775名非活跃储值会员（重点筛选预流失及睡眠阶段的储值会员）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100券（件单价¥312×2=¥624，减100后¥524，储值叠加×0.8=¥419.2，折扣率83.9%＞75%合规），同时刺激连带提升</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约93-116人到店，连带率提升至2.0+，预计贡献约¥58,000-72,000元周业绩，缓解流失风险</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -696,8 +713,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅18.1%（基准30.4%），1780名有效会员中预流失高达952人（占53.5%），流失风险率83.8%远超基准70.1%，核心问题是大量会员正加速流失——504名储值会员中84%（约423人）处于非活跃状态，说明即便有储值锁客手段仍未能有效激活回店；但到店客质量极高，连带3.16、客单¥922均远超基准，说明问题不在转化能力而在流量回引失败。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对504名非活跃储值会员发送专属短信+企微触达，推送满2件减100元满件券（件单价¥312×2=¥624，减100后¥524，折扣率84%符合红线，储值叠加×0.8后实付¥419），以'储值余额即将升级权益'为话术制造紧迫感，目标激活其中50人到店（约10%激活率），预计贡献订单50笔、业绩约¥26,000。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅18.1%（基准30.4%），1780名有效会员中预流失952人占53.5%，客群严重流失</li><li>储值会员504人中非活跃占84%（约423人），高价值会员沉睡资金未被激活</li><li>周均买家仅48人，流失风险率83.8%远超基准70.1%，门店客流依赖极少数高消费客户（客单¥922、连带3.16均远超基准）</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">423名非活跃储值会员（储值余额未消耗，消费力已验证）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季红线≥70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约76人到店，按客单¥922估算贡献约70,000元，同步拉升活跃率至22%以上</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -731,8 +752,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店1684名有效会员中预流失628人+睡眠458人合计占64.5%，储值会员1071人中86%（约921人）处于非活跃状态，说明大量有储值余额的会员已停止到店消费，本周业绩较上周回落16.6%（¥51,098→¥42,607），活跃率27.2%低于基准30.4%，流失风险率73.7%高于基准3.6个百分点，核心问题是储值沉睡会员未被有效激活导致客流持续流失。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对921名非活跃储值会员中的预流失及睡眠群体（约800人），通过企微/短信定向推送满减券'满600减80'（储值叠加后实付约（600-80）×0.8=¥416，件单价¥312×2件=¥624，折扣率416/624=66.7%不达标；调整为'满800减60'，储值叠加实付（800-60）×0.8=¥592，对应3件¥936，折扣率592/936=63.2%仍不达标；最终方案：推送无门槛券¥50，引导到店消费客单¥666水平，实付（666-50）=¥616，对应连带2.25件即¥702货值，折扣率616/702=87.7%＞75%合规），预计触达800人，目标唤醒到店60人，带动本周买家数回升至65+人、业绩恢复至¥45,000以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率73.7%远超基准70.1%，预流失+睡眠会员合计1086人占总会员64.5%，会员资产严重恶化</li><li>1071名储值会员中86%（约921人）处于非活跃状态，大量预存资金未被激活消费</li><li>本周业绩¥42,607较上周¥51,098下滑16.6%，买家数从64人回落至59人，回暖势头未能延续</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">921名非活跃储值会员中的预流失及睡眠群体</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%，换季红线70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约110-138人到店，预计贡献人均客单¥666，增量业绩约73,000-92,000元</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -766,8 +791,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅20.6%（基准30.4%），1210名有效会员中预流失572人+睡眠307人合计879人占比72.6%，流失风险率高达79.9%；储值会员415人中82%（约340人）处于非活跃状态，说明大量已储值会员长期未回店消费，会员资产正在加速贬值。本周仅26笔订单、23位买家，客流严重不足。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对415名储值会员中340名非活跃储值会员发送专属满减券'满500减80'（储值叠加×0.8后实付约336元/件，折扣率约86%>75%红线），以储值余额+专属优惠双重钩子召回，短信触达并标注余额金额，目标召回40-50人到店，预计新增订单35笔以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅20.6%远低于基准30.4%，1210名有效会员中仅249人活跃，沉默+睡眠+预流失合计967人占80%，流失风险率79.9%严重超标</li><li>储值会员415人中非活跃占比82%（约340人），大量已储值用户未到店消费，储值资金沉淀未转化为业绩</li><li>近3周买家数持续下滑（27→24→23人），周均业绩约16,000元，客流不足是核心瓶颈</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">340名非活跃储值会员（优先触达307名睡眠期+88名沉默期中的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后折扣约78%，合规），短信+企微定向推送，强调储值余额即将享专属福利</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约51人到店，客单¥631计算，预计贡献约32,000元周业绩，活跃率提升至24%以上</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -801,8 +830,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅22.8%（基准30.4%），1178名有效会员中预流失529人占比高达44.9%，流失风险率78%远超基准70.1%。近3周买家数持续下滑（37→30→28人），业绩连续萎缩（¥25,526→¥23,381→¥21,678），虽然连带率和客单价优于基准，但进店消费人数严重不足，核心问题是大量沉默/预流失会员未被激活，256名储值会员中82%非活跃更是直接损失。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对529名预流失会员+256名非活跃储值会员中重叠人群（约210人）发送短信+企微触达，推送满1000减150券（折后约85折，满足≥75%红线；储值会员叠加×0.8后实付约680元买2件，仍≥75折），以'专属回归礼'为话术，目标召回35-40人到店，预计贡献额外订单20笔、业绩增量约¥15,000。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.8%（基准30.4%），1178名有效会员中预流失529人占比高达44.9%，流失风险率78.0%远超基准70.1%</li><li>近3周买家数持续下滑（37→30→28人），业绩连续下降（¥25,526→¥23,381→¥21,678），到店人数严重不足</li><li>储值会员256人中非活跃占比82%（约210人），高价值会员沉睡严重，核心VIP 37人+重要153人的复购驱动力未被激活</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">210名非活跃储值会员及153名重要层级会员中的预流失人群</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后折扣约72.9%，换季红线70%合规），定向推送短信+企微触达</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约32名储值会员到店，按客单¥748估算贡献约23,900元，扭转业绩连续下滑趋势</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -836,8 +869,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">连带率1.72远低于基准2.23，客单价¥427远低于基准¥628，且近3周连带从1.94下滑至1.71、客单从¥510跌至¥427，说明顾客进店只买单件即离开，搭配销售严重不足。预流失会员538人占比47%，储值会员非活跃占比75%，大量有消费力的老客正在加速流失。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对538名预流失会员及287名非活跃储值会员发送满件券：满2件减80元（折合件单价¥312×2=¥624，减80后¥544，折扣约87%>75%红线），通过企微/短信触达，重点话术强调新品搭配穿搭方案，预期触达300人、到店转化45人，目标将连带率提升至1.9以上、客单恢复至¥500+。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.72远低于基准2.23（差距23%），客单价¥427远低于基准¥628（差距32%），说明顾客进店后搭配推荐严重不足</li><li>预流失会员538人占比46.8%，加上睡眠241人，合计779人处于流失通道，流失风险率70.2%居高不下</li><li>储值会员383人中非活跃占比75%（约287人），大量储值余额未被激活消费，本周客单价从上周¥510回落至¥427</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">287名非活跃储值会员（优先触达其中核心VIP及重要层级约60人）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满624减80券（储值叠加后实付约(624-80)×0.8=435元，折扣率约70%，换季合规；引导两件连带，件单价312×2=624）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约43人到店，连带提升至2.0件，预计贡献约¥18,700元周增量业绩</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -871,8 +908,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店连带率1.67远低于基准2.23，客单价¥388仅为基准¥628的62%，说明顾客进店后几乎只买单件即离店，搭配销售严重不足；同时预流失会员561人占总会员49.7%，储值会员非活跃占比高达86%（282人中243人未消费），大量有消费能力的储值会员正在沉睡，门店既留不住人也卖不深。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对243名非活跃储值会员发送满件券：满2件减80元（折合件单价¥312×2=¥624，减80后¥544，折扣率87%>75%红线，储值叠加×0.8后实付¥435仍高于当前客单¥388），通过企微1对1触达并附当季搭配穿搭图，目标激活至少30人到店、将连带率提升至1.9以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.67远低于基准2.23，客单价¥388仅为基准¥628的62%，说明顾客进店后搭配购买严重不足</li><li>预流失会员561人占总会员49.7%，储值会员282人中86%（约243人）非活跃，大量高价值会员正在沉默流失</li><li>活跃率26.8%低于基准30.4%，近3周买家数30→43→40人波动低位，周均业绩仅¥16,769，门店客流转化乏力</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">243名非活跃储值会员（储值余额可叠加，唤醒价值最高）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满600减50券（储值叠加后实付约(600-50)×0.8=¥440，折扣率73.3%，≥70%合规；鼓励两件连带，件单价¥312×2=¥624＞600门槛）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约36人到店，连带提升至2件，预计贡献约¥22,000，同步拉动连带率和客单价回升</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -906,8 +947,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅27.8%低于基准30.4%，999人有效会员中预流失高达470人（占47%），储值会员330人中76%（约251人）处于非活跃状态，说明大量高价值会员正在加速流失。虽然连带率3.5和客单价¥951远超基准，表明到店客质极高，但买家数持续偏低（本周仅47人），门店过度依赖少量高消费会员，客群基盘严重萎缩。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对251名非活跃储值会员发送专属唤醒短信，推送满3件减150元满件券（件单价¥312×3=¥936，折后¥786，折扣率约84%>75%红线，储值叠加×0.8后实付¥629仍合理），以储值余额提醒+限时7天到期为触达话术，目标唤醒40-50人到店消费，将活跃率提升至30%以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>预流失会员470人占比47%，流失风险率73.2%远超基准70.1%，活跃率仅27.8%低于基准30.4%，会员留存严重恶化</li><li>储值会员330人中非活跃占比76%（约251人），大量已充值用户未到店消费，储值资金沉淀未转化为业绩</li><li>近3周买家数仅34→36→47人，999名有效会员中周均到店转化率不足5%，客单价¥951虽高但客流严重不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">251名非活跃储值会员（已有余额但近期未消费）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减70券（储值叠加后折扣约73.8%×0.8=实际折扣需验证；储值价951×(1-70/951)×0.8≈702，折扣75.4%，合规），短信推送强调余额即将享专属优惠限时7天</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约45人到店，按客单价¥951计算，预计贡献约42,800元周业绩增量</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -941,8 +986,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅22.9%（基准30.4%），951名有效会员中预流失389人+睡眠268人合计657人占69%，流失风险率77.1%远超基准70.1%；储值会员496人中83%（约412人）处于非活跃状态，大量已储值客户未被激活消费，说明门店缺乏对存量高价值客户的持续触达和唤醒机制。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对496名非活跃储值会员发送专属唤醒短信，推送满2件减100元满件券（券后件单价约¥262，叠加储值×0.8后约¥210，折扣率约67%——超出红线，调整为满2件减60元，券后件单价¥282×0.8=¥226，折扣率72%符合换季线），预计触达412人，目标唤醒到店40人，带动约20笔连带订单，预估增量业绩约¥14,800。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.9%远低于基准30.4%，951名有效会员中活跃仅218人，沉默+睡眠+预流失合计733人占77.1%，流失风险严重</li><li>储值会员496人中非活跃占比高达83%（约412人），大量已充值会员未到店消费，储值资金沉淀未转化为业绩</li><li>周均买家仅28人，本周34笔订单虽客单价¥742高于基准¥628，但流量严重不足，高客单难以弥补人数缺口</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">412名非活跃储值会员（优先触达其中预流失阶段的高价值储值客户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%，换季红线70%合规），短信+企微定向推送，强调储值余额即将享专属优惠</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约62人到店，按客单价¥742估算贡献约46,000元，活跃率提升至约29.4%接近基准水平</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -976,8 +1025,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅24.7%（基准30.4%），910人有效会员中预流失366人+睡眠252人合计618人占68%，流失风险率高达76.4%；储值会员296人中90%（约266人）处于非活跃状态，大量已储值客户未被激活消费，是活跃率低迷的核心症结。本周业绩虽回升至¥22,706，但主要靠买家数从22-23人提升至30人拉动，客群基础仍薄弱。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对296名非活跃储值会员发送专属短信/企微触达，推送满减券'满600减80'（储值叠加后实付约(600-80)×0.8=416元，件单价¥312×2件=624>600可触发，顾客到手均价约208元/件，折扣率约66.7%——需调整为'满900减100'，实付(900-100)×0.8=640元，对应3件936>900，件均约213元，折扣率68%——仍低于70%红线，最终定为'满900减60'，实付(900-60)×0.8=672元，件均224元，折扣率71.8%≥70%合规），以唤醒储值余额消费为话术，目标激活40-50人到店，预计带来15笔以上成交，提升活跃率3-5个百分点。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率76.4%远超基准70.1%，预流失366人+睡眠252人合计618人占总会员68%，会员资产严重恶化</li><li>296名储值会员中非活跃占比高达90%（约266人），大量预存资金沉睡未被激活消费</li><li>活跃率仅24.7%低于基准30.4%，活跃会员仅225人，本周34笔订单主要依赖少量忠客支撑，拉新转化断层</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">266名非活跃储值会员（已有预存资金，唤醒门槛最低）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季红线≥70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约40人到店，按客单价668元估算贡献约26,700元，同步带动沉睡会员回流</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1011,8 +1064,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅26.4%（低于基准30.4%），800人有效会员中预流失306人+睡眠221人合计527人占比66%，储值会员334人中79%（约264人）处于非活跃状态，说明高价值储值客群正在大规模沉睡流失。虽然客单价¥845远超基准¥628、连带率2.52也优于基准，但买家数持续低位（35→33→36人），高消费力未能覆盖客群萎缩的风险。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对334名储值会员中264名非活跃储值客户，通过企微/短信定向推送满减券'满800减120'（储值叠加后实付约¥544，件单价¥312×2件=¥624，折后约87%不破红线），以唤醒储值余额消费为话术触达，目标激活40-50人到店，预计带动15笔以上订单，提升活跃率约5个百分点。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅26.4%低于基准30.4%，800人中仅211人活跃，沉默+睡眠+预流失合计593人占74.1%，流失风险严重</li><li>储值会员334人中非活跃占79%（约264人），大量已充值会员未到店消费，储值资金沉淀未转化</li><li>周买家数持续低位（35→33→36人），客单价虽高达¥845但订单量仅40笔，业绩增长完全依赖单客消费拉升，缺乏新客流补充</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">264名非活跃储值会员（重点锁定84名重要会员及睡眠221人中的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季合规；券有效期7天制造紧迫感）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约40人到店，按客单¥845估算贡献约33,800元，周买家数提升至55+人，活跃率回升至30%以上</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1046,8 +1103,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店连续3周客单价从¥620断崖式下滑至¥451（仅为基准¥628的72%），连带率同步从2.14降至1.58（基准2.23），说明顾客购买件数严重不足（平均仅1.5-1.6件），且预流失会员293人占比近40%、储值会员非活跃率高达77%，核心消费力未被激活。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对78位非活跃储值会员（60人）及36位核心VIP发送满件券：买2件减80元（折后约¥272/件，储值叠加后¥217.6仍高于75%红线¥234，需设定仅限当季正价货品），通过企微1对1触达并搭配穿搭推荐，目标激活30人到店、提升连带至2.0以上，预计带动周业绩增量约¥18,000。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅23.9%（基准30.4%），预流失+睡眠合计508人占比69%，会员流失严重失控</li><li>连带率连续3周下滑（2.14→1.69→1.58），客单价同步跌至¥451（基准¥628），单笔贡献严重不足</li><li>78名储值会员中77%（约60人）非活跃，核心VIP仅36人却未能拉动整体业绩，高价值会员激活失败</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">508名睡眠+预流失会员中的储值非活跃60人优先，其次触达215名睡眠会员</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100券（件单价312×2=624，减100后524，折扣84%，储值叠加×0.8=67%不合规；调整为满2件减70券，折扣89%，储值叠加71%合规），同时对储值非活跃会员发放无门槛50元券刺激首次回店</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值非活跃15%约9人+睡眠会员10%约22人到店，连带率提升至1.8以上，预计贡献约17,000元周业绩增量</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1081,8 +1142,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">南村店活跃率仅22.4%（基准30.4%），527名有效会员中预流失高达262人占49.7%，流失风险率78.6%远超基准70.1%；168名储值会员中80%（约134人）处于非活跃状态，大量沉淀资金未被激活消费；近3周买家数持续低迷（19→19→21人），客单价¥561低于基准¥628，业绩连续三周在1.6万左右徘徊无增长动力。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对134名非活跃储值会员+262名预流失会员中有消费记录的前50名，发送满减券满599减80（储值叠加后实付约399，件单价¥312×2件=¥624＞599触发门槛，折后均价约¥300/件≥75%红线），通过企微1对1触达并告知储值余额提醒，目标激活到店30人、新增订单15笔，拉动周业绩突破2万。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率78.6%远超基准70.1%，预流失262人占总会员近50%，沉默+睡眠+预流失合计414人，会员池严重恶化</li><li>活跃率仅22.4%低于基准30.4%，周均买家仅19-21人，527人会员池中超400人未产生消费</li><li>储值会员168人中非活跃占80%（约134人），客单价¥561低于基准¥628，连带率2.18略低于基准2.23，消费深度不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">134名非活跃储值会员（已有储值余额，唤醒门槛最低）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付(900-80)×0.8=656元，折扣率约72.9%，换季合规≥70%）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约24人到店，客单价提升至¥820+，预计贡献约19,700元，同步拉升活跃率至26%</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1116,8 +1181,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率仅17.7%，远低于基准30.4%，521名有效会员中预流失253人+睡眠144人合计占76%，流失风险率高达83.5%；核心VIP 21人+重要会员56人共77人中大量未活跃，储值会员57人中79%（约45人）处于非活跃状态，说明高价值会员严重流失，门店缺乏有效的会员唤醒和回店机制。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对57名储值会员中45名非活跃储值客发送专属短信，推送满600减80满减券（储值叠加后实付约(600-80)×0.8=416元，件单价312×2件=624元仍高于折扣红线），同时对77名核心VIP及重要会员中未到店者发放50元无门槛券（限3天有效制造紧迫感），目标本周唤醒储值非活跃客8-10人、重要会员到店5-8人，预计新增订单13-18笔。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.7%（基准30.4%），521名有效会员中仅92人活跃，预流失253人占比48.6%，流失风险率高达83.5%</li><li>57名储值会员中79%即45人处于非活跃状态，储值资金沉淀未能有效驱动复购</li><li>近3周买家数持续低迷（15→13→15人），周均业绩约¥11,713，门店客流严重不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">45名非活跃储值会员+253名预流失会员中客单≥500的高价值人群</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">储值会员发满900减80券（储值叠加后折扣约72.9%≈73%，合规）；预流失会员发满600减50无门槛券（折扣91.7%，合规），短信+企微触达</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值会员20%约9人+预流失会员10%约25人到店，合计34人贡献约¥20,800，周业绩提升约78%</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1151,8 +1220,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">湛江吴川门店流失风险率高达75.9%（基准70.1%），预流失+睡眠会员合计305人占总会员67%，且储值会员245人中83%（约203人）处于非活跃状态，说明大量已储值会员未被有效激活消费。本周客单价¥522较上周¥660骤降21%，连带率从2.37降至2.0，买家数停滞在15人，门店正在经历会员加速沉睡与客单连带双降的恶性循环。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对245名储值非活跃会员中的203人进行定向触达，发送满减券'满600减80'（实付520÷2件=件单价¥260，折扣率83%符合红线，储值叠加520×0.8=¥416仍高于成本线），通过企微/短信告知储值余额及券权益，目标激活至少25人到店，预计带动客单回升至¥600+、连带提升至2.2以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率75.9%远超基准70.1%，预流失+睡眠共305人占总会员67%，会员资产严重恶化</li><li>储值会员245人中83%（约203人）非活跃，大量预付费用户未被激活消费，储值资源浪费严重</li><li>客单价¥522低于基准¥628达17%，连带率2.0低于基准2.23，本周业绩¥8,879较上周¥12,540下滑29%，成交质量持续走低</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">203名非活跃储值会员（重点锁定睡眠+预流失阶段）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率约71%，换季合规），短信+企微定向触达，限7天有效</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约30人到店，客单价提升至900元以上，预计贡献约27,000元周业绩，同步拉升连带率至2.2+</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1186,8 +1259,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">东莞南城活跃率仅17.6%（基准30.4%），流失风险率高达84.0%（基准70.1%），预流失会员248人占总会员56%，储值会员58人中86%处于非活跃状态。核心问题是大量会员正加速流失，尽管连带率2.63和客单价¥657均优于基准，但周买家数仅10-13人，说明进店转化能力尚可但到店流量严重不足，会员唤醒失败。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对248名预流失会员+50名非活跃储值会员，通过企微/短信定向推送满减券满600减80（折后约87折，安全线内），以'专属回归礼'话术触达，配合邀约到店试穿当季新品；目标唤醒35-40人到店，预计新增订单15笔以上，将周买家数提升至25人以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.6%（基准30.4%），443人中仅78人活跃，预流失会员高达248人占56%，流失风险率84%远超基准70.1%</li><li>储值会员58人中非活跃占比86%（约50人），核心VIP 37人+重要会员63人共100人中大量沉睡，高价值会员未被有效维护</li><li>近3周买家数仅10→11→13人，周均订单不足20笔，业绩在8,459-12,478元低位徘徊，客群到店严重不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">50名非活跃储值会员+248名预流失会员中的核心VIP及重要会员（约60人），合计约110人</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">储值会员发满900减80券（储值叠加后折扣：(900-80)/900×0.8=73%，合规）；预流失重要会员发满600减50无门槛券（折扣91.7%，合规），短信+企微1对1触达</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值会员15%约8人贡献约52,000元，预流失会员唤醒10%约6人贡献约39,000元，两周内合计新增约14人到店贡献约91,000元</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1221,8 +1298,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">英德朵以核心问题是会员大面积沉睡流失：预流失106人+睡眠65人合计171人占总会员63%，储值会员119人中77%（约92人）处于非活跃状态，说明曾经高粘性客户正在批量流失。虽然本周客单价¥704和连带率2.5均优于基准，但有效买家仅18人，活跃率29.9%略低于基准，门店过度依赖少量高质量客户消费，增长天花板明显。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对92名非活跃储值会员发送专属唤醒短信，推送满减券'消费满600减80'（折后约¥624÷¥704≈88.6%，储值叠加×0.8后实付约¥499，件单价¥312×2件=¥624满足门槛，折扣率安全），强调储值余额即将到期提醒+新品上架信息，目标唤醒15-20人到店，预计带动额外业绩¥9,000-¥12,000。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率70.8%，预流失+睡眠会员合计171人占总会员63%，会员资产严重恶化</li><li>储值会员119人中非活跃占比77%（约92人），储值资金沉淀未转化为到店消费</li><li>近3周买家数仅15→10→18人，271名有效会员周均到店转化率不足7%，客流严重不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">92名非活跃储值会员（优先触达25名核心VIP及65名重要会员中的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季红线70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约14人到店，按客单704元估算贡献约9,800元，同时激活储值余额消耗</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1256,8 +1337,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店本周订单为0笔，连带率和客单价均为0，说明会员虽有33.1%活跃率（258人标记为活跃），但活跃可能仅体现在到店浏览或积分互动，并未产生实际购买转化；同时睡眠252人+预流失170人合计422人占总会员54%，流失压力大。核心矛盾是活跃会员的购买转化断裂，258人活跃却零成交。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对258名活跃会员+102名沉默会员（共360人）发送无门槛券￥50（无门槛直减，刺激首单破冰），通过企微1对1触达，话术强调'本周到店专属礼'，重点邀约40名核心VIP和120名重要会员到店试穿搭配，预期激活到店下单30-40人，目标周销售额≥￥9000（按件单价312×1件保守估算）。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>本周订单为0笔，连带率和客单价均为0，门店可能处于闭店或系统异常状态，需立即核实</li><li>沉默+睡眠+预流失会员共524人占总会员67.2%，流失风险池庞大</li><li>60名储值会员中35%（约21人）非活跃，储值余额沉淀未被激活消费</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">21名非活跃储值会员+102名沉默期会员（合计123人）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后折扣约73%，合规），短信+企微触达邀约到店</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约18人到店，预计连带1.8件，贡献约10,000元周销售额，恢复门店正常经营节奏</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1291,8 +1376,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">大朗店预流失会员208人占总会员35.7%，叠加睡眠174人，流失风险率72.2%高于基准70.1%，核心问题在于沉默→预流失转化未被有效拦截；储值会员152人中70%非活跃（约106人），这批高价值用户未被激活直接拉低了活跃率（28.9% vs 基准30.4%）和复购贡献。近3周买家数虽从14人回升至28人，但客单价持续停留在¥600未突破基准¥628，说明回流客以低件单消费为主。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对152名储值非活跃会员（约106人）定向推送满减券：满600减80（实付520，件单价¥312×2件=¥624，折后83折符合红线），短信+企微触达，目标唤醒15-20人到店核销，预计贡献额外业绩约¥10,000，同时将活跃率提升约2.5个百分点至31%以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率72.2%高于基准70.1%，预流失208人+睡眠174人合计382人占总会员65.6%，会员资产严重恶化</li><li>储值会员152人中非活跃占比70%（约106人），储值资金沉淀未转化为到店消费</li><li>客单价¥600低于基准¥628，连带率2.33虽高于基准但近两周回落至1.89-1.92，件单价贡献不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">106名非活跃储值会员（已有储值余额但近期未到店）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付=(900-80)×0.8=656元，折扣率72.9%，换季红线70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约16人到店，客单价提升至900+，预计贡献约14,400元，同步拉动连带率回升至2.3以上</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1326,8 +1415,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">客单价¥525远低于基准¥628，且近3周波动剧烈（¥606→¥418→¥525），核心问题在于连带率虽达标但件单价¥312×2.31=¥721理论客单与实际¥525存在较大差距，说明顾客购买的多为低价款或折扣款，拉低了件单价；同时预流失会员224人占比42%，储值会员非活跃率63%（74人），大量高价值会员正在流失。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对118名储值会员中63%非活跃的74人，以短信/企微触达，发放满800减120元满减券（折后约85折，叠加储值×0.8后实付约¥544，高于当前客单¥525且不破75%红线），引导搭配购买2件以上当季正价款，预期激活15-20人到店，目标提升客单至¥620以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>客单价¥525远低于基准¥628（差距16.4%），近3周客单从¥606骤降至¥418后回升至¥525，仍未恢复正常水平</li><li>预流失会员224人占总会员42.2%，叠加睡眠127人，流失风险率71.6%高于基准70.1%，沉默+睡眠+预流失合计380人亟需干预</li><li>储值会员118人中非活跃占63%（约74人），核心VIP 38人+重要会员74人的高价值客群未被充分激活，客单价拉低明显</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">74名非活跃储值会员及224名预流失会员中的重要/核心VIP（约112人）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71.1%，换季红线≥70%合规），针对高价值预流失客群定向推送</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒20%约22人到店，客单价提升至¥800+，预计贡献约17,600元，同步拉升整体客单价回归基准水平</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1361,8 +1454,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">坪地宜城店活跃率26.9%低于基准30.4%，432人中沉默+睡眠+预流失合计310人（占71.8%），流失风险池庞大。近3周买家数从16→15→28人有回升但客单价从¥660降至¥610，核心VIP 28人+重要63人共91人中相当部分未被有效激活，整体业绩依赖少量回流而非稳定复购。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对61名沉默会员（30-60天未购）发送满减券满899减120元（折后约86折，符合红线），通过企微1对1触达配合新品上新话术，目标激活15人到店，预计贡献约9000元业绩，将活跃率提升至30%以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率26.9%低于基准30.4%，432名有效会员中仅116人活跃，沉默+睡眠+预流失合计310人（占71.8%）流失风险严峻</li><li>客单价¥610低于基准¥628，近3周波动大（¥660→¥530→¥610），第2周骤降20%暴露客群消费力不稳定</li><li>预流失116人与睡眠133人合计249人，占总会员57.6%，若不干预将加速流失，核心VIP仅28人支撑力薄弱</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">249名睡眠及预流失会员（重点触达其中63名重要层级会员）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（券后折扣88.9%，储值叠加后71.1%≥70%合规），针对重要层级会员额外赠满2件减50券（件单价约¥312，2件624，券后574，折扣92%，储值叠加73.6%≥70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒睡眠及预流失会员12%-15%约30-37人到店，预计贡献额外业绩¥18,000-¥22,000，活跃率提升至30%以上回归基准</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1396,8 +1493,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">深圳满京华店活跃率49.9%远超基准30.4%，流失风险率49.9%远低于基准70.1%，会员健康度优异。但近3周业绩持续下滑（¥15,784→¥19,166→¥10,963），本周买家数仅16人，客单价¥522低于基准¥628，核心瓶颈在于高活跃会员的客单价未被有效拉升，连带率2.24虽达标但未能带动消费升级。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">经验推广建议：该店会员激活能力突出，建议将其社群运营与到店邀约话术提炼为区域标杆SOP；同时本周针对53名重要会员及18名核心VIP发放满800减80满减券，刺激高价值客群提升客单价至¥600+，预期触达71人、转化15人到店，带动周业绩回升至¥15,000以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率49.9%远超基准30.4%，流失风险率49.9%远低于基准70.1%，会员健康度表现突出</li><li>近3周业绩呈下滑趋势（¥15,784→¥19,166→¥10,963），最近一周买家数降至16人，客单价¥522低于基准¥628，存在客单价提升空间</li><li>核心VIP 18人+重要会员53人合计71人，占比21%，高价值会员储备良好，连带率2.24持平基准但仍有提升空间</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">71名核心VIP及重要会员中近2周未到店者</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（折扣率88.9%，储值叠加后71.1%，合规），引导搭配连带提升客单</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒30%约21人到店，客单价提升至¥900+，连带率提升至2.5，预计贡献约18,900元，同时将该店活跃率维护经验（高频触达+储值锁客）推广至同区域门店</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1431,8 +1532,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率78.6%远超基准，流失风险率仅18.1%，会员健康度优秀。但连带率1.93低于基准2.23，客单价¥560低于基准¥628，且近3周客单价从¥779持续下滑至¥560、连带从2.52降至1.96，说明顾客购买件数明显减少，搭配销售能力在下降。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">针对本周到店的普通会员167人（占比最大且提升空间最大），推送满2件减50元的满件券，刺激多件搭配购买，将连带率从1.93提升至2.2以上，预计触达80人到店，目标带动40人使用券完成2件以上成交，客单价回升至¥620+。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.93低于基准2.23，且近3周从2.52持续下滑至1.96，搭配销售能力减弱</li><li>客单价¥560低于基准¥628，近3周从¥779骤降至¥560，降幅达28%，单笔成交金额明显缩水</li><li>普通会员167人占比56%，核心VIP仅5人，会员升级转化通道不畅，高价值客户储备不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">167名普通会员中近30天有消费记录的高频客户</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减50券（件单价¥312×2=¥624，减50后¥574，折扣率92%，合规），刺激多件连带</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">提升连带率至2.2以上，预计带动20%约33人使用，贡献额外约19,000元周业绩增量</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
@@ -1466,8 +1571,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">核心问题</div><div class="scb-text">门店活跃率79.3%远超基准，流失风险率仅21.4%，会员健康度优异。但近3周买家数持续下滑（39→35→31人），业绩从¥24,000回落至¥20,559，客单价¥587低于基准¥628，连带率2.11略低于基准2.23，说明进店转化人数在收缩，且顾客购买深度和金额均有提升空间。37人预流失群体是本周需重点激活的对象。</div></div>
-                <div class="scb-item"><div class="scb-label">本周动作</div><div class="scb-text" style="color:var(--brand);">本周针对37名预流失会员发送满减券'满800减80'，引导其到店回购并提升客单价至¥628以上（满800门槛可推动连带从2.11提升至2.5件），同时对近3周未到店的沉默+预流失共46人进行企微1对1触达，预期召回8-10人到店，带动本周买家数回升至38人以上。</div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率79.3%远超基准30.4%，门店会员健康度优秀，但近3周买家数持续下滑（39→35→31人），到店流量收窄趋势明显</li><li>客单价¥587低于基准¥628，连带率2.11低于基准2.23，说明进店顾客的深度消费潜力未充分挖掘</li><li>预流失会员37人占比12.5%，虽低于基准但绝对数量不小，需提前干预防止滑入流失池</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">37名预流失会员+9名沉默会员，共46人</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（折扣率88.9%，储值叠加后71.1%≥70%合规），引导搭配两件提升连带</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒25%约12人到店，件单价¥312×2件=¥624客单提升，预计贡献约10,800元，同时稳固活跃率</span></div>
+        </div></div></div>
             </div>
         </div>
     </div>
