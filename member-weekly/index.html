@@ -118,6 +118,9 @@
         .sc-tag.type-e { background:#f3e8ff;color:#7c3aed; }
         .sc-tag.urgent { background:var(--red-bg);color:var(--red); }
         .sc-tag.attention { background:var(--orange-bg);color:var(--orange); }
+        .sc-tag.improve { background:#fff7ed;color:#9a3412; }
+        .sc-tag.bench-above { background:#dcfce7;color:#166534; }
+        .sc-tag.bench-below { background:#fee2e2;color:#991b1b; }
         .sc-tag.normal { background:var(--green-bg);color:var(--green); }
         .store-card-body { padding:16px 20px; }
         .sc-metrics { display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px; }
@@ -346,9 +349,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--red)"></div>本周关键变化</div>
             <div class="change-item"><div class="change-dot red"></div><div class="change-text">
-        <div class="ct-title">9家门店标记为紧急</div>
+        <div class="ct-title">19家门店标记为紧急</div>
         <div class="ct-desc">需要立即关注和干预</div></div></div><div class="change-item"><div class="change-dot red"></div><div class="change-text">
-        <div class="ct-title">储值沉积问题普遍（21家门店）</div>
+        <div class="ct-title">储值沉积问题普遍（6家门店）</div>
         <div class="ct-desc">非活跃储值占比均值31.2%，大量储值余额沉睡</div></div></div><div class="change-item"><div class="change-dot yellow"></div><div class="change-text">
     <div class="ct-title">客单价¥627，连带率2.18</div>
     <div class="ct-desc">消费质量有优化空间</div></div></div><div class="change-item"><div class="change-dot yellow"></div><div class="change-text">
@@ -365,7 +368,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div></div><div class="action-item">
         <span class="action-pri p0">P0</span>
         <div class="action-content">
-            <div class="ac-title">紧急门店专项干预（9家）</div>
+            <div class="ac-title">紧急门店专项干预（19家）</div>
             <div class="ac-meta">负责人：待配置 · 截止6/14 · 目标到店率提升</div>
         </div></div><div class="action-item">
         <span class="action-pri p1">P1</span>
@@ -604,12 +607,12 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 <!-- ===== 第四页：门店诊断 ===== -->
 <div id="page-stores" class="page">
     <div class="page-summary">
-        从<strong>问题归因</strong>出发看门店。本周9家门店标记为紧急。
+        从<strong>问题归因</strong>出发看门店。本周19家门店标记为紧急。
         <br>基准线：活跃率30.4% · 流失风险率70.1% · 连带2.23 · 客单¥628
         <br><span style="font-size:11px;color:#94a3b8;">取值依据：全店（25家门店）过去360天整体均值，代表朵以品牌正常经营水平。高于基准=优于平均，低于基准=需关注。</span>
-        <br><span style="font-size:11px;color:#94a3b8;">告警分级：🔴紧急=2项以上指标严重偏离基准 · 🟡关注=1项偏离 · ⚪正常 · 🟢亮点=活跃率&连带均优于基准。</span>
+        <br><span style="font-size:11px;color:#94a3b8;">诊断体系（三层）：❶ 单店自比归因 — 对比门店自身历史360天均值，检测哪项指标在恶化（A活跃萎缩/B流失预警/C储值沉积/D质量下滑/E复合）。❷ 大盘对标 — 对比全域基准线（⬆高于/⬇低于），反映门店绝对水平。❸ 紧急度 — 综合两层判断：🔴紧急=有恶化+低于大盘 · 🟡关注=有恶化+高于大盘 · 🟠待提升=无恶化+低于大盘 · 🟢亮点=突出优秀 · ⚪正常。</span>
         <br><span style="font-size:11px;color:#94a3b8;">归因逻辑链：没人来店(A型·活跃萎缩) → 人在流失(B型·流失预警) → 有钱不来花(C型·储值沉积) → 来了卖不好(D型·质量下滑) → 多重叠加(E型·复合)。按经营优先级排序，越靠前越需要优先解决。</span>
-        <br><span style="font-size:11px;color:#94a3b8;">业绩修正规则：客单≥¥628 + 连带≥2.12 + 流失风险率＜80.6% + 活跃率＞18.2% → 经营质量优秀且未极端恶化，告警降一级（⭐标记）。</span>
+        <br><span style="font-size:11px;color:#94a3b8;">数据来源：客单价/连带率已启用单店360天自比基准；活跃率/流失风险率/储值比正在积累每周快照，4周后启用自比（当前使用大盘严格阈值兜底）。</span>
     </div>
 
     <div class="filter-bar">
@@ -630,367 +633,17 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <button class="filter-btn" onclick="filterStore('E',this)">E型·复合</button>
         <button class="filter-btn" onclick="filterStore('urgent',this)">🔴 紧急</button>
         <button class="filter-btn" onclick="filterStore('attention',this)">🟡 关注</button>
+        <button class="filter-btn" onclick="filterStore('improve',this)">🟠 待提升</button>
         <button class="filter-btn" onclick="filterStore('highlight',this)">🟢 亮点</button>
         <button class="filter-btn" onclick="toggleAllCards(this)" style="margin-left:auto;">展开全部</button>
     </div>
 
     <div class="store-cards-container" style="max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px;">
     
-    <div class="store-card collapsed" data-type="E B C" data-level="urgent" data-region="陈祝利">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">清远城市广场（有效2329人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">25.7%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:51.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">76.0%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:76.0%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">1.98</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:49.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥530</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:44.2%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率76.0%远超基准70.1%，预流失+睡眠会员合计1579人占67.8%，会员健康度严重恶化</li><li>客单价¥530低于基准¥628达15.6%，连带率1.98低于基准2.23，顾客购买深度不足</li><li>储值会员969人中非活跃占80%（约775人），大量预付费资源沉睡未被激活消费</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">775名非活跃储值会员中的预流失及睡眠群体</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付=800×0.8=640元，件单价¥312按连带2件=¥624，折扣率71%，换季合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约93-116人到店，预计贡献约74,000-93,000元业绩，同步拉升客单价至¥640+</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="彭苑婷">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">广州塔广场店（有效1780人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">18.1%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:36.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">83.8%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:83.8%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">3.16</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:79.0%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">¥922</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:76.8%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅18.1%，远低于基准30.4%，1780名有效会员中仅323人活跃，沉默+睡眠+预流失合计1491人占比83.8%，客流严重枯竭</li><li>504名储值会员中84%即423人处于非活跃状态，储值资金沉淀但未转化为到店消费，唤醒价值极高</li><li>近3周业绩呈上升趋势（¥35,919→¥43,649→¥52,259），客单价¥922远超基准¥628，连带率3.16也优于基准2.23，说明到店转化能力极强，核心瓶颈在客流量而非转化</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">423名非活跃储值会员+418名睡眠期会员，优先触达储值会员</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">向储值会员发放满900减100券（储值叠加后实付=800×0.8=640元，折扣率约71%，换季合规≥70%）；向睡眠期会员发放满600减50无门槛券（折扣率91.7%，合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">储值会员唤醒率15%约63人到店，按客单¥922预估贡献约58,000元；睡眠会员唤醒8%约33人，贡献约28,700元，合计新增约86,700元业绩</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E B C D" data-level="urgent" data-region="鲜于浩">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">通城朵以（有效1149人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">30.6%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:61.2%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">70.2%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:70.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">1.72</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥427</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:35.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.72远低于基准2.23（差距23%），客单价¥427远低于基准¥628（差距32%），说明顾客每次只买1件且选低价款，搭配销售严重不足</li><li>预流失会员538人占总会员47%，储值会员383人中非活跃占75%（约287人），大量高价值会员正在流失</li><li>近3周客单价从¥510回落至¥427、连带率从1.94降至1.71，虽买家数微增但件单效率持续下滑</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">287名非活跃储值会员中预流失阶段的高价值客户</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满624减80券（满2件触发，件单价¥312×2=¥624，储值叠加后实付(624-80)×0.8=¥435.2，折扣率69.7%→换季红线70%边界合规），引导连带提升</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员15%约43人到店，连带率提升至2.0+，预计贡献额外业绩约¥18,700</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E B C D" data-level="urgent" data-region="鲜于浩">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">宜都清江店（有效1129人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">26.8%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:53.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.4%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:73.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">1.67</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:41.8%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥388</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:32.3%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>预流失会员561人占比49.7%，活跃率仅26.8%低于基准30.4%，流失风险率73.4%超基准3.3个百分点</li><li>连带率1.67远低于基准2.23（差距25%），客单价¥388仅为基准¥628的61.8%，搭配销售严重不足</li><li>储值会员282人中非活跃占比86%（约243人），储值资金沉淀未能有效转化为到店消费</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">243名非活跃储值会员+561名预流失会员中有储值余额者</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满600减100券（储值叠加后实付600×0.8-100=¥380，两件均价¥312则件单价¥190，折扣率76%，合规），推送搭配穿搭方案提升连带</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员18%约44人到店，连带率提升至1.8+，预计贡献额外业绩约¥26,400</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E A B C D" data-level="urgent" data-region="古欢欢">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">高埗万和（有效740人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">23.9%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:47.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">76.4%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:76.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">1.72</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥451</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:37.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅23.9%远低于基准30.4%，740名会员中仅177人活跃，睡眠+预流失高达508人占68.6%，会员资产严重流失</li><li>客单价从3周前¥620骤降至¥451（降幅27.3%），连带率从2.14降至1.58，顾客购买意愿和搭配能力持续恶化</li><li>78名储值会员中77%（约60人）处于非活跃状态，储值资金沉淀未被激活，核心VIP仅36人难以支撑业绩</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">508名睡眠及预流失会员中优先触达60名非活跃储值会员+129名重要层级会员</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后折扣约72.9%≥70%，合规），搭配满2件减50券提升连带率</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值会员15%约9人+重要会员10%约13人到店，预计贡献约19,800元，连带率回升至1.8以上</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="彭苑婷">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">南村店（有效527人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">22.4%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:44.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">78.6%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:78.6%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">2.18</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:54.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">¥561</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:46.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.4%，远低于基准30.4%，527名有效会员中仅118人活跃，预流失262人占比高达49.7%，流失风险率78.6%显著超过基准70.1%</li><li>储值会员168人中非活跃占比80%（约134人），储值资金沉淀未能有效驱动复购，核心VIP仅27人难以支撑业绩</li><li>近3周业绩持续下滑（¥16,737→¥16,920→¥15,712），客单价¥561低于基准¥628，差距达¥67，连带率2.18也略低于基准2.23</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">134名非活跃储值会员+262名预流失会员中消费≥2次的高潜人群</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">向非活跃储值会员发放满900减80券（储值叠加后实付(900-80)×0.8=656，件单价¥312×3件=936，折扣率70.1%≥70%合规）；向预流失高潜会员发放满600减40无门槛券（折扣率93.3%，安全合规），引导连带提升</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员15%约20人、预流失会员8%约21人到店，合计约41人贡献约¥28,000-¥32,000，活跃率提升至26%以上</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="古欢欢">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">东莞黄江大道（有效521人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">17.7%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:35.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">83.5%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:83.5%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">2.42</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:60.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">¥614</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:51.2%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.7%，远低于基准30.4%，521名有效会员中仅92人活跃，253人已进入预流失阶段占比48.6%</li><li>储值会员57人中79%（约45人）处于非活跃状态，储值资金沉淀未能有效驱动复购</li><li>近3周买家数持续低迷（15→13→15人），周均业绩约¥11,713，流失风险率83.5%远超基准70.1%，客流严重不足</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">253名预流失会员+144名睡眠会员（合计397人）及45名非活跃储值会员优先触达</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">非储值会员发满900减130券（折扣85.6%≥75%合规）；储值会员发满900减80券（储值叠加后900-80=820×0.8=656，折扣72.9%≥70%换季红线合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒预流失+睡眠会员12%-15%约48-60人到店，叠加储值会员唤醒20%约9人，预计新增约57-69笔订单，贡献增量业绩约¥35,000-¥42,000</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E B C" data-level="urgent" data-region="彭苑婷">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">湛江吴川（有效453人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">25.2%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:50.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">75.9%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:75.9%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">2.0</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:50.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥522</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率75.9%远超基准70.1%，预流失+睡眠会员共305人占总会员67%，会员资产严重恶化</li><li>储值会员245人中83%（约203人）非活跃，储值资金沉淀未转化为到店消费</li><li>客单价¥522低于基准¥628达17%，连带率2.0低于基准2.23，本周业绩¥8,879较上周¥12,540下滑29%</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">203名非活跃储值会员中的睡眠及预流失群体</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满600减50券（储值叠加后实付440元，折扣率73.3%≥70%合规），短信触达强调储值余额即将到期提醒</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约25-30人到店，连带率提升至2.2件，预计贡献额外¥13,000-16,000周业绩</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="古欢欢">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">东莞南城（有效443人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">17.6%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:35.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">84.0%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:84.0%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">2.63</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:65.8%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">¥657</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:54.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.6%，远低于基准30.4%，443名有效会员中仅78人活跃，预流失会员高达248人占比56%，流失风险率84.0%严重超标</li><li>58名储值会员中86%即50人处于非活跃状态，储值资金沉淀但未转化为到店消费，会员资产浪费严重</li><li>近3周买家数仅10→11→13人，周均仅11.3人到店，大量沉默（28人）+睡眠（96人）会员亟需唤醒</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">248名预流失会员+50名非活跃储值会员，优先触达100名核心VIP与重要会员中的非活跃人群</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减120券（折扣率86.7%，储值叠加后69.3%≥换季红线70%，合规边界内）；对非活跃储值会员额外发放无门槛50元券刺激首次回店</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒预流失会员12%约30人+非活跃储值会员20%约10人到店，预计新增40人到店，按客单价657元计算贡献约26,280元周业绩</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="赖月平">
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="赖月平">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">萝岗万达（有效2663人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1016,20 +669,98 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率74.5%远超基准70.1%，预流失+睡眠人数达1748人占总会员65.6%，会员留存严重恶化</li><li>储值会员1173人中非活跃占比80%（约938人），大量高价值储值会员未被激活消费</li><li>活跃率仅26.1%低于基准30.4%，活跃会员694人难以支撑业绩增长，近3周买家数波动在73-91人之间未见突破</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率74.5%远超基准70.1%，预流失会员达1132人占总会员42.5%，沉默+睡眠+预流失合计1985人占74.5%，会员池严重老化</li><li>储值会员1173人中非活跃占比80%（约938人），大量已充值会员未到店消费，储值资金沉淀未转化为业绩</li><li>活跃率仅26.1%低于基准30.4%，活跃会员694人支撑本周98笔订单，人均消费频次低，近3周买家数波动在73-91人之间未见增长趋势</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">938名非活跃储值会员（已有储值余额，唤醒成本最低、转化概率最高）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（件单价¥312×3件=¥936达标，券后折扣91.4%，储值叠加×0.8后实付约¥685，折扣率73.2%≥70%合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约140人到店，客单价¥685×140人，预计贡献增量业绩约96,000元，同步拉升活跃率至30%+</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">938名非活跃储值会员（重点触达319名重要会员及预流失阶段的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付820×0.8=656元，折扣率约72.9%，换季期间≥70%合规），短信+企微定向推送，限7天有效制造紧迫感</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约140人到店，按客单价648元估算，预期贡献约90,720元，同时拉动活跃率回升至30%以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="彭苑婷">
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="陈祝利">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">清远城市广场（有效2329人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(0/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">25.7%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:51.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">76.0%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:76.0%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">1.98</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:49.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">¥530</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:44.2%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率76.0%远超基准70.1%，预流失会员988人占总会员42.4%，沉默+睡眠+预流失合计1769人，会员资产严重恶化</li><li>客单价¥530较基准¥628低15.6%，连带率1.98低于基准2.23，近3周客单从¥606跌至¥530，单笔贡献持续下滑</li><li>储值会员969人中非活跃占比80%（约775人），大量储值余额未被激活消费，门店缺乏有效唤醒手段</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">775名非活跃储值会员（重点筛选预流失及睡眠阶段的储值客户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100元券（件单价¥312×2=¥624，减100后¥524，储值叠加×0.8=¥419.2，折扣率67%→调整为满2件减60元券，实付¥564×0.8=¥451.2，折扣率72.3%≥70%换季红线，合规），短信+企微定向推送</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约93-116人到店，连带率提升至2.0+，预计贡献约52,000-65,000元周业绩增量</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">广州塔广场店（有效1780人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">18.1%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:36.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">83.8%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:83.8%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">3.16</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:79.0%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">¥922</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:76.8%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅18.1%（基准30.4%），1780名有效会员中仅323人活跃，预流失952人占比53.5%，流失风险率83.8%远超基准70.1%</li><li>储值会员504人中非活跃占比84%（约423人），大量高价值储值会员未到店消费，储值资金沉淀未转化为业绩</li><li>周均买家仅48人，本周58笔订单虽客单价¥922远超基准¥628，但客流严重不足，业绩增长完全依赖少量高消费客户</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">423名非活跃储值会员（优先触达其中190名重要层级会员）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付约(900-80)×0.8=656元，件单价¥312×3件=936元，折扣率约70%，换季合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%-20%约65-85人到店，按客单¥922估算贡献约60,000-78,000元，活跃率提升至21%以上</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="C" data-level="urgent" data-region="彭苑婷">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">海珠乐峰广场（有效1684人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-c">C型·储值沉积</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1055,20 +786,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率27.2%低于基准30.4%，1684名有效会员中仅458人活跃，沉默+睡眠+预流失合计1241人占73.7%，流失风险显著高于基准70.1%</li><li>储值会员1071人中非活跃占比高达86%（约921人），大量已储值用户未产生消费，储值资金沉淀未被有效激活</li><li>近3周业绩波动明显（¥35,307→¥51,098→¥42,607），第3周较第2周回落16.6%，客单价从¥730降至¥666，买家数从64降至59，增长动能不稳定</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率73.7%远超基准70.1%，预流失+睡眠会员合计1086人占总会员64.5%，会员资产严重流失</li><li>储值会员1071人中非活跃占比高达86%（约921人），大量已储值用户未被激活消费，储值转化效率极低</li><li>活跃率仅27.2%低于基准30.4%，本周业绩¥42,607较上周¥51,098下滑16.6%，买家数从64人回落至59人，增长动能不足</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">921名非活跃储值会员中的预流失及睡眠群体（约780人）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">推送满624减80券（件单价¥312×2件=¥624，券后折扣87.2%，储值叠加×0.8后实际折扣69.7%≥换季红线70%，取整为满630减80券确保合规70.1%）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约94-117人到店，人均消费¥630+，预计贡献额外业绩约¥65,000-¥75,000，同步拉升活跃率至30%以上回归基准</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">921名非活跃储值会员（重点锁定预流失628人中的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付820×0.8=656元，折扣率72.9%，换季合规；件单价¥312×3件=936元可触发门槛，提升连带）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约110-138人到店，人均消费约¥820，预计贡献增量业绩约¥95,000-¥113,000，活跃率提升至30%以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E A B C" data-level="attention" data-region="古欢欢">
+    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="古欢欢">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">乐从天佑城（有效1210人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1094,20 +825,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅20.6%，远低于基准30.4%，1210名有效会员中活跃仅249人，沉默+睡眠+预流失合计967人占比达79.9%</li><li>415名储值会员中非活跃占比高达82%（约340人），储值资金沉淀未能有效驱动复购</li><li>近3周买家数持续下滑（27→24→23人），业绩维持在¥14,527-¥17,197低位波动，客流瓶颈明显</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅20.6%远低于基准30.4%，1210名有效会员中仅249人活跃，沉默+睡眠+预流失合计967人占80%，客流严重不足</li><li>储值会员415人中非活跃占比高达82%（约340人），这批已付费用户未被有效激活，是最大的浪费资源</li><li>预流失572人占总会员47%，流失风险率79.9%远超基准70.1%，若不干预将持续恶化，本周仅26笔订单印证到店人数极低</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">340名非活跃储值会员（优先触达预流失572人中的储值用户）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">推送满900减80券（储值叠加后折扣=（900-80）/900×0.8=72.9%≈73%，合规≥70%），短信+企微双触达，强调储值余额即将进入休眠提醒</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约41-51人到店，按客单¥631估算贡献约25,800-32,200元，同时带动活跃率回升至25%以上</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">340名非活跃储值会员（优先触达预流失阶段的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">推送满900减80券（储值叠加后实付：820×0.8=656元，折扣率约73%，符合当季≥75%储值叠加合规线），短信+企微1对1触达，强调储值余额即将沉淀提醒</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约51人到店，按客单¥631估算贡献约32,000元，同时带动活跃率回升至约25%</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E A B C" data-level="attention" data-region="彭苑婷">
+    <div class="store-card collapsed" data-type="E B C" data-level="urgent" data-region="彭苑婷">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">潘州广场朵以（有效1178人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=B+C</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1133,59 +864,98 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.8%，远低于基准30.4%，1178名有效会员中活跃仅269人，沉默+睡眠+预流失合计919人（占78%），会员资产严重闲置</li><li>近3周业绩连续下滑（¥25,526→¥23,381→¥21,678），买家数从37人缩减至28人，到店流量持续萎缩</li><li>256名储值会员中82%（约210人）处于非活跃状态，储值余额未被有效激活，同时预流失会员高达529人，流失风险率78.0%远超基准70.1%</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.8%（基准30.4%），1178名有效会员中预流失529人占45%，沉默+睡眠390人，会员资产严重恶化</li><li>储值会员256人中82%即210人非活跃，储值资金沉淀未转化为到店消费</li><li>近3周买家数持续下滑37→30→28人，业绩连降¥25,526→¥23,381→¥21,678，客流枯竭是核心瓶颈</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">210名非活跃储值会员及529名预流失会员中有储值或消费2次以上的高价值人群</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">向非活跃储值会员发放满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%，≥70%换季合规）；向预流失高价值会员发放满600减50无门槛券（折扣91.7%，储值叠加73.3%，合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值会员15%约32人、预流失会员8%约42人到店，合计约74人，按客单价¥748估算可贡献约55,000元业绩，活跃率有望回升至26%以上</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">210名非活跃储值会员及529名预流失会员中有储值或消费≥2次的高潜人群</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">储值会员发满600减50券（储值叠加后折扣约73%，合规），预流失人群发无门槛80元券（件单价312×2=624，折扣87%合规），短信+企微双触达</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值非活跃15%约32人、预流失10%约53人到店，预计新增85人次贡献约63,000元周业绩，扭转下滑趋势</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="彭苑婷">
+    <div class="store-card collapsed" data-type="D" data-level="urgent" data-region="鲜于浩">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">岗顶天娱广场（有效999人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-name">通城朵以（有效1149人）</div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·质量下滑</span><span class="sc-tag bench-below">⬇ 低于大盘(1/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">27.8%</div>
+            <div class="scm-value" style="color:var(--orange);">30.6%</div>
             <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:55.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:61.2%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">73.2%</div>
+            <div class="scm-value" style="color:var(--orange);">70.2%</div>
             <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:73.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:70.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">3.5</div>
+            <div class="scm-value" style="color:var(--red);">1.72</div>
             <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:87.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">¥951</div>
+            <div class="scm-value" style="color:var(--red);">¥427</div>
             <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:79.2%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:35.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅27.8%低于基准30.4%，999名有效会员中预流失高达470人（占47%），流失风险率73.2%超基准3.1个百分点，会员留存形势严峻</li><li>330名储值会员中非活跃占比76%（约251人），储值资金沉淀未能有效转化为到店消费，核心资产浪费严重</li><li>近3周买家数从34→36→47人虽有回升，但客单价从¥1015波动下降至¥951，连带率从3.66降至3.50，高质量成交能力有松动迹象</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.72远低于基准2.23，客单价¥427远低于基准¥628，说明顾客单次购买件数和金额严重不足，是业绩核心瓶颈</li><li>预流失会员538人占比46.8%，叠加睡眠241人，合计779人处于高流失风险状态，流失风险率70.2%</li><li>储值会员383人中非活跃占比75%（约287人），大量储值余额未被激活消费，近3周客单从¥510回落至¥427，连带从1.94降至1.71呈下滑趋势</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">251名非活跃储值会员（已有储值余额，唤醒成本最低且储值叠加后折扣可控）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（券后¥800÷¥900=88.9%，储值叠加×0.8后实付约71.1%≥70%当季换季红线，合规；搭配短信+企微1对1触达，强调储值余额即将权益升级截止）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%-20%约38-50人到店，按客单¥951估算贡献约36,000-47,500元，同时带动活跃率提升3-5个百分点至30%以上回归基准</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">287名非活跃储值会员（优先触达其中预流失及睡眠阶段人群）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%，储值叠加×0.8后67折不达标；调整为满2件减50券，折扣92%，储值叠加后73.6%，合规），同步推送搭配穿搭内容引导连带</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约52人到店，连带提升至2.0+，预计贡献约¥54,000，客单价回升至¥500以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E A B C" data-level="attention" data-region="彭苑婷">
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="鲜于浩">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">宜都清江店（有效1129人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(0/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">26.8%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:53.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">73.4%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:73.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">1.67</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:41.8%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">¥388</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:32.3%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>预流失会员561人占总会员49.7%，流失风险率73.4%远超基准70.1%，会员资产严重流失</li><li>连带率1.67仅为基准2.23的74.9%，客单价¥388仅为基准¥628的61.8%，顾客搭配购买意愿极低</li><li>储值会员282人中非活跃占86%即243人，大量已充值顾客未到店消费，沉睡资金未被激活</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">243名非活跃储值会员及561名预流失会员中有消费记录的高价值群体</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%；储值叠加×0.8后约67折不合规；调整为满2件减50券，折扣92%，储值叠加后73.6%，合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员15%约36人到店，连带率提升至2.0以上，预计贡献额外¥22,500周业绩</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="C" data-level="urgent" data-region="彭苑婷">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">茂名印象汇（有效951人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-c">C型·储值沉积</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1211,20 +981,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.9%，远低于基准30.4%，951名有效会员中仅218人活跃，沉默+睡眠+预流失合计733人占77.1%，流失风险严重</li><li>496名储值会员中83%（约412人）处于非活跃状态，储值资金沉淀但未转化为到店消费，唤醒价值极高</li><li>客单价¥742和连带率2.53均优于基准，说明到店转化能力强，核心瓶颈在于到店人数不足——近3周买家仅22→30→32人</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.9%远低于基准30.4%，951名有效会员中仅218人活跃，沉默+睡眠+预流失合计733人占77.1%</li><li>储值会员496人中非活跃占比高达83%（约412人），大量已充值会员未到店消费，储值资金沉淀未转化</li><li>周买家数仅22-32人，客单价¥742虽高于基准但无法弥补流量不足，业绩受限于到店人数瓶颈</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
             <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">412名非活跃储值会员（优先触达其中268名睡眠期会员）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">推送满900减80券（储值叠加后实付×0.8=656元，折扣率约72.9%，≥换季红线70%合规），短信+企微双触达，强调储值余额即将享专属优惠</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约50-62人到店，按客单价¥742估算，预计贡献额外业绩约37,000-46,000元</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季合规；券有效期10天制造紧迫感）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约62人到店，按客单价¥742计算预计贡献约46,000元，周买家数提升至45+人</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="彭苑婷">
+    <div class="store-card collapsed" data-type="C" data-level="urgent" data-region="彭苑婷">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">白云万象汇朵以（有效910人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-c">C型·储值沉积</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1250,20 +1020,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅24.7%远低于基准30.4%，910人中仅225人活跃，流失风险率高达76.4%，预流失366人+睡眠252人合计618人处于危险状态</li><li>储值会员296人中非活跃占比90%（约266人），储值资金沉淀但未产生消费，唤醒价值极高</li><li>近3周买家数持续低位（22→23→30人），普通会员484人占比53%缺乏升级激励，客流转化不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率76.4%远超基准70.1%，预流失366人+睡眠252人合计618人占总会员68%，会员资产严重流失</li><li>储值会员296人中非活跃占比高达90%（约266人），储值资金沉淀未转化为到店消费</li><li>活跃率仅24.7%低于基准30.4%，910人有效会员中仅225人活跃，周均买家仅25人，客流严重不足</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">266名非活跃储值会员（优先）+ 252名睡眠期会员</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71.1%，换季红线70%合规），短信触达储值余额提醒+限时7天有效</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员15%约40人到店，睡眠会员5%约13人，预计贡献53笔订单约47,700元周业绩</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">266名非活跃储值会员（已有储值余额但近期未到店）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付：820×0.8=656元，折扣率约73%，合规），短信+企微定向推送，强调储值余额即将享专属优惠</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约40人到店，按客单价668元估算，预计贡献约26,700元业绩，同时拉动活跃率提升4个百分点至28.7%</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="赖月平">
+    <div class="store-card collapsed" data-type="C" data-level="urgent" data-region="赖月平">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">花都骏壹万邦（有效800人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-c">C型·储值沉积</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1289,59 +1059,59 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅26.4%低于基准30.4%，800名有效会员中活跃仅211人，预流失306人+睡眠221人合计527人占比66%，流失风险严重</li><li>储值会员334人中非活跃占79%（约264人），储值资金沉淀未转化为到店消费</li><li>周均买家仅35人，客单价¥845虽高于基准但买家基数过小，业绩增长依赖提频而非拉新到店</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅26.4%低于基准30.4%，800名会员中仅211人活跃，预流失306人+睡眠221人合计527人占比66%，会员池正在加速流失</li><li>储值会员334人中非活跃占比高达79%（约264人），这批已付费用户未被有效激活，是最大的沉没资产</li><li>本周买家仅36人撑起33,809元业绩，客单845元和连带2.52虽优于基准，但过度依赖少数高消费客户，抗风险能力极弱</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">264名非活跃储值会员（优先触达预流失306人中的储值用户）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">推送满800减100券（储值叠加后实付560元，折扣率70%=满足换季红线；件单价312×连带2.52≈786，凑单门槛合理）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约48人到店，预估贡献客单745元×48人≈35,760元，活跃率提升至约32%回归基准</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">264名非活跃储值会员（已有储值余额，回店动机最强）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季合规），短信定向推送并标注储值余额可用</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约32-40人到店，按客单845元计算预计贡献27,000-34,000元，活跃率提升至30%以上回归基准</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="normal" data-level="attention" data-region="李硕果">
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="古欢欢">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">深圳龙岗坪山（有效780人）</div>
-            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-name">高埗万和（有效740人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(0/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">33.1%</div>
+            <div class="scm-value" style="color:var(--red);">23.9%</div>
             <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:66.2%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:47.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">67.2%</div>
+            <div class="scm-value" style="color:var(--orange);">76.4%</div>
             <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:67.2%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:76.4%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">2.33</div>
+            <div class="scm-value" style="color:var(--red);">1.72</div>
             <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:58.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:43.0%;background:var(--red);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">¥619</div>
+            <div class="scm-value" style="color:var(--red);">¥451</div>
             <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:51.6%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:37.6%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>沉默+睡眠+预流失合计524人占67.2%，虽略优于基准70.1%但绝对量大，需重点关注睡眠252人向预流失转化的风险</li><li>客单价¥619低于基准¥628，连带率2.33虽高于基准但未能有效拉升客单，说明高单价款渗透不足</li><li>储值会员仅60人中有21人非活跃（35%），储值池体量小且激活率偏低，储值拉动消费的杠杆未充分发挥</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅23.9%（基准30.4%），预流失+睡眠共508人占比69%，会员流失严重失控</li><li>连带率连续3周下滑（2.14→1.69→1.58），客单价同步跌落（¥620→¥567→¥451），远低于基准¥628，搭配销售能力崩塌</li><li>储值会员78人中非活跃占比77%（约60人），核心消费力未被激活，门店缺乏稳定复购基盘</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">252名睡眠会员及21名非活跃储值会员（合计273人）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">睡眠会员发放满900减100券（折后价¥800/单，件单价¥312×3件=¥936，实付¥836，折扣率89.3%≥75%合规）；非活跃储值会员发放满600减50券（储值叠加后实付(600-50)×0.8=¥440，折扣73.3%≥70%换季红线合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒睡眠会员12%约30人到店贡献约¥25,000，激活储值会员30%约6人到店贡献约¥3,600，合计约¥28,600增量</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">60名非活跃储值会员+215名睡眠期会员中近90天有购买记录者</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%，储值叠加×0.8=67%不合规；调整为满2件减50券，折扣92%，储值叠加×0.8=73.6%，合规），同步推送储值会员专属满900减80券（折扣91%，储值叠加后72.8%≥70%，合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">满2件券提升连带率至1.8+，唤醒储值非活跃会员15%约9人+睡眠会员10%约22人到店，预计贡献额外31人×¥524≈16,200元，周业绩回升至20,000元以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="古欢欢">
+    <div class="store-card collapsed" data-type="D" data-level="urgent" data-region="古欢欢">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">大朗店（有效582人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·质量下滑</span><span class="sc-tag bench-below">⬇ 低于大盘(1/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1367,20 +1137,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率28.9%低于基准30.4%，582名有效会员中预流失208人+睡眠174人合计382人占65.6%，流失风险率72.2%超基准</li><li>152名储值会员中非活跃占比70%（约106人），储值资金沉淀未能有效驱动复购，核心VIP仅25人转化层级偏薄</li><li>客单价¥600低于基准¥628，近3周连带率从2.24降至1.92，虽买家数从14人回升至28人但件单价与连带均承压</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率72.2%高于基准70.1%，预流失208人+睡眠174人合计382人占总会员65.6%，会员资产严重恶化</li><li>储值会员152人中非活跃占比70%（约106人），储值资金沉淀未转化为到店消费</li><li>周均买家仅20人，582名有效会员周到店转化率不足3.5%，客流严重不足拖累业绩</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">106名非活跃储值会员及174名睡眠期会员</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">向106名非活跃储值会员推送满900减80券（储值叠加后实付(900-80)×0.8=¥656，折扣率72.9%，换季红线≥70%合规）；向174名睡眠会员推送满600减40无门槛券（实付¥560，折扣率93.3%，合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员15%约16人到店，贡献约¥13,120；唤醒睡眠会员10%约17人到店，贡献约¥9,520，合计预估增收约¥22,640，同步提升活跃率至32%以上</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">106名非活跃储值会员（已有储值余额但近期未消费）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付：(900-80)×0.8=656元，折扣率72.9%，换季红线70%合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约16人到店，客单约900元，预计贡献约14,400元周业绩，同步带动活跃率回升至30%以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="B" data-level="attention" data-region="鲜于浩">
+    <div class="store-card collapsed" data-type="D" data-level="urgent" data-region="鲜于浩">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">宜城香港路（有效531人）</div>
-            <div class="sc-tags"><span class="sc-tag type-b">B型·流失预警</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·质量下滑</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1406,59 +1176,172 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>客单价¥525远低于基准¥628，差距达16.4%，且近3周从¥606骤降至¥418后仅回升至¥525，件单价承压明显</li><li>预流失会员224人占比42.2%，叠加睡眠127人，合计351人处于流失通道，流失风险率71.6%高于基准70.1%</li><li>储值会员118人中非活跃占比63%（约74人），储值资金沉淀未能有效拉动复购和客单提升</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>客单价¥525远低于基准¥628（差距16.4%），近3周从¥606骤降至¥418后仅回升至¥525，价格带下移明显</li><li>预流失会员224人占比42.2%，加上睡眠127人，合计351人处于高流失风险，流失风险率71.6%超基准</li><li>储值会员118人中非活跃占比63%（约74人），核心VIP 38人+重要会员74人的消费力未被充分激活，周均买家仅21人</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">74名非活跃储值会员（优先）+ 224名预流失会员中有2次以上购买记录者</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减70券（储值叠加后实付约664元，折扣率73.8%≥70%合规），引导连带3件达标</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员20%约15人+预流失召回10%约22人到店，预计贡献约30,000元业绩，客单回升至¥650以上</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">74名非活跃储值会员及224名预流失会员中的重要/核心VIP</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣71.1%，换季红线70%合规），针对核心VIP发满1200减150券（储值叠加后实付840元，折扣70%，合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒非活跃储值会员20%约15人+预流失VIP 10%约11人到店，预计贡献26人×客单850元≈22,100元，客单价回升至基准水平</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="B" data-level="attention" data-region="李硕果">
+    <div class="store-card collapsed" data-type="E B C D" data-level="urgent" data-region="彭苑婷">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">坪地宜城店（有效432人）</div>
-            <div class="sc-tags"><span class="sc-tag type-b">B型·流失预警</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-name">南村店（有效527人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=B+C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(0/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">26.9%</div>
+            <div class="scm-value" style="color:var(--red);">22.4%</div>
             <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:53.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:44.8%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">71.8%</div>
+            <div class="scm-value" style="color:var(--red);">78.6%</div>
             <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:71.8%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:78.6%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">2.34</div>
+            <div class="scm-value" style="color:var(--orange);">2.18</div>
             <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:58.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:54.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
         </div>
         <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">¥610</div>
+            <div class="scm-value" style="color:var(--orange);">¥561</div>
             <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:50.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+            <div class="scm-bar"><div class="fill" style="width:46.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率26.9%低于基准30.4%，432人中仅116人活跃，沉默+睡眠+预流失合计310人（71.8%），流失风险高于基准</li><li>客单价¥610低于基准¥628，近3周波动大（¥660→¥530→¥610），第2周骤降20%显示客群消费力不稳定</li><li>储值会员仅38人占比8.8%极低，其中21%即8人非活跃，核心VIP28人+重要63人共91人未被有效激活复购</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅22.4%（基准30.4%），527名有效会员中活跃仅118人，预流失高达262人占49.7%，会员流失风险率78.6%远超基准70.1%</li><li>168名储值会员中非活跃占比80%（约134人），储值资金沉淀但未转化消费，核心VIP仅27人难以支撑业绩</li><li>近3周业绩持续低迷（¥16,737→¥16,920→¥15,712），周均买家仅19-21人，客单价¥561低于基准¥628，连带率2.18低于基准2.23，门店缺乏消费驱动力</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">133名睡眠会员中的重要+核心VIP层级（约45人）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（件单价¥312×3件=¥936，折后¥836÷¥936=89%，储值叠加×0.8=71.3%≥70%合规）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒20%约9人到店，连带3件客单提升至¥836，预计贡献约7,500元周业绩增量</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">134名非活跃储值会员（重点触达预流失及睡眠阶段）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付820×0.8=656元，折扣率约72.9%，换季合规≥70%），短信+企微定向推送，强调储值余额即将到期提醒</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒18%约24人到店，客单提升至¥900+，预计贡献约21,600元，同时带动连带率提升至2.3以上</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="E B C" data-level="attention" data-region="古欢欢">
+    <div class="store-card collapsed" data-type="E A B C D" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">东莞黄江大道（有效521人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(1/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">17.7%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:35.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">83.5%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:83.5%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">2.42</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:60.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥614</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:51.2%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.7%（基准30.4%），521名有效会员中仅92人活跃，预流失253人占比48.6%，流失风险率高达83.5%</li><li>储值会员57人中非活跃占79%（约45人），储值资金沉淀未能驱动复购，核心资产浪费严重</li><li>近3周买家数持续低迷（15→13→15人），周均业绩约¥11,713，客流严重不足，门店经营陷入低循环</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">45名非活跃储值会员+253名预流失会员中消费≥2次的高潜客户</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">储值会员发满600减50券（储值叠加后折扣约73.3%，合规）；预流失会员发无门槛80元券（件单价312×2=624，折扣87.2%，合规），限7天有效制造紧迫感</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒储值会员20%约9人+预流失会员10%约25人到店，合计34人贡献约¥20,000-25,000，将周买家数提升至25+人</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">湛江吴川（有效453人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(0/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">25.2%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:50.4%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">75.9%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:75.9%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">2.0</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:50.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">¥522</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><p>复合问题（C、D）——流失风险率75.9%、活跃率25.2%均偏离基准</p></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><p>储值余额提醒+专属到店礼,刺激245名储值会员消耗余额</p></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="E A B C" data-level="urgent" data-region="古欢欢">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">东莞南城（有效443人）</div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=A+B+C</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">17.6%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:35.2%;background:var(--red);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">84.0%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:84.0%;background:var(--red);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">2.63</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:65.8%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥657</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:54.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率仅17.6%（基准30.4%），443人中仅78人活跃，预流失会员高达248人占56%，流失风险率84%远超基准70.1%</li><li>58名储值会员中86%（约50人）处于非活跃状态，核心VIP 37人+重要会员63人共100人中大量沉睡，高价值会员唤醒缺失严重</li><li>近3周买家数仅10→11→13人，周均订单不足15笔，庞大会员池（443人）几乎未被激活，到店转化极低</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">248名预流失会员中的核心VIP及重要会员（约45人）+ 50名非活跃储值会员，合计约95人</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后折扣约71%，换季红线70%合规；非储值会员折扣89%合规），短信+企微1对1触达，强调限时7天有效</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒20%约19人到店，按客单价657元计算，预计贡献约12,500元，同时拉升活跃率至21%以上</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="E C D" data-level="urgent" data-region="古欢欢">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">英德朵以（有效271人）</div>
-            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-e">E型·复合</span><span class="sc-tag" style="background:#f1f5f9;color:#64748b;font-size:10px;">=C+D</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag urgent">🔴 紧急</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1484,59 +1367,20 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>储值会员119人中非活跃占比高达77%（约92人沉睡），储值资金未被有效激活，是最大的业绩增量来源</li><li>生命周期健康度堪忧：预流失106人+睡眠65人合计171人，占有效会员63%，远超活跃会员81人</li><li>近3周买家数波动明显（15→10→18人），周均客流仅14人，到店频次不足制约业绩天花板</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率70.8%，预流失+睡眠会员合计171人占总会员63%，会员资产严重恶化</li><li>储值会员119人中非活跃占比77%（约92人），储值资金沉淀未转化为到店消费</li><li>近3周买家数仅15→10→18人，271名有效会员周均到店转化率不足7%，客流严重不足</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">92名非活跃储值会员（优先触达其中25名核心VIP和65名重要会员中的储值用户）</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">发放满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%≥70%，合规），短信+企微定向推送，强调储值余额即将届满提醒到店</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约14人到店，按客单价¥704估算，贡献约9,800元周增量，同时拉动活跃率提升至33%以上</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">92名非活跃储值会员（优先触达25名核心VIP及65名重要会员中的储值用户）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后实付640元，折扣率71%，换季合规；件单价312×3件=936元可触发）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约14人到店，客单704元基础上预计贡献约9,800元周增量，同时降低预流失人群规模</span></div>
         </div></div></div>
             </div>
         </div>
     </div>
     
-    <div class="store-card collapsed" data-type="highlight" data-level="highlight" data-region="李硕果">
-        <div class="store-card-header" onclick="toggleStoreCard(this)">
-            <div class="sc-name">深圳满京华店（有效335人）</div>
-            <div class="sc-tags"><span class="sc-tag normal">亮点门店</span><span class="sc-tag normal">🟢 亮点</span><span class="sc-expand-icon">▶</span></div>
-        </div>
-        <div class="store-card-body">
-            <div class="sc-metrics">
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">49.9%</div>
-            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:99.8%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--green);">49.9%</div>
-            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:49.9%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--orange);">2.24</div>
-            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:56.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
-        </div>
-        <div class="sc-metric">
-            <div class="scm-value" style="color:var(--red);">¥522</div>
-            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
-            <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
-        </div>
-    </div>
-            <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率49.9%远超基准30.4%，流失风险率49.9%远低于基准70.1%，会员健康度表现优异</li><li>储值会员58人中非活跃仅7%（约4人），储值会员维护到位，复购粘性强</li><li>近3周业绩呈下滑趋势（¥15,784→¥19,166→¥10,963），客单价从¥607降至¥522低于基准¥628，需关注连带提升空间</li></ul></div></div>
-                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">78名预流失会员+50名睡眠会员中的核心VIP及重要会员</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满1000减100券（折扣率90%，储值叠加后72%≥70%合规），针对沉睡高价值客群定向推送，搭配连带话术提升件单</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒预流失+睡眠会员中20%约26人到店，客单价回升至¥600+，周业绩恢复至¥15,000以上水平</span></div>
-        </div></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="store-card collapsed" data-type="normal" data-level="normal" data-region="李硕果">
+    <div class="store-card collapsed" data-type="D" data-level="attention" data-region="李硕果">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">深圳龙华大浪（有效299人）</div>
-            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag normal"></span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag type-d">D型·质量下滑</span><span class="sc-tag bench-above">⬆ 高于大盘(3/5)</span><span class="sc-tag attention">🟡 关注</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1562,11 +1406,167 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率78.6%远超基准30.4%，流失风险率仅18.1%（基准70.1%），会员健康度表现优异</li><li>近3周客单价从¥779下滑至¥560，降幅28.1%；连带率从2.52降至1.96，均低于基准¥628和2.23，存在客单价与连带率双降趋势</li><li>普通会员167人占比55.9%，核心VIP仅5人，会员向上跃迁动力不足，高价值会员占比偏低</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>连带率1.93远低于基准2.23，近3周从2.52持续下滑至1.96，搭配销售能力明显退化</li><li>客单价¥559低于基准¥628，近3周从¥779骤降至¥560，降幅达28%，单客贡献严重缩水</li><li>活跃率78.6%远超基准但客单价和连带率双低，说明235名活跃会员到店频次高但购买深度不足，存在'逛而不买多'的问题</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">167名普通会员中近期有消费记录的活跃客户</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满600减50券（件单价¥312×2件=¥624，实付¥574，折扣率92%，储值叠加后×0.8=73.6%，≥70%合规），引导两件连带提升客单价</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">连带率提升至2.2以上，客单价回升至¥600+，预计带动20%普通会员约33人升单，周业绩增长约8,000元</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">235名活跃会员中客单价低于¥500的普通会员群体</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满2件减50券（件单价¥312×2=¥624，减50后¥574，折扣率92%，储值叠加后×0.8=73.6%，≥70%合规），刺激多件连带</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">连带率提升至2.2以上，预计20%活跃会员响应约47人多买1件，周增额约¥14,664，客单价回升至¥620+</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="normal" data-level="improve" data-region="彭苑婷">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">岗顶天娱广场（有效999人）</div>
+            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag improve">🟠 待提升</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">27.8%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:55.6%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">73.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:73.2%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">3.5</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:87.5%;background:var(--green);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">¥951</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:79.2%;background:var(--green);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>流失风险率73.2%高于基准70.1%，预流失会员470人占总会员47%，沉默+睡眠+预流失合计731人，会员健康度堪忧</li><li>储值会员330人中非活跃占76%（约251人），大量已储值用户未持续消费，储值资金沉淀未转化为到店频次</li><li>活跃率27.8%低于基准30.4%，但活跃客质极高（客单¥951、连带3.5远超基准），说明问题不在转化能力而在到店人数不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">251名非活跃储值会员（已有储值余额但近期未到店）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（储值叠加后实付：(900-80)×0.8=656元，对应件单价¥312×3件=¥936，折扣率约70%，换季合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒15%约38人到店，结合门店连带率3.5和客单¥951，预计贡献约36,000元业绩，同时拉动活跃率提升至30%以上</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="normal" data-level="improve" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">坪地宜城店（有效432人）</div>
+            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag bench-below">⬇ 低于大盘(2/5)</span><span class="sc-tag improve">🟠 待提升</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">26.9%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:53.8%;background:var(--orange);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">71.8%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:71.8%;background:var(--orange);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">2.34</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:58.5%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥610</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:50.8%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率26.9%低于基准30.4%，432名会员中仅116人活跃，沉默+睡眠+预流失合计310人（占71.8%）流失风险突出</li><li>客单价¥610低于基准¥628，近3周波动明显（¥660→¥530→¥610），第2周骤降20%说明高价值会员到店不稳定</li><li>核心VIP 28人+重要会员63人合计91人，但周均买家仅19.7人，高价值会员复购驱动不足</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">133名睡眠会员及116名预流失会员中有消费力的中高层级客户（约85人）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（券后折扣88.9%，储值叠加后71.1%≥70%合规），短信定向触达沉睡高价值会员</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%-15%约11-13人到店，按客单¥900计算预计贡献约10,800元，同时拉升活跃率至29%以上</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="highlight" data-level="highlight" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">深圳满京华店（有效335人）</div>
+            <div class="sc-tags"><span class="sc-tag normal">亮点门店</span><span class="sc-tag bench-above">⬆ 高于大盘(4/5)</span><span class="sc-tag normal">🟢 亮点</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">49.9%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:99.8%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">49.9%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:49.9%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">2.24</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:56.0%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--red);">¥522</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:43.5%;background:var(--red);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率49.9%远超基准30.4%，流失风险率49.9%远低于基准70.1%，会员健康度表现突出</li><li>近3周业绩呈下滑趋势（¥15,784→¥19,166→¥10,963），最近一周买家数降至16人，客单价¥522低于基准¥628，存在客单价提升空间</li><li>核心VIP 18人+重要会员53人合计71人，占比21%，高价值会员储备良好，连带率2.24持平基准但仍有提升空间</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">71名核心VIP及重要会员中近2周未到店者</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减80券（件单价¥312×3件=¥936，折后¥856，折扣率91.5%，储值叠加后73.2%，合规），引导连带3件提升客单价</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">激活约20%即14人到店，客单价提升至¥850+，连带率提升至2.5，单周贡献约¥11,900，经验可推广至同类门店</span></div>
+        </div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-card collapsed" data-type="normal" data-level="normal" data-region="李硕果">
+        <div class="store-card-header" onclick="toggleStoreCard(this)">
+            <div class="sc-name">深圳龙岗坪山（有效780人）</div>
+            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag bench-above">⬆ 高于大盘(4/5)</span><span class="sc-expand-icon">▶</span></div>
+        </div>
+        <div class="store-card-body">
+            <div class="sc-metrics">
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">33.1%</div>
+            <div class="scm-label has-tip" tabindex="0">活跃率<span class="tip-text">活跃会员数÷有效会员数×100%（活跃=60天内有消费，有效=360天内有消费）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:66.2%;background:var(--green);"></div><div class="benchmark" style="left:60.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--green);">67.2%</div>
+            <div class="scm-label has-tip" tabindex="0">流失风险率<span class="tip-text">（沉默+睡眠+预流失）÷会员总数×100%（反映有流失风险的会员占比）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:67.2%;background:var(--green);"></div><div class="benchmark" style="left:70.1%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">2.33</div>
+            <div class="scm-label has-tip" tabindex="0">连带率<span class="tip-text">本周全渠道订单商品总件数÷订单总笔数（每笔订单平均购买件数）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:58.2%;background:var(--orange);"></div><div class="benchmark" style="left:55.8%;"></div></div>
+        </div>
+        <div class="sc-metric">
+            <div class="scm-value" style="color:var(--orange);">¥619</div>
+            <div class="scm-label has-tip" tabindex="0">客单价<span class="tip-text">本周全渠道订单总金额÷订单总笔数（每笔订单平均消费金额，剔除退款）</span></div>
+            <div class="scm-bar"><div class="fill" style="width:51.6%;background:var(--orange);"></div><div class="benchmark" style="left:52.3%;"></div></div>
+        </div>
+    </div>
+            <div class="sc-bottom">
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>门店整体运营健康，活跃率33.1%高于基准30.4%，连带率2.33优于基准2.23，基本面稳固</li><li>沉默+睡眠+预流失合计524人占67.2%，其中睡眠252人是最大可挽回池，转化空间明确</li><li>客单价¥619略低于基准¥628，普通会员386人占比49.5%，提升单客价值是增长关键</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">252名睡眠期会员及21名非活跃储值会员</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（储值叠加后折扣71%，换季合规；非储值会员折扣88.9%，当季合规）</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒12%约30人到店，配合连带率2.33预计客单¥900+，贡献约27,000元</span></div>
         </div></div></div>
             </div>
         </div>
@@ -1575,7 +1575,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <div class="store-card collapsed" data-type="normal" data-level="normal" data-region="李硕果">
         <div class="store-card-header" onclick="toggleStoreCard(this)">
             <div class="sc-name">深圳宝安店（有效295人）</div>
-            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag normal"></span><span class="sc-expand-icon">▶</span></div>
+            <div class="sc-tags"><span class="sc-tag normal">健康</span><span class="sc-tag bench-above">⬆ 高于大盘(3/5)</span><span class="sc-expand-icon">▶</span></div>
         </div>
         <div class="store-card-body">
             <div class="sc-metrics">
@@ -1601,11 +1601,11 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div>
             <div class="sc-bottom">
-                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率79.3%远超基准30.4%，流失风险率21.4%远低于基准70.1%，会员健康度优秀</li><li>近3周买家数从39人降至31人（降幅20.5%），客流持续收窄需关注；但客单价从¥444提升至¥587（+32.2%），连带率从1.65提升至2.11，导购转化能力在增强</li><li>连带率2.11略低于基准2.23，客单价¥587低于基准¥628，仍有约¥41的客单提升空间，可通过搭配销售补齐</li></ul></div></div>
+                <div class="scb-item"><div class="scb-label">🔍 核心问题</div><div class="scb-text"><ul class="ai-points"><li>活跃率79.3%远超基准30.4%，门店会员健康度优秀，但近3周买家数持续下滑（39→35→31人），到店流量收窄趋势明显</li><li>客单价¥587低于基准¥628，连带率2.11低于基准2.23，说明进店顾客的深度消费潜力未充分挖掘</li><li>预流失会员37人占比12.5%，虽低于基准但绝对数量不小，需提前干预防止活跃率下滑</li></ul></div></div>
                 <div class="scb-item"><div class="scb-label">🎯 本周动作</div><div class="scb-text"><div class="ai-action">
-            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">37名预流失会员+9名沉默会员共46人</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减60券（折扣93.3%，储值叠加后74.7%≥70%，合规），引导搭配第2件提升连带</span></div>
-            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒25%约12人到店，人均客单提升至¥900+，预计贡献约¥10,800，同时连带率向2.23基准靠拢</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">👥</span><span class="ai-act-label">目标</span><span class="ai-act-val">37名预流失会员+17名睡眠会员共54人</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">🎫</span><span class="ai-act-label">方式</span><span class="ai-act-val">满900减100券（折扣率88.9%，储值叠加后71.1%≥70%合规），搭配连带引导话术提升件数</span></div>
+            <div class="ai-act-row"><span class="ai-act-icon">📈</span><span class="ai-act-label">预期</span><span class="ai-act-val">唤醒25%约14人到店，连带提升至2.3件，预计贡献客单¥900+，增量业绩约12,600元</span></div>
         </div></div></div>
             </div>
         </div>
@@ -1617,7 +1617,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 <!-- ===== 第五页：行动计划 ===== -->
 <div id="page-actions" class="page">
     <div class="page-summary">
-        本周<strong>4项大盘行动 + 22家门店行动</strong>，基于门店诊断和人群分析自动生成，按区域/门店拆解到人。
+        本周<strong>4项大盘行动 + 20家门店行动</strong>，基于门店诊断和人群分析自动生成，按区域/门店拆解到人。
     </div>
 
     <!-- Tab切换 -->
@@ -1643,9 +1643,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <td>6/11</td>
     </tr><tr>
         <td><span class="pri-badge p0">P0</span></td>
-        <td>紧急门店专项干预（9家）</td>
+        <td>紧急门店专项干预（19家）</td>
         <td>问题门店会员</td>
-        <td>广州塔广场店、东莞黄江大道、清远城市广场</td>
+        <td>萝岗万达、广州塔广场店、潘州广场朵以</td>
         <td>待配置</td>
         <td>到店率提升</td>
         <td>6/14</td>
@@ -1695,7 +1695,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 活跃率28.5%低于基准30.0%（差1.5pp）</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 流失风险率71.7%高于基准70.1%</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 连带率1.9低于基准2.23</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 沉睡储值比74.7%高于基准15.0%</div></div>
         <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚宜都清江店、通城朵以，活跃率28.5%低于基准30.0%（差1.5pp）。</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 活跃率提升至28.9%+</span><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 流失风险率控制在71.4%以下</span><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 连带提升至2.0</span></div>
-        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：宜都清江店、通城朵以、宜城香港路</div>
+        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：宜都清江店、通城朵以</div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">彭苑婷（8家门店）</div>
@@ -1708,9 +1708,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">¥722</div><div style="font-size:10px;color:var(--text-tri);">客单价</div></div>
     </div>
         <div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 活跃率23.9%低于基准30.0%（差6.1pp）</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 流失风险率77.1%高于基准70.1%</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 沉睡储值比83.0%高于基准15.0%</div></div>
-        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚广州塔广场店、南村店，活跃率23.9%低于基准30.0%（差6.1pp）。</div>
+        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚海珠乐峰广场、白云万象汇朵以，活跃率23.9%低于基准30.0%（差6.1pp）。</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 活跃率提升至25.7%+</span><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 流失风险率控制在75.7%以下</span></div>
-        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：广州塔广场店、南村店、岗顶天娱广场、海珠乐峰广场</div>
+        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：海珠乐峰广场、白云万象汇朵以</div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">李硕果（5家门店）</div>
@@ -1725,11 +1725,11 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 连带率2.19低于基准2.23</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 沉睡储值比16.7%高于基准15.0%</div></div>
         <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 关注连带率2.19低于基准2.23，推动改善。</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 连带提升至2.2</span></div>
-        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：坪地宜城店、深圳龙岗坪山</div>
+        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：深圳龙华大浪</div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">赖月平（2家门店）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);font-weight:600;">🟡 需关注</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">🔴 需紧急关注</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0;padding:10px;background:var(--bg);border-radius:8px;">
         <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">26.2%</div><div style="font-size:10px;color:var(--text-tri);">活跃率</div></div>
@@ -1738,7 +1738,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">¥746</div><div style="font-size:10px;color:var(--text-tri);">客单价</div></div>
     </div>
         <div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 活跃率26.2%低于基准30.0%（差3.8pp）</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 流失风险率74.3%高于基准70.1%</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 沉睡储值比79.2%高于基准15.0%</div></div>
-        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 关注活跃率26.2%低于基准30.0%（差3.8pp），推动改善。</div>
+        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚萝岗万达、花都骏壹万邦，活跃率26.2%低于基准30.0%（差3.8pp）。</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 活跃率提升至27.3%+</span><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 流失风险率控制在73.5%以下</span></div>
         <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：萝岗万达、花都骏壹万邦</div>
     </div><div class="card" style="margin-bottom:12px;">
@@ -1753,9 +1753,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">¥610</div><div style="font-size:10px;color:var(--text-tri);">客单价</div></div>
     </div>
         <div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 活跃率23.1%低于基准30.0%（差6.9pp）</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 流失风险率77.8%高于基准70.1%</div><div style="font-size:12px;color:var(--text-sec);padding:3px 0;">⚠️ 沉睡储值比78.5%高于基准15.0%</div></div>
-        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚高埗万和、东莞南城，活跃率23.1%低于基准30.0%（差6.9pp）。</div>
+        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px;padding:8px 12px;background:var(--brand-lighter);border-radius:6px;border-left:3px solid var(--brand);">📋 重点攻坚大朗店、高埗万和，活跃率23.1%低于基准30.0%（差6.9pp）。</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 活跃率提升至25.2%+</span><span style="font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--brand);font-weight:600;margin-right:6px;">📈 流失风险率控制在76.3%以下</span></div>
-        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：高埗万和、东莞南城、大朗店、乐从天佑城</div>
+        <div style="font-size:11px;color:var(--text-tri);margin-top:8px;">⚡ 主要拖累：大朗店、高埗万和</div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">陈祝利（1家门店）</div>
@@ -1783,45 +1783,45 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <!-- 门店行动Tab -->
     <div id="action-tab-store" class="action-tab-content">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <div style="font-size:14px;font-weight:700;color:var(--text);">本周门店行动计划（22家门店）</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">本周门店行动计划（20家门店）</div>
             <div style="display:flex;gap:8px;">
-                <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">🔴 紧急 9家</span>
-                <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);font-weight:600;">🟡 关注 13家</span>
+                <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">🔴 紧急 19家</span>
+                <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);font-weight:600;">🟡 关注 1家</span>
             </div>
         </div>
         <div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">赖月平（2家）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">2家关注</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">2家紧急</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="store-action-item" data-region="赖月平">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">萝岗万达</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>938名非活跃储值会员（已有储值余额，唤醒成本最低、转化概率最高）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（件单价¥312×3件=¥936达标，券后折扣91.4%，储值叠加×0.8后实付约¥685，折扣率73.2%≥70%合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约140人到店，客单价¥685×140人，预计贡献增量业绩约96,000元，同步拉升活跃率至30%+</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>938名非活跃储值会员（重点触达319名重要会员及预流失阶段的储值用户）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付820×0.8=656元，折扣率约72.9%，换季期间≥70%合规），短信+企微定向推送，限7天有效制造紧迫感</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约140人到店，按客单价648元估算，预期贡献约90,720元，同时拉动活跃率回升至30%以上</div>
             </div>
         </div><div class="store-action-item" data-region="赖月平">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">花都骏壹万邦</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>264名非活跃储值会员（优先触达预流失306人中的储值用户）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>推送满800减100券（储值叠加后实付560元，折扣率70%=满足换季红线；件单价312×连带2.52≈786，凑单门槛合理）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒18%约48人到店，预估贡献客单745元×48人≈35,760元，活跃率提升至约32%回归基准</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>264名非活跃储值会员（已有储值余额，回店动机最强）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付640元，折扣率71%，换季合规），短信定向推送并标注储值余额可用</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约32-40人到店，按客单845元计算预计贡献27,000-34,000元，活跃率提升至30%以上回归基准</div>
             </div>
         </div>
         </div>
         
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:14px;font-weight:700;color:var(--text);">彭苑婷（8家）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">3家紧急 + 5家关注</span>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">彭苑婷（7家）</div>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">7家紧急</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="store-action-item" data-region="彭苑婷">
@@ -1830,39 +1830,39 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">广州塔广场店</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>423名非活跃储值会员+418名睡眠期会员，优先触达储值会员</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>向储值会员发放满900减100券（储值叠加后实付=800×0.8=640元，折扣率约71%，换季合规≥70%）；向睡眠期会员发放满600减50无门槛券（折扣率91.7%，合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>储值会员唤醒率15%约63人到店，按客单¥922预估贡献约58,000元；睡眠会员唤醒8%约33人，贡献约28,700元，合计新增约86,700元业绩</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>423名非活跃储值会员（优先触达其中190名重要层级会员）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付约(900-80)×0.8=656元，件单价¥312×3件=936元，折扣率约70%，换季合规）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%-20%约65-85人到店，按客单¥922估算贡献约60,000-78,000元，活跃率提升至21%以上</div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">潘州广场朵以</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>210名非活跃储值会员及529名预流失会员中有储值或消费2次以上的高价值人群</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>向非活跃储值会员发放满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%，≥70%换季合规）；向预流失高价值会员发放满600减50无门槛券（折扣91.7%，储值叠加73.3%，合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒储值会员15%约32人、预流失会员8%约42人到店，合计约74人，按客单价¥748估算可贡献约55,000元业绩，活跃率有望回升至26%以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>210名非活跃储值会员及529名预流失会员中有储值或消费≥2次的高潜人群</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>储值会员发满600减50券（储值叠加后折扣约73%，合规），预流失人群发无门槛80元券（件单价312×2=624，折扣87%合规），短信+企微双触达</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒储值非活跃15%约32人、预流失10%约53人到店，预计新增85人次贡献约63,000元周业绩，扭转下滑趋势</div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">白云万象汇朵以</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>266名非活跃储值会员（优先）+ 252名睡眠期会员</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付640元，折扣率71.1%，换季红线70%合规），短信触达储值余额提醒+限时7天有效</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员15%约40人到店，睡眠会员5%约13人，预计贡献53笔订单约47,700元周业绩</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>266名非活跃储值会员（已有储值余额但近期未到店）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付：820×0.8=656元，折扣率约73%，合规），短信+企微定向推送，强调储值余额即将享专属优惠</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约40人到店，按客单价668元估算，预计贡献约26,700元业绩，同时拉动活跃率提升4个百分点至28.7%</div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">海珠乐峰广场</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>921名非活跃储值会员中的预流失及睡眠群体（约780人）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>推送满624减80券（件单价¥312×2件=¥624，券后折扣87.2%，储值叠加×0.8后实际折扣69.7%≥换季红线70%，取整为满630减80券确保合规70.1%）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约94-117人到店，人均消费¥630+，预计贡献额外业绩约¥65,000-¥75,000，同步拉升活跃率至30%以上回归基准</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>921名非活跃储值会员（重点锁定预流失628人中的储值用户）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付820×0.8=656元，折扣率72.9%，换季合规；件单价¥312×3件=936元可触发门槛，提升连带）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约110-138人到店，人均消费约¥820，预计贡献增量业绩约¥95,000-¥113,000，活跃率提升至30%以上</div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -1870,9 +1870,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">湛江吴川</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>203名非活跃储值会员中的睡眠及预流失群体</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满600减50券（储值叠加后实付440元，折扣率73.3%≥70%合规），短信触达强调储值余额即将到期提醒</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约25-30人到店，连带率提升至2.2件，预计贡献额外¥13,000-16,000周业绩</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span></div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span></div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span></div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -1880,39 +1880,29 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">南村店</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>134名非活跃储值会员+262名预流失会员中消费≥2次的高潜人群</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>向非活跃储值会员发放满900减80券（储值叠加后实付(900-80)×0.8=656，件单价¥312×3件=936，折扣率70.1%≥70%合规）；向预流失高潜会员发放满600减40无门槛券（折扣率93.3%，安全合规），引导连带提升</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员15%约20人、预流失会员8%约21人到店，合计约41人贡献约¥28,000-¥32,000，活跃率提升至26%以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>134名非活跃储值会员（重点触达预流失及睡眠阶段）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付820×0.8=656元，折扣率约72.9%，换季合规≥70%），短信+企微定向推送，强调储值余额即将到期提醒</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒18%约24人到店，客单提升至¥900+，预计贡献约21,600元，同时带动连带率提升至2.3以上</div>
             </div>
         </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
-                <span style="font-size:13px;font-weight:700;color:var(--text);">岗顶天娱广场</span>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>251名非活跃储值会员（已有储值余额，唤醒成本最低且储值叠加后折扣可控）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（券后¥800÷¥900=88.9%，储值叠加×0.8后实付约71.1%≥70%当季换季红线，合规；搭配短信+企微1对1触达，强调储值余额即将权益升级截止）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%-20%约38-50人到店，按客单¥951估算贡献约36,000-47,500元，同时带动活跃率提升3-5个百分点至30%以上回归基准</div>
-            </div>
-        </div><div class="store-action-item" data-region="彭苑婷" style="display:none;">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">茂名印象汇</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
                 <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>412名非活跃储值会员（优先触达其中268名睡眠期会员）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>推送满900减80券（储值叠加后实付×0.8=656元，折扣率约72.9%，≥换季红线70%合规），短信+企微双触达，强调储值余额即将享专属优惠</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约50-62人到店，按客单价¥742估算，预计贡献额外业绩约37,000-46,000元</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付640元，折扣率71%，换季合规；券有效期10天制造紧迫感）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约62人到店，按客单价¥742计算预计贡献约46,000元，周买家数提升至45+人</div>
             </div>
         </div>
         </div>
         <div class="expand-btn" onclick="toggleRegionStores(this, '彭苑婷')" style="text-align:center;padding:8px;cursor:pointer;font-size:12px;color:var(--brand);font-weight:500;border-top:1px solid var(--border);margin-top:8px;">
-            展开剩余 6 家门店 ↓
+            展开剩余 5 家门店 ↓
         </div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">古欢欢（6家）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">3家紧急 + 3家关注</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">6家紧急</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="store-action-item" data-region="古欢欢">
@@ -1921,19 +1911,19 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">东莞黄江大道</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>253名预流失会员+144名睡眠会员（合计397人）及45名非活跃储值会员优先触达</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>非储值会员发满900减130券（折扣85.6%≥75%合规）；储值会员发满900减80券（储值叠加后900-80=820×0.8=656，折扣72.9%≥70%换季红线合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒预流失+睡眠会员12%-15%约48-60人到店，叠加储值会员唤醒20%约9人，预计新增约57-69笔订单，贡献增量业绩约¥35,000-¥42,000</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>45名非活跃储值会员+253名预流失会员中消费≥2次的高潜客户</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>储值会员发满600减50券（储值叠加后折扣约73.3%，合规）；预流失会员发无门槛80元券（件单价312×2=624，折扣87.2%，合规），限7天有效制造紧迫感</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒储值会员20%约9人+预流失会员10%约25人到店，合计34人贡献约¥20,000-25,000，将周买家数提升至25+人</div>
             </div>
         </div><div class="store-action-item" data-region="古欢欢">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">乐从天佑城</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>340名非活跃储值会员（优先触达预流失572人中的储值用户）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>推送满900减80券（储值叠加后折扣=（900-80）/900×0.8=72.9%≈73%，合规≥70%），短信+企微双触达，强调储值余额即将进入休眠提醒</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约41-51人到店，按客单¥631估算贡献约25,800-32,200元，同时带动活跃率回升至25%以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>340名非活跃储值会员（优先触达预流失阶段的储值用户）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>推送满900减80券（储值叠加后实付：820×0.8=656元，折扣率约73%，符合当季≥75%储值叠加合规线），短信+企微1对1触达，强调储值余额即将沉淀提醒</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约51人到店，按客单¥631估算贡献约32,000元，同时带动活跃率回升至约25%</div>
             </div>
         </div><div class="store-action-item" data-region="古欢欢" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -1941,19 +1931,19 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">高埗万和</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>508名睡眠及预流失会员中优先触达60名非活跃储值会员+129名重要层级会员</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后折扣约72.9%≥70%，合规），搭配满2件减50券提升连带率</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒储值会员15%约9人+重要会员10%约13人到店，预计贡献约19,800元，连带率回升至1.8以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>60名非活跃储值会员+215名睡眠期会员中近90天有购买记录者</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%，储值叠加×0.8=67%不合规；调整为满2件减50券，折扣92%，储值叠加×0.8=73.6%，合规），同步推送储值会员专属满900减80券（折扣91%，储值叠加后72.8%≥70%，合规）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>满2件券提升连带率至1.8+，唤醒储值非活跃会员15%约9人+睡眠会员10%约22人到店，预计贡献额外31人×¥524≈16,200元，周业绩回升至20,000元以上</div>
             </div>
         </div><div class="store-action-item" data-region="古欢欢" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">英德朵以</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>92名非活跃储值会员（优先触达其中25名核心VIP和65名重要会员中的储值用户）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>发放满900减80券（储值叠加后折扣：(900-80)/900×0.8=72.9%≥70%，合规），短信+企微定向推送，强调储值余额即将届满提醒到店</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约14人到店，按客单价¥704估算，贡献约9,800元周增量，同时拉动活跃率提升至33%以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>92名非活跃储值会员（优先触达25名核心VIP及65名重要会员中的储值用户）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付640元，折扣率71%，换季合规；件单价312×3件=936元可触发）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约14人到店，客单704元基础上预计贡献约9,800元周增量，同时降低预流失人群规模</div>
             </div>
         </div><div class="store-action-item" data-region="古欢欢" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -1961,19 +1951,19 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">东莞南城</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>248名预流失会员+50名非活跃储值会员，优先触达100名核心VIP与重要会员中的非活跃人群</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减120券（折扣率86.7%，储值叠加后69.3%≥换季红线70%，合规边界内）；对非活跃储值会员额外发放无门槛50元券刺激首次回店</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒预流失会员12%约30人+非活跃储值会员20%约10人到店，预计新增40人到店，按客单价657元计算贡献约26,280元周业绩</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>248名预流失会员中的核心VIP及重要会员（约45人）+ 50名非活跃储值会员，合计约95人</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后折扣约71%，换季红线70%合规；非储值会员折扣89%合规），短信+企微1对1触达，强调限时7天有效</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒20%约19人到店，按客单价657元计算，预计贡献约12,500元，同时拉升活跃率至21%以上</div>
             </div>
         </div><div class="store-action-item" data-region="古欢欢" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">大朗店</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>106名非活跃储值会员及174名睡眠期会员</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>向106名非活跃储值会员推送满900减80券（储值叠加后实付(900-80)×0.8=¥656，折扣率72.9%，换季红线≥70%合规）；向174名睡眠会员推送满600减40无门槛券（实付¥560，折扣率93.3%，合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员15%约16人到店，贡献约¥13,120；唤醒睡眠会员10%约17人到店，贡献约¥9,520，合计预估增收约¥22,640，同步提升活跃率至32%以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>106名非活跃储值会员（已有储值余额但近期未消费）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减80券（储值叠加后实付：(900-80)×0.8=656元，折扣率72.9%，换季红线70%合规）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒15%约16人到店，客单约900元，预计贡献约14,400元周业绩，同步带动活跃率回升至30%以上</div>
             </div>
         </div>
         </div>
@@ -1992,9 +1982,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">清远城市广场</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>775名非活跃储值会员中的预流失及睡眠群体</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付=800×0.8=640元，件单价¥312按连带2件=¥624，折扣率71%，换季合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约93-116人到店，预计贡献约74,000-93,000元业绩，同步拉升客单价至¥640+</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>775名非活跃储值会员（重点筛选预流失及睡眠阶段的储值客户）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满2件减100元券（件单价¥312×2=¥624，减100后¥524，储值叠加×0.8=¥419.2，折扣率67%→调整为满2件减60元券，实付¥564×0.8=¥451.2，折扣率72.3%≥70%换季红线，合规），短信+企微定向推送</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒12%-15%约93-116人到店，连带率提升至2.0+，预计贡献约52,000-65,000元周业绩增量</div>
             </div>
         </div>
         </div>
@@ -2002,18 +1992,18 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:14px;font-weight:700;color:var(--text);">鲜于浩（3家）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">2家紧急 + 1家关注</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">3家紧急</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="store-action-item" data-region="鲜于浩">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
+                <span style="font-size:13px;">🔴</span>
                 <span style="font-size:13px;font-weight:700;color:var(--text);">宜城香港路</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>74名非活跃储值会员（优先）+ 224名预流失会员中有2次以上购买记录者</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减70券（储值叠加后实付约664元，折扣率73.8%≥70%合规），引导连带3件达标</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员20%约15人+预流失召回10%约22人到店，预计贡献约30,000元业绩，客单回升至¥650以上</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>74名非活跃储值会员及224名预流失会员中的重要/核心VIP</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（储值叠加后实付640元，折扣71.1%，换季红线70%合规），针对核心VIP发满1200减150券（储值叠加后实付840元，折扣70%，合规）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员20%约15人+预流失VIP 10%约11人到店，预计贡献26人×客单850元≈22,100元，客单价回升至基准水平</div>
             </div>
         </div><div class="store-action-item" data-region="鲜于浩">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -2021,9 +2011,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">宜都清江店</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>243名非活跃储值会员+561名预流失会员中有储值余额者</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满600减100券（储值叠加后实付600×0.8-100=¥380，两件均价¥312则件单价¥190，折扣率76%，合规），推送搭配穿搭方案提升连带</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员18%约44人到店，连带率提升至1.8+，预计贡献额外业绩约¥26,400</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>243名非活跃储值会员及561名预流失会员中有消费记录的高价值群体</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%；储值叠加×0.8后约67折不合规；调整为满2件减50券，折扣92%，储值叠加后73.6%，合规）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员15%约36人到店，连带率提升至2.0以上，预计贡献额外¥22,500周业绩</div>
             </div>
         </div><div class="store-action-item" data-region="鲜于浩" style="display:none;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
@@ -2031,9 +2021,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <span style="font-size:13px;font-weight:700;color:var(--text);">通城朵以</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>287名非活跃储值会员中预流失阶段的高价值客户</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满624减80券（满2件触发，件单价¥312×2=¥624，储值叠加后实付(624-80)×0.8=¥435.2，折扣率69.7%→换季红线70%边界合规），引导连带提升</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒非活跃储值会员15%约43人到店，连带率提升至2.0+，预计贡献额外业绩约¥18,700</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>287名非活跃储值会员（优先触达其中预流失及睡眠阶段人群）</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满2件减100券（件单价¥312×2=¥624，减100后¥524，折扣84%，储值叠加×0.8后67折不达标；调整为满2件减50券，折扣92%，储值叠加后73.6%，合规），同步推送搭配穿搭内容引导连带</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒18%约52人到店，连带提升至2.0+，预计贡献约¥54,000，客单价回升至¥500以上</div>
             </div>
         </div>
         </div>
@@ -2042,29 +2032,19 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         </div>
     </div><div class="card" style="margin-bottom:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:14px;font-weight:700;color:var(--text);">李硕果（2家）</div>
-            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">2家关注</span>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">李硕果（1家）</div>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);font-weight:600;">1家关注</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="store-action-item" data-region="李硕果">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
                 <span style="font-size:13px;">🟡</span>
-                <span style="font-size:13px;font-weight:700;color:var(--text);">深圳龙岗坪山</span>
+                <span style="font-size:13px;font-weight:700;color:var(--text);">深圳龙华大浪</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>252名睡眠会员及21名非活跃储值会员（合计273人）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>睡眠会员发放满900减100券（折后价¥800/单，件单价¥312×3件=¥936，实付¥836，折扣率89.3%≥75%合规）；非活跃储值会员发放满600减50券（储值叠加后实付(600-50)×0.8=¥440，折扣73.3%≥70%换季红线合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒睡眠会员12%约30人到店贡献约¥25,000，激活储值会员30%约6人到店贡献约¥3,600，合计约¥28,600增量</div>
-            </div>
-        </div><div class="store-action-item" data-region="李硕果">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <span style="font-size:13px;">🟡</span>
-                <span style="font-size:13px;font-weight:700;color:var(--text);">坪地宜城店</span>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:4px;padding-left:20px;">
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>133名睡眠会员中的重要+核心VIP层级（约45人）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满900减100券（件单价¥312×3件=¥936，折后¥836÷¥936=89%，储值叠加×0.8=71.3%≥70%合规）</div>
-                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>唤醒20%约9人到店，连带3件客单提升至¥836，预计贡献约7,500元周业绩增量</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">👥 目标：</span>235名活跃会员中客单价低于¥500的普通会员群体</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">🎫 方式：</span>满2件减50券（件单价¥312×2=¥624，减50后¥574，折扣率92%，储值叠加后×0.8=73.6%，≥70%合规），刺激多件连带</div>
+                <div style="font-size:12px;color:var(--text);"><span style="color:var(--brand);font-weight:600;">📈 预期：</span>连带率提升至2.2以上，预计20%活跃会员响应约47人多买1件，周增额约¥14,664，客单价回升至¥620+</div>
             </div>
         </div>
         </div>
@@ -2170,7 +2150,7 @@ function applyStoreFilters() {
             if (matchType && matchRegion) matchCards.push(card);
         });
         // 确定最高紧急等级: urgent > attention > normal/highlight
-        var severityOrder = ['urgent', 'attention', 'normal', 'highlight'];
+        var severityOrder = ['urgent', 'attention', 'improve', 'normal', 'highlight'];
         var topLevel = null;
         for (var i = 0; i < severityOrder.length; i++) {
             if (matchCards.some(c => c.dataset.level === severityOrder[i])) {
@@ -2190,7 +2170,7 @@ function applyStoreFilters() {
             var showType = true;
             var showRegion = true;
             if (_storeTypeFilter !== 'all') {
-                if (_storeTypeFilter === 'urgent' || _storeTypeFilter === 'attention' || _storeTypeFilter === 'highlight') {
+                if (_storeTypeFilter === 'urgent' || _storeTypeFilter === 'attention' || _storeTypeFilter === 'improve' || _storeTypeFilter === 'highlight') {
                     showType = card.dataset.level === _storeTypeFilter;
                 } else {
                     showType = card.dataset.type.includes(_storeTypeFilter);
