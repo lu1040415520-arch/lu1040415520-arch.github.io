@@ -163,6 +163,20 @@
         .pri-badge.p0 { background:var(--red-bg);color:var(--red); }
         .pri-badge.p1 { background:var(--orange-bg);color:var(--orange); }
         .pri-badge.p2 { background:var(--brand-lighter);color:var(--brand); }
+        .ga-cards { display:flex;flex-direction:column;gap:16px; }
+        .ga-card { background:var(--white);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow); }
+        .ga-header { display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap; }
+        .ga-title { font-size:15px;font-weight:700;color:var(--text);flex:1; }
+        .ga-deadline { font-size:12px;color:var(--text-tri);background:var(--bg);padding:3px 10px;border-radius:4px;white-space:nowrap; }
+        .ga-body { display:grid;grid-template-columns:1fr 1fr;gap:10px 24px; }
+        .ga-field { display:flex;flex-direction:column;gap:3px; }
+        .ga-label { font-size:11px;color:var(--text-tri);font-weight:600;text-transform:uppercase;letter-spacing:0.5px; }
+        .ga-value { font-size:13px;color:var(--text-sec);line-height:1.6; }
+        .ga-goal { color:var(--brand-dark);font-weight:600; }
+        @media (max-width:768px) {
+            .ga-body { grid-template-columns:1fr; }
+            .ga-card { padding:16px; }
+        }
         .action-tabs { display:flex;gap:0;margin-bottom:16px;background:var(--bg);border-radius:var(--radius);padding:4px;border:1px solid var(--border); }
         .action-tab { flex:1;padding:10px 16px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text-sec);cursor:pointer;border-radius:calc(var(--radius) - 2px);transition:all 0.2s; }
         .action-tab.active { background:var(--white);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -1691,42 +1705,55 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <div id="action-tab-global" class="action-tab-content active">
         <div class="card section-gap">
             <div class="card-title"><div class="dot" style="background:var(--brand)"></div>本周大盘行动计划</div>
-            <table class="plan-table">
-                <thead><tr><th style="width:60px;">优先级</th><th>行动内容</th><th style="width:100px;">目标人群</th><th style="width:110px;">涉及门店</th><th style="width:80px;">负责人</th><th style="width:120px;">目标指标</th><th style="width:70px;">截止</th></tr></thead>
-                <tbody><tr>
-        <td><span class="pri-badge p0">P0</span></td>
-        <td>全域储值沉睡会员分级唤醒——48小时启动、7天闭环</td>
-        <td>8173名储值会员中80%非活跃约6538人</td>
-        <td>19家储值非活跃占比≥76%的门店（全域覆盖）</td>
-        <td>会员运营总监统筹，各店长执行</td>
-        <td>首周激活到店800人，唤醒沉睡资金≥¥38万，储值非活跃占比从80%降至72%</td>
-        <td>7/11</td>
-    </tr><tr>
-        <td><span class="pri-badge p0">P0</span></td>
-        <td>预流失会员分级拦截——高价值电话回访+普通企微批量触达</td>
-        <td>流失风险会员约10798人(41.3%)，优先触达近90天未消费高客单客群</td>
-        <td>19家流失风险率≥73%的紧急门店，重点关注东莞黄江(84%)、广州塔(82%)、乐从天佑城(80%)</td>
-        <td>区域经理督导，店长+资深导购执行</td>
-        <td>流失风险率从41.3%降至38%以下，拦截回流到店≥500人，活跃率从26.8%提升至29%+</td>
-        <td>7/14</td>
-    </tr><tr>
-        <td><span class="pri-badge p1">P1</span></td>
-        <td>全域连带率与客单价提升——标准搭配方案输出+晨会演练考核机制</td>
-        <td>周均1039单客群，重点提升连带<2.0及客单<¥550的门店顾客</td>
-        <td>15家客单价低+13家连带率低门店，重点：宜都清江(1.8/¥415)、宜城香港路(1.9/¥437)、白云万象汇(1.78/¥544)、高埗万和(2.0/¥508)</td>
-        <td>商品部出搭配方案，培训部考核通关，店长每日追踪</td>
-        <td>连带率从2.22提升至2.35+，客单价从¥602提升至¥640+，周业绩突破¥68万</td>
-        <td>7/14</td>
-    </tr><tr>
-        <td><span class="pri-badge p2">P2</span></td>
-        <td>亮点门店经验萃取与紧急门店1对1帮扶结对</td>
-        <td>19家紧急门店店长及核心导购团队</td>
-        <td>1家亮点门店+3家正常门店输出方法论，定向帮扶活跃率<22%的5家门店(东莞黄江、广州塔、乐从天佑城、潘州广场、南村店)</td>
-        <td>运营总监主导，亮点/正常门店店长担任帮扶导师</td>
-        <td>5家重点帮扶门店活跃率平均提升3个百分点，达到22%+</td>
-        <td>7/18</td>
-    </tr></tbody>
-            </table>
+            <div class="ga-cards"><div class="ga-card" style="border-left:4px solid var(--red);">
+        <div class="ga-header">
+            <span class="pri-badge p0">P0</span>
+            <span class="ga-title">全域储值沉睡会员分级唤醒——48小时启动、7天闭环</span>
+            <span class="ga-deadline">截止 7/11</span>
+        </div>
+        <div class="ga-body">
+            <div class="ga-field"><span class="ga-label">目标人群</span><span class="ga-value">8173名储值会员中80%非活跃约6538人</span></div>
+            <div class="ga-field"><span class="ga-label">涉及门店</span><span class="ga-value">19家储值非活跃占比≥76%的门店（全域覆盖）</span></div>
+            <div class="ga-field"><span class="ga-label">目标指标</span><span class="ga-value ga-goal">首周激活到店800人，唤醒沉睡资金≥¥38万，储值非活跃占比从80%降至72%</span></div>
+            <div class="ga-field"><span class="ga-label">负责人</span><span class="ga-value">零售负责人及各门店店长</span></div>
+        </div>
+    </div><div class="ga-card" style="border-left:4px solid var(--red);">
+        <div class="ga-header">
+            <span class="pri-badge p0">P0</span>
+            <span class="ga-title">预流失会员分级拦截——高价值电话回访+普通企微批量触达</span>
+            <span class="ga-deadline">截止 7/14</span>
+        </div>
+        <div class="ga-body">
+            <div class="ga-field"><span class="ga-label">目标人群</span><span class="ga-value">流失风险会员约10798人(41.3%)，优先触达近90天未消费高客单客群</span></div>
+            <div class="ga-field"><span class="ga-label">涉及门店</span><span class="ga-value">19家流失风险率≥73%的紧急门店，重点关注东莞黄江(84%)、广州塔(82%)、乐从天佑城(80%)</span></div>
+            <div class="ga-field"><span class="ga-label">目标指标</span><span class="ga-value ga-goal">流失风险率从41.3%降至38%以下，拦截回流到店≥500人，活跃率从26.8%提升至29%+</span></div>
+            <div class="ga-field"><span class="ga-label">负责人</span><span class="ga-value">零售负责人及各门店店长</span></div>
+        </div>
+    </div><div class="ga-card" style="border-left:4px solid var(--orange);">
+        <div class="ga-header">
+            <span class="pri-badge p1">P1</span>
+            <span class="ga-title">全域连带率与客单价提升——标准搭配方案输出+晨会演练考核机制</span>
+            <span class="ga-deadline">截止 7/14</span>
+        </div>
+        <div class="ga-body">
+            <div class="ga-field"><span class="ga-label">目标人群</span><span class="ga-value">周均1039单客群，重点提升连带<2.0及客单<¥550的门店顾客</span></div>
+            <div class="ga-field"><span class="ga-label">涉及门店</span><span class="ga-value">15家客单价低+13家连带率低门店，重点：宜都清江(1.8/¥415)、宜城香港路(1.9/¥437)、白云万象汇(1.78/¥544)、高埗万和(2.0/¥508)</span></div>
+            <div class="ga-field"><span class="ga-label">目标指标</span><span class="ga-value ga-goal">连带率从2.22提升至2.35+，客单价从¥602提升至¥640+，周业绩突破¥68万</span></div>
+            <div class="ga-field"><span class="ga-label">负责人</span><span class="ga-value">零售负责人及各门店店长</span></div>
+        </div>
+    </div><div class="ga-card" style="border-left:4px solid var(--brand);">
+        <div class="ga-header">
+            <span class="pri-badge p2">P2</span>
+            <span class="ga-title">亮点门店经验萃取与紧急门店1对1帮扶结对</span>
+            <span class="ga-deadline">截止 7/18</span>
+        </div>
+        <div class="ga-body">
+            <div class="ga-field"><span class="ga-label">目标人群</span><span class="ga-value">19家紧急门店店长及核心导购团队</span></div>
+            <div class="ga-field"><span class="ga-label">涉及门店</span><span class="ga-value">1家亮点门店+3家正常门店输出方法论，定向帮扶活跃率<22%的5家门店(东莞黄江、广州塔、乐从天佑城、潘州广场、南村店)</span></div>
+            <div class="ga-field"><span class="ga-label">目标指标</span><span class="ga-value ga-goal">5家重点帮扶门店活跃率平均提升3个百分点，达到22%+</span></div>
+            <div class="ga-field"><span class="ga-label">负责人</span><span class="ga-value">零售负责人及各门店店长</span></div>
+        </div>
+    </div></div>
         </div>
         <div class="card">
         <div class="card-title"><div class="dot" style="background:var(--text-tri)"></div>上周行动回顾</div>
