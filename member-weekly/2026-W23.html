@@ -79,10 +79,16 @@
         .has-tip { position:relative;cursor:help; }
         .has-tip .tip-text { display:none;position:absolute;z-index:10;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:12px;font-weight:400;padding:8px 12px;border-radius:6px;width:max-content;max-width:220px;white-space:normal;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,0.15); }
         .has-tip .tip-text::after { content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1e293b; }
-        .has-tip:hover .tip-text, .has-tip:focus .tip-text { display:block; }
+        .has-tip:hover .tip-text, .has-tip:focus .tip-text, .has-tip.tip-active .tip-text { display:block; }
         .matrix-table th.row-header .tip-text { left:auto;right:0;transform:none;bottom:calc(100% + 6px); }
         .matrix-table th.row-header .tip-text::after { left:auto;right:12px;transform:none; }
         .chart-container { height:280px; }
+        .chart-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+        .lc-grid-5 { display:grid;grid-template-columns:repeat(5,1fr);gap:8px; }
+        .page.active { animation:pageFadeIn 0.25s ease-out; }
+        @keyframes pageFadeIn { from { opacity:0;transform:translateY(6px); } to { opacity:1;transform:translateY(0); } }
+        html { overscroll-behavior-y:contain; }
+        body { -webkit-overflow-scrolling:touch; }
         .matrix-table { width:100%;border-collapse:separate;border-spacing:4px;table-layout:fixed; }
         .matrix-table colgroup col.col-header { width:18%; }
         .matrix-table colgroup col.col-data { width:20.5%; }
@@ -173,10 +179,6 @@
         .ga-label { font-size:11px;color:var(--text-tri);font-weight:600;text-transform:uppercase;letter-spacing:0.5px; }
         .ga-value { font-size:13px;color:var(--text-sec);line-height:1.6; }
         .ga-goal { color:var(--brand-dark);font-weight:600; }
-        @media (max-width:768px) {
-            .ga-body { grid-template-columns:1fr; }
-            .ga-card { padding:16px; }
-        }
         .action-tabs { display:flex;gap:0;margin-bottom:16px;background:var(--bg);border-radius:var(--radius);padding:4px;border:1px solid var(--border); }
         .action-tab { flex:1;padding:10px 16px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text-sec);cursor:pointer;border-radius:calc(var(--radius) - 2px);transition:all 0.2s; }
         .action-tab.active { background:var(--white);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -190,40 +192,67 @@
         .version-release { background:#f3e8ff;color:#7c3aed; }
         .version-sample { background:#fee2e2;color:#dc2626; }
         @media (max-width:768px) {
-            .top-bar-inner { flex-direction:column;height:auto;padding:10px 0;gap:8px; }
-            .nav-tabs { flex-wrap:wrap;justify-content:center; }
-            .nav-tab { padding:5px 10px;font-size:12px; }
-            .page-container { padding:16px 12px 60px; }
+            /* 导航栏：水平滚动 + 44px触摸目标 */
+            .top-bar { padding:0 12px; }
+            .top-bar-inner { flex-direction:column;height:auto;padding:8px 0;gap:6px; }
+            .logo-area h1 { font-size:14px; }
+            .nav-tabs { display:flex;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;gap:6px;padding:4px 0;width:100%; }
+            .nav-tab { padding:10px 16px;font-size:13px;white-space:nowrap;flex-shrink:0;scroll-snap-align:start;min-height:44px;display:flex;align-items:center; }
+            /* 页面容器 */
+            .page-container { padding:16px 12px 80px; }
+            .page-summary { font-size:14px;padding:12px 14px;line-height:1.8; }
+            /* 网格响应 */
             .grid-6 { grid-template-columns:repeat(2,1fr);gap:10px; }
             .grid-3 { grid-template-columns:1fr; }
             .grid-2 { grid-template-columns:1fr; }
             .grid-4 { grid-template-columns:repeat(2,1fr); }
-            .traffic-light-row { grid-template-columns:1fr; }
-            .metric-card { padding:12px 14px; }
-            .metric-card .mc-value { font-size:20px; }
-            .metric-card .mc-change { font-size:11px; }
-            .matrix-table th,.matrix-table td { padding:8px 4px;font-size:11px; }
-            .matrix-table td .cell-num { font-size:14px; }
-            .matrix-table td .cell-label { font-size:9px; }
+            .traffic-light-row { grid-template-columns:1fr;gap:12px; }
+            /* 卡片优化 */
+            .card { padding:18px 16px; }
+            .section-gap { margin-bottom:16px; }
+            /* 指标卡 */
+            .metric-card { padding:14px 12px; }
+            .metric-card .mc-value { font-size:22px; }
+            .metric-card .mc-change { font-size:12px; }
+            /* 矩阵表格 */
+            .matrix-table th,.matrix-table td { padding:10px 6px;font-size:12px; }
+            .matrix-table td .cell-num { font-size:16px; }
+            .matrix-table td .cell-label { font-size:11px; }
             .matrix-table colgroup col.col-header { width:60px; }
+            /* 门店诊断 */
             .sc-metrics { grid-template-columns:repeat(2,1fr); }
-            .plan-table { display:block;overflow-x:auto;white-space:nowrap; }
+            .store-cards-container { max-height:none;overflow:visible;padding-right:0; }
+            .filter-bar { flex-wrap:wrap;gap:8px; }
+            .filter-btn { font-size:13px;padding:10px 14px;min-height:40px; }
+            /* 洞察 */
+            .insights-grid { grid-template-columns:1fr;gap:10px; }
+            /* 图表 */
             .chart-container { height:200px; }
             #chart-matrix-heatmap { height:240px !important; }
-            .filter-bar { flex-wrap:wrap;gap:6px; }
-            .filter-btn { font-size:11px;padding:4px 8px; }
-            .has-tip .tip-text { max-width:160px;font-size:11px; }
-            .card { padding:16px; }
-            .page-summary { font-size:13px;padding:10px 12px; }
+            .chart-grid-2 { grid-template-columns:1fr; }
+            /* 生命周期 */
+            .lc-grid-5 { grid-template-columns:repeat(3,1fr);gap:10px; }
+            /* Tooltip */
+            .has-tip .tip-text { max-width:200px;font-size:12px; }
+            /* 全局字号地板 12px */
+            .so-change,.so-tier-badge,.cell-label,.sc-tag,.tl-desc { font-size:12px; }
+            .ga-body { grid-template-columns:1fr; }
+            .ga-card { padding:16px; }
+            /* 门店健康表 */
+            .so-table-wrap { overflow-x:auto;-webkit-overflow-scrolling:touch; }
+            #so-health-table { min-width:700px; }
         }
         @media (max-width:480px) {
-            .grid-6 { grid-template-columns:repeat(2,1fr); }
-            .metric-card .mc-value { font-size:18px; }
-            .top-bar { padding:0 12px; }
-            .page-container { padding:12px 8px 60px; }
-            .matrix-table th,.matrix-table td { padding:6px 2px;font-size:10px; }
-            .matrix-table td .cell-num { font-size:12px; }
-            .matrix-table colgroup col.col-header { width:50px; }
+            .page-container { padding:12px 8px 80px; }
+            .metric-card .mc-value { font-size:20px; }
+            .grid-6 { grid-template-columns:repeat(2,1fr);gap:8px; }
+            .matrix-table th,.matrix-table td { padding:8px 4px;font-size:11px; }
+            .matrix-table td .cell-num { font-size:14px; }
+            .matrix-table td .cell-label { font-size:10px; }
+            .matrix-table colgroup col.col-header { width:55px; }
+            .lc-grid-5 { grid-template-columns:repeat(2,1fr);gap:8px; }
+            .traffic-card .tl-value { font-size:24px; }
+            .nav-tab { padding:8px 12px;font-size:12px; }
         }
         /* 门店概况美化 */
         #so-health-table { border-collapse:separate;border-spacing:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow); }
@@ -347,7 +376,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="brand-dot"></div>
             <h1>朵以会员运营周报</h1>
             <span class="week-tag">2026年第23周 · 6.1-6.7</span>
-            <span class="version-badge version-release">正式版 · 真实数据 V20260613</span>
+            <span class="version-badge version-release">正式版 · 真实数据 V20260614</span>
         </div>
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="switchPage('overview')">大盘概况</button>
@@ -386,13 +415,13 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--brand)"></div>会员价值分层</div>
             <div class="grid-4">
-                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">905</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓6人（-0.7%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">核心VIP<span class="tip-text">历史累计支付金额5000以上，或累计支付3000-5000元且笔单价≥1000元且支付次数≥4次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">3196</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑17人（+0.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">重要客户<span class="tip-text">历史累计支付金额2000-5000元，或累计支付1200-2000元且笔单价≥600元且支付次数≥3次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">14,747</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓28人（-0.2%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">普通客户<span class="tip-text">历史累计支付金额500-2000元，或累计支付300-500元且笔单价≥200元且支付次数≥2次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">7114</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑33人（+0.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">初级客户<span class="tip-text">累计支付金额1-300元，或累计支付1-500元且支付次数=1次</span></div></div>
+                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">905</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑1人（+0.1%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">核心VIP<span class="tip-text">历史累计支付金额5000以上，或累计支付3000-5000元且笔单价≥1000元且支付次数≥4次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">3196</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑5人（+0.2%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">重要客户<span class="tip-text">历史累计支付金额2000-5000元，或累计支付1200-2000元且笔单价≥600元且支付次数≥3次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">14,747</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓53人（-0.4%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">普通客户<span class="tip-text">历史累计支付金额500-2000元，或累计支付300-500元且笔单价≥200元且支付次数≥2次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">7114</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑42人（+0.6%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">初级客户<span class="tip-text">累计支付金额1-300元，或累计支付1-500元且支付次数=1次</span></div></div>
             </div>
         </div>
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--orange)"></div>会员生命周期</div>
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
-                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--green);">6999</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↑13人（+0.2%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">活跃<span class="tip-text">最近60天内最后一次购买的会员，反映门店的会员活跃度</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">2282</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑94人（+4.3%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">沉默<span class="tip-text">最近61-90天内最后一次购买的会员，需重点关注</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">6241</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓3人（-0.0%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">睡眠<span class="tip-text">最近91-180天内最后一次购买的会员，存在流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--red);">10,813</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓170人（-1.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">预流失<span class="tip-text">最近181-365天内最后一次购买的会员，高流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--text-tri);">40,392</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑332人（+0.8%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">流失<span class="tip-text">最近366天内没有购买过的会员（不含入会未消费会员）</span></div></div>
+            <div class="lc-grid-5">
+                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--green);">6999</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↑12人（+0.2%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">活跃<span class="tip-text">最近60天内最后一次购买的会员，反映门店的会员活跃度</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">2282</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑150人（+6.8%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">沉默<span class="tip-text">最近61-90天内最后一次购买的会员，需重点关注</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">6241</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓67人（-1.1%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">睡眠<span class="tip-text">最近91-180天内最后一次购买的会员，存在流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--red);">10,813</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓107人（-1.0%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">预流失<span class="tip-text">最近181-365天内最后一次购买的会员，高流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--text-tri);">40,392</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑342人（+0.9%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">流失<span class="tip-text">最近366天内没有购买过的会员（不含入会未消费会员）</span></div></div>
             </div>
         </div>
     </div>
@@ -470,11 +499,11 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 
     <div class="card">
         <div class="card-title"><div class="dot" style="background:var(--text-tri)"></div>8周经营趋势</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="chart-grid-2">
             <div id="chart-trend-aov" style="height:220px;"></div>
             <div id="chart-trend-bundle" style="height:220px;"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+        <div class="chart-grid-2" style="margin-top:12px;">
             <div id="chart-trend-buyers" style="height:220px;"></div>
             <div id="chart-trend-repeat" style="height:220px;"></div>
         </div>
@@ -517,8 +546,8 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 
     <div class="card section-gap">
         <div class="card-title"><div class="dot" style="background:var(--brand)"></div>门店健康度一览 <span style="font-size:11px;color:var(--text-tri);font-weight:400;">（点击表头排序）</span></div>
-        <div style="overflow-x:auto;">
-            <table id="so-health-table" style="width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;border-radius:var(--radius);">
+        <div class="so-table-wrap">
+            <table id="so-health-table" style="width:100%;border-collapse:separate;border-spacing:0;border-radius:var(--radius);">
                 <thead id="so-health-thead"></thead>
                 <tbody id="so-health-tbody"></tbody>
             </table>
@@ -533,7 +562,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <select id="sel-so-trend2" onchange="renderSOCharts()" style="padding:5px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;"><option value="">不选</option></select>
             <select id="sel-so-trend3" onchange="renderSOCharts()" style="padding:5px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;"><option value="">不选</option></select>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="chart-grid-2">
             <div id="so-chart-aov" style="height:240px;"></div>
             <div id="so-chart-bundle" style="height:240px;"></div>
             <div id="so-chart-buyers" style="height:240px;"></div>
@@ -2647,6 +2676,61 @@ function calcStrategy(tier, lc, direction, cellData) {
 }
 
 // renderStrategy removed (merged into matrix flip)
+
+/* ===== 交互增强 ===== */
+
+// 1. tooltip 移动端 tap-to-show
+(function(){
+  var active=null;
+  document.addEventListener('click',function(e){
+    var tip=e.target.closest('.has-tip');
+    if(tip){
+      e.preventDefault();
+      if(active&&active!==tip) active.classList.remove('tip-active');
+      tip.classList.toggle('tip-active');
+      active=tip.classList.contains('tip-active')?tip:null;
+    } else if(active){
+      active.classList.remove('tip-active');
+      active=null;
+    }
+  });
+})();
+
+// 2. 回顶按钮
+(function(){
+  var btn=document.createElement('div');
+  btn.id='back-to-top';
+  btn.innerHTML='↑';
+  btn.style.cssText='position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--brand);color:#fff;display:none;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);z-index:9999;transition:opacity .3s;';
+  document.body.appendChild(btn);
+  btn.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  var ticking=false;
+  window.addEventListener('scroll',function(){
+    if(!ticking){
+      window.requestAnimationFrame(function(){
+        btn.style.display=window.scrollY>400?'flex':'none';
+        ticking=false;
+      });
+      ticking=true;
+    }
+  });
+})();
+
+// 3. 横屏切换 ECharts 重绘
+(function(){
+  var orientHandler=function(){
+    setTimeout(function(){
+      var charts=document.querySelectorAll('[_echarts_instance_]');
+      charts.forEach(function(el){
+        var inst=echarts.getInstanceByDom(el);
+        if(inst) inst.resize();
+      });
+    },300);
+  };
+  if('onorientationchange' in window){
+    window.addEventListener('orientationchange',orientHandler);
+  }
+})();
 </script>
 
 </body>
