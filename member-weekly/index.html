@@ -2546,6 +2546,14 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 
     <!-- 子Tab2: 行动看板 -->
     <div id="hv-sub-action" class="hv-sub-page">
+        <div class="hv-filter-bar section-gap">
+            <span style="font-size:12px;color:var(--text-sec);font-weight:600;">负责人：</span>
+            <select id="hvActionRegionFilter" onchange="hvActionFilterByRegion(this.value)" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;">
+                <option value="">全部区域</option>
+                <option value="古欢欢">古欢欢</option><option value="彭苑婷">彭苑婷</option><option value="李硕果">李硕果</option><option value="赖月平">赖月平</option><option value="陈祝利">陈祝利</option><option value="鲜于浩">鲜于浩</option>
+            </select>
+            <span id="hvActionFilterCount" style="font-size:12px;color:var(--text-tri);"></span>
+        </div>
         
     <div class="action-summary">
         <div class="action-summary-card" style="border-left:4px solid #E53E3E;">
@@ -2568,7 +2576,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         🔴 缺口大 — 重点扩池（8家）
     </div>
     <div class="action-cards-grid">
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">白云万象汇朵以</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -2609,7 +2617,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="李硕果">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">深圳龙华大浪</div>
                 <div class="action-card-mgr">李硕果</div>
@@ -2646,7 +2654,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">乐从天佑城</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -2687,7 +2695,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">湛江吴川</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -2728,7 +2736,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="李硕果">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">深圳满京华店</div>
                 <div class="action-card-mgr">李硕果</div>
@@ -2761,7 +2769,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="赖月平">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">花都骏壹万邦</div>
                 <div class="action-card-mgr">赖月平</div>
@@ -2798,7 +2806,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">广州塔广场店</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -2835,7 +2843,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>萝岗万达</b>（达成率 130%，人均 ¥3,728）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #dc3545;">
                 <div class="action-card-store">潘州广场朵以</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -2877,7 +2885,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         🟡 接近达标 — 精准冲线（6家）
     </div>
     <div class="action-cards-grid">
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">海珠乐峰广场</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -2914,7 +2922,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>萝岗万达</b>（达成率 130%，人均 ¥3,728）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">东莞黄江大道</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -2951,7 +2959,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="李硕果">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">深圳宝安店</div>
                 <div class="action-card-mgr">李硕果</div>
@@ -2988,7 +2996,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="李硕果">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">坪地宜城店</div>
                 <div class="action-card-mgr">李硕果</div>
@@ -3025,7 +3033,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="鲜于浩">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">宜都清江店</div>
                 <div class="action-card-mgr">鲜于浩</div>
@@ -3062,7 +3070,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #f59e0b;">
                 <div class="action-card-store">东莞南城</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -3104,7 +3112,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         🟢 已达标 — 提质防流失（11家）
     </div>
     <div class="action-cards-grid">
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">茂名印象汇</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -3141,7 +3149,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">大朗店</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -3178,7 +3186,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="陈祝利">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">清远城市广场</div>
                 <div class="action-card-mgr">陈祝利</div>
@@ -3215,7 +3223,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>萝岗万达</b>（¥3,728）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">英德朵以</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -3252,7 +3260,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">🏅 本梯队人均贡献标杆</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="鲜于浩">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">宜城香港路</div>
                 <div class="action-card-mgr">鲜于浩</div>
@@ -3289,7 +3297,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">岗顶天娱广场</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -3326,7 +3334,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="鲜于浩">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">通城朵以</div>
                 <div class="action-card-mgr">鲜于浩</div>
@@ -3363,7 +3371,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="彭苑婷">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">南村店</div>
                 <div class="action-card-mgr">彭苑婷</div>
@@ -3400,7 +3408,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="李硕果">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">深圳龙岗坪山</div>
                 <div class="action-card-mgr">李硕果</div>
@@ -3437,7 +3445,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="赖月平">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">萝岗万达</div>
                 <div class="action-card-mgr">赖月平</div>
@@ -3474,7 +3482,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
                 <div class="action-card-benchmark">🏅 本梯队人均贡献标杆</div>
             </div>
         </div>
-        <div class="action-card">
+        <div class="action-card" data-region="古欢欢">
             <div class="action-card-header" style="border-left:4px solid #22c55e;">
                 <div class="action-card-store">高埗万和</div>
                 <div class="action-card-mgr">古欢欢</div>
@@ -4374,6 +4382,21 @@ function hvFilterByRegion(region) {
         h.style.display = visibleTiers[h.dataset.tier] ? '' : 'none';
     });
     var countEl = document.getElementById('hvFilterCount');
+    if (region) { countEl.textContent = '显示 ' + visibleCount + ' 家门店'; }
+    else { countEl.textContent = ''; }
+}
+function hvActionFilterByRegion(region) {
+    var cards = document.querySelectorAll('#hv-sub-action .action-card');
+    var visibleCount = 0;
+    cards.forEach(function(card) {
+        if (!region || card.dataset.region === region) {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    var countEl = document.getElementById('hvActionFilterCount');
     if (region) { countEl.textContent = '显示 ' + visibleCount + ' 家门店'; }
     else { countEl.textContent = ''; }
 }
