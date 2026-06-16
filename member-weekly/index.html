@@ -321,15 +321,24 @@
     .hv-detail-table tr:hover td { background:var(--brand-bg); }
     .hv-filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
     .hv-note { background:#fffff0; border:1px solid #fefcbf; border-radius:var(--radius-sm); padding:14px 18px; font-size:12px; color:#744210; line-height:1.8; }
-    /* 行动看板: sticky header + scroll */
+    /* 行动看板: sticky control card + scroll */
     .hv-action-sticky-header {
         position:sticky; top:0; z-index:10; background:var(--page-bg);
-        padding-bottom:12px;
+        padding-bottom:16px;
     }
-    .hv-action-filter-bar {
-        display:flex; align-items:center; gap:10px; margin-top:16px;
-        padding:10px 16px; background:var(--white); border-radius:var(--radius-sm);
-        box-shadow:var(--shadow);
+    .hv-action-control-card {
+        background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow);
+        padding:20px;
+    }
+    .hv-action-control-card .action-summary {
+        margin-bottom:16px;
+    }
+    .hv-action-control-card .action-summary-card {
+        box-shadow:none; background:var(--page-bg);
+    }
+    .hv-action-filter-row {
+        display:flex; align-items:center; gap:10px;
+        padding-top:14px; border-top:1px solid var(--border);
     }
     .hv-action-scroll {
         overflow-y:auto; padding-bottom:20px;
@@ -2560,7 +2569,8 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <!-- 子Tab2: 行动看板 -->
     <div id="hv-sub-action" class="hv-sub-page">
         <div class="hv-action-sticky-header">
-            
+            <div class="hv-action-control-card">
+                
     <div class="action-summary">
         <div class="action-summary-card" style="border-left:4px solid #E53E3E;">
             <div style="font-size:15px;font-weight:700;color:#E53E3E;">🔴 缺口大</div>
@@ -2578,13 +2588,14 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="action-summary-detail" style="font-size:12px;color:#4A5568;">超额 +327 人</div>
         </div>
     </div>
-            <div class="hv-action-filter-bar">
-                <span style="font-size:12px;color:var(--text-sec);font-weight:600;">负责人：</span>
-                <select id="hvActionRegionFilter" onchange="hvActionFilterByRegion(this.value)" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;">
-                    <option value="">全部区域</option>
-                    <option value="古欢欢">古欢欢</option><option value="彭苑婷">彭苑婷</option><option value="李硕果">李硕果</option><option value="赖月平">赖月平</option><option value="陈祝利">陈祝利</option><option value="鲜于浩">鲜于浩</option>
-                </select>
-                <span id="hvActionFilterCount" style="font-size:12px;color:var(--text-tri);"></span>
+                <div class="hv-action-filter-row">
+                    <span style="font-size:12px;color:var(--text-sec);font-weight:600;">负责人：</span>
+                    <select id="hvActionRegionFilter" onchange="hvActionFilterByRegion(this.value)" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;">
+                        <option value="">全部区域</option>
+                        <option value="古欢欢">古欢欢</option><option value="彭苑婷">彭苑婷</option><option value="李硕果">李硕果</option><option value="赖月平">赖月平</option><option value="陈祝利">陈祝利</option><option value="鲜于浩">鲜于浩</option>
+                    </select>
+                    <span id="hvActionFilterCount" style="font-size:12px;color:var(--text-tri);"></span>
+                </div>
             </div>
         </div>
         <div class="hv-action-scroll">
