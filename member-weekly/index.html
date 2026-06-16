@@ -376,7 +376,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <div class="brand-dot"></div>
             <h1>朵以会员运营周报</h1>
             <span class="week-tag">2026年第24周 · 6.8-6.14</span>
-            <span class="version-badge version-release">正式版 · 真实数据 V20260615</span>
+            <span class="version-badge version-release">正式版 · 真实数据 V20260616</span>
         </div>
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="switchPage('overview')">大盘概况</button>
@@ -384,6 +384,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             <button class="nav-tab" onclick="switchPage('actions')">区域计划</button>
             <button class="nav-tab" onclick="switchPage('store-overview')">门店概况</button>
             <button class="nav-tab" onclick="switchPage('stores')">门店诊断</button>
+            <button class="nav-tab" onclick="switchPage('hv-pool')">价值池</button>
             <button class="nav-tab" onclick="switchPage('preference')">会员偏好</button>
             <button class="nav-tab" onclick="switchPage('salon')">会员沙龙</button>
             <button class="nav-tab" onclick="switchPage('guide')">导购入门</button>
@@ -415,13 +416,13 @@ window.addEventListener('load', function() { document.getElementById('auth-input
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--brand)"></div>会员价值分层</div>
             <div class="grid-4">
-                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">912</div><div style="font-size:9px;color:#94a3b8;margin-top:2px;">环比 —</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">核心VIP<span class="tip-text">历史累计支付金额5000以上，或累计支付3000-5000元且笔单价≥1000元且支付次数≥4次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">3196</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓10人（-0.3%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">重要客户<span class="tip-text">历史累计支付金额2000-5000元，或累计支付1200-2000元且笔单价≥600元且支付次数≥3次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">14,755</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓38人（-0.3%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">普通客户<span class="tip-text">历史累计支付金额500-2000元，或累计支付300-500元且笔单价≥200元且支付次数≥2次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">7128</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑32人（+0.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">初级客户<span class="tip-text">累计支付金额1-300元，或累计支付1-500元且支付次数=1次</span></div></div>
+                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">912</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓3人（-0.3%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">核心VIP<span class="tip-text">历史累计支付金额5000以上，或累计支付3000-5000元且笔单价≥1000元且支付次数≥4次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">3196</div><div style="font-size:9px;color:#94a3b8;margin-top:2px;">环比 —</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">重要客户<span class="tip-text">历史累计支付金额2000-5000元，或累计支付1200-2000元且笔单价≥600元且支付次数≥3次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">14,755</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓3人（-0.0%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">普通客户<span class="tip-text">历史累计支付金额500-2000元，或累计支付300-500元且笔单价≥200元且支付次数≥2次</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--brand);">7128</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑33人（+0.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">初级客户<span class="tip-text">累计支付金额1-300元，或累计支付1-500元且支付次数=1次</span></div></div>
             </div>
         </div>
         <div class="card">
             <div class="card-title"><div class="dot" style="background:var(--orange)"></div>会员生命周期</div>
             <div class="lc-grid-5">
-                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--green);">7073</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↑89人（+1.3%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">活跃<span class="tip-text">最近60天内最后一次购买的会员，反映门店的会员活跃度</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">2326</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑119人（+5.4%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">沉默<span class="tip-text">最近61-90天内最后一次购买的会员，需重点关注</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">6237</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓64人（-1.0%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">睡眠<span class="tip-text">最近91-180天内最后一次购买的会员，存在流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--red);">10,804</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓93人（-0.9%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">预流失<span class="tip-text">最近181-365天内最后一次购买的会员，高流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--text-tri);">40,481</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑320人（+0.8%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">流失<span class="tip-text">最近366天内没有购买过的会员（不含入会未消费会员）</span></div></div>
+                <div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--green);">7073</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↑51人（+0.7%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">活跃<span class="tip-text">最近60天内最后一次购买的会员，反映门店的会员活跃度</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">2326</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑104人（+4.7%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">沉默<span class="tip-text">最近61-90天内最后一次购买的会员，需重点关注</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--orange);">6237</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓69人（-1.1%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">睡眠<span class="tip-text">最近91-180天内最后一次购买的会员，存在流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--red);">10,804</div><div style="font-size:9px;color:#22c55e;margin-top:2px;">↓57人（-0.5%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">预流失<span class="tip-text">最近181-365天内最后一次购买的会员，高流失风险</span></div></div><div style="text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--text-tri);">40,481</div><div style="font-size:9px;color:#ef4444;margin-top:2px;">↑288人（+0.7%）</div><div class="has-tip" tabindex="0" style="font-size:11px;color:var(--text-sec);display:inline-block;">流失<span class="tip-text">最近366天内没有购买过的会员（不含入会未消费会员）</span></div></div>
             </div>
         </div>
     </div>
@@ -1944,6 +1945,16 @@ window.addEventListener('load', function() { document.getElementById('auth-input
             上周4项大盘行动 + 6个区域行动，数据追踪中。
         </div>
     </div>
+    </div>
+</div>
+
+<!-- ===== 会员价值池 ===== -->
+<div id="page-hv-pool" class="page">
+    <div class="page-summary">
+        <strong>会员价值池</strong>基于各门店盈亏平衡线，按高价值客户历史营收占比分摊目标，计算每家门店需保有的高价值客户基准人数，并生成门店行动看板。
+    </div>
+    <div style="border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:var(--white);">
+        <iframe src="https://claw.youzan.com/api/oss/download/reports/hv-pool/hv-pool-report.html" style="width:100%;height:calc(100vh - 160px);min-height:600px;border:none;display:block;"></iframe>
     </div>
 </div>
 
