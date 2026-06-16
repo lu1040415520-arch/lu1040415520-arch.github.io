@@ -307,6 +307,62 @@
             .strat-cell { padding:6px;font-size:10px; }
             .strat-cell .sc-amount { font-size:12px; }
         }
+        
+    /* 价值池二级导航 */
+    .hv-sub-tabs { display:flex; gap:4px; background:var(--white); border-radius:var(--radius-sm); padding:4px; box-shadow:var(--shadow); }
+    .hv-sub-tab { padding:8px 20px; border-radius:6px; font-size:13px; font-weight:500; color:var(--text-sec); cursor:pointer; border:none; background:none; transition:all 0.2s; }
+    .hv-sub-tab:hover { background:var(--brand-lighter); color:var(--brand); }
+    .hv-sub-tab.active { background:var(--brand); color:#fff; }
+    .hv-sub-page { display:none; } .hv-sub-page.active { display:block; animation:pageFadeIn 0.25s ease-out; }
+    /* 价值池表格 */
+    .hv-detail-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .hv-detail-table th { background:var(--brand-lighter); color:var(--text-sec); font-weight:600; padding:10px 12px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; position:relative; }
+    .hv-detail-table td { padding:10px 12px; border-bottom:1px solid var(--border); white-space:nowrap; }
+    .hv-detail-table tr:hover td { background:var(--brand-bg); }
+    .hv-filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .hv-note { background:#fffff0; border:1px solid #fefcbf; border-radius:var(--radius-sm); padding:14px 18px; font-size:12px; color:#744210; line-height:1.8; }
+    
+/* 门店行动看板 */
+.action-summary {
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-bottom:24px;
+}
+.action-summary-card {
+    background:var(--white); border-radius:var(--radius); padding:16px 20px; box-shadow:var(--shadow);
+}
+.action-group-title {
+    font-size:16px; font-weight:700; padding:12px 16px; margin-bottom:16px; border-radius:8px;
+}
+.action-cards-grid {
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; margin-bottom:28px;
+}
+.action-card {
+    background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;
+}
+.action-card-header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 16px; background:#FAFBFC;
+}
+.action-card-store { font-size:15px; font-weight:700; color:var(--text); }
+.action-card-mgr { font-size:12px; color:var(--text-tri); }
+.action-card-metrics {
+    display:flex; gap:16px; padding:10px 16px; font-size:12px; color:var(--text-sec);
+    border-bottom:1px solid #EDF2F7;
+}
+.action-card-section { padding:12px 16px; }
+.action-card-section + .action-card-section { padding-top:0; }
+.action-card-section-title { font-size:12px; font-weight:600; color:var(--text-tri); margin-bottom:6px; }
+.action-card-struct { font-size:13px; color:var(--text-sec); line-height:1.8; }
+.action-item { margin-bottom:8px; }
+.action-item-title { font-size:13px; font-weight:600; color:var(--text); }
+.action-item-detail { font-size:12px; color:var(--text-sec); line-height:1.6; margin-top:2px; }
+.action-card-target { font-size:13px; color:var(--text-sec); }
+.action-card-benchmark { font-size:12px; color:var(--text-sec); }
+
+@media (max-width:768px) {
+    .action-summary { grid-template-columns:1fr; }
+    .action-cards-grid { grid-template-columns:1fr; }
+}
+
     </style>
 </head>
 <body>
@@ -1950,11 +2006,1512 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 
 <!-- ===== 会员价值池 ===== -->
 <div id="page-hv-pool" class="page">
+    
     <div class="page-summary">
-        <strong>会员价值池</strong>基于各门店盈亏平衡线，按高价值客户历史营收占比分摊目标，计算每家门店需保有的高价值客户基准人数，并生成门店行动看板。
+        <strong>会员价值池</strong>基于各门店盈亏平衡线，按高价值客户历史营收占比分摊目标，计算每家门店需保有的高价值客户基准人数。
     </div>
-    <div style="border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:var(--white);">
-        <iframe src="https://claw.youzan.com/api/oss/download/reports/hv-pool/hv-pool-report.html" style="width:100%;height:calc(100vh - 160px);min-height:600px;border:none;display:block;"></iframe>
+
+    <!-- 二级导航 -->
+    <div class="hv-sub-tabs section-gap">
+        <button class="hv-sub-tab active" onclick="switchHvSubTab('overview', this)">价值池总览</button>
+        <button class="hv-sub-tab" onclick="switchHvSubTab('action', this)">行动看板</button>
+    </div>
+
+    <!-- 子Tab1: 价值池总览 -->
+    <div id="hv-sub-overview" class="hv-sub-page active">
+        
+    <div class="grid-4 section-gap">
+        <div class="metric-card">
+            <div class="mc-label"><span class="has-tip" tabindex="0">盈亏平衡线合计<span class="tip-text">25家门店2026年年度盈亏平衡点之和</span></span></div>
+            <div class="mc-value">3,252<span style="font-size:13px;font-weight:400;color:var(--text-sec);">万</span></div>
+            <div class="mc-change first">25家门店年度总目标</div>
+        </div>
+        <div class="metric-card">
+            <div class="mc-label"><span class="has-tip" tabindex="0">高价值客户基准<span class="tip-text">各门店基准人数之和：盈亏平衡点 x 高价值营收占比 / 人均年贡献</span></span></div>
+            <div class="mc-value" style="color:var(--brand);">4,035<span style="font-size:13px;font-weight:400;color:var(--text-sec);">人</span></div>
+            <div class="mc-change first">达到盈亏平衡所需</div>
+        </div>
+        <div class="metric-card">
+            <div class="mc-label"><span class="has-tip" tabindex="0">当前持有<span class="tip-text">各门店核心VIP + 重要客户的合计人数（实时快照）</span></span></div>
+            <div class="mc-value" style="color:var(--green);">3,771<span style="font-size:13px;font-weight:400;color:var(--text-sec);">人</span></div>
+            <div class="mc-change first">核心VIP + 重要客户</div>
+        </div>
+        <div class="metric-card">
+            <div class="mc-label"><span class="has-tip" tabindex="0">整体达成率<span class="tip-text">当前持有 / 基准总数 x 100%</span></span></div>
+            <div class="mc-value" style="color:var(--orange);">93.5<span style="font-size:13px;font-weight:400;color:var(--text-sec);">%</span></div>
+            <div class="mc-change first" style="color:var(--red);">缺口 -264 人</div>
+        </div>
+    </div>
+
+        <div class="card section-gap">
+            <div class="card-title"><div class="dot" style="background:var(--brand);"></div>门店梯队分档</div>
+            <div class="grid-3" style="gap:16px;">
+                
+        <div style="background:#fef2f2;border-left:4px solid #dc3545;border-radius:var(--radius);padding:20px;">
+            <div style="font-size:14px;font-weight:700;color:#dc3545;margin-bottom:12px;">A档（旗舰店）（4家）</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:12px;color:var(--text-sec);">
+                <div><span class="has-tip" tabindex="0">平衡线范围<span class="tip-text">该梯队门店盈亏平衡点的最小/最大值</span></span>：<b>240~278万</b></div>
+                <div><span class="has-tip" tabindex="0">人均年贡献均值<span class="tip-text">该梯队各门店高价值客户人均年贡献的加权平均</span></span>：<b>¥3,677</b></div>
+                <div><span class="has-tip" tabindex="0">营收占比均值<span class="tip-text">该梯队高价值客户营收占比的加权平均</span></span>：<b>44.0%</b></div>
+                <div><span class="has-tip" tabindex="0">基准总数<span class="tip-text">该梯队基准人数之和</span></span>：<b>1241人</b></div>
+                <div><span class="has-tip" tabindex="0">当前持有<span class="tip-text">该梯队当前核心VIP+重要客户合计</span></span>：<b>1221人</b></div>
+            </div>
+            <div style="margin-top:10px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:98.3883964544722%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">98%</span></div></div>
+        </div>
+        <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:var(--radius);padding:20px;">
+            <div style="font-size:14px;font-weight:700;color:#f59e0b;margin-bottom:12px;">B档（主力店）（11家）</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:12px;color:var(--text-sec);">
+                <div><span class="has-tip" tabindex="0">平衡线范围<span class="tip-text">该梯队门店盈亏平衡点的最小/最大值</span></span>：<b>108~174万</b></div>
+                <div><span class="has-tip" tabindex="0">人均年贡献均值<span class="tip-text">该梯队各门店高价值客户人均年贡献的加权平均</span></span>：<b>¥3,882</b></div>
+                <div><span class="has-tip" tabindex="0">营收占比均值<span class="tip-text">该梯队高价值客户营收占比的加权平均</span></span>：<b>48.6%</b></div>
+                <div><span class="has-tip" tabindex="0">基准总数<span class="tip-text">该梯队基准人数之和</span></span>：<b>1764人</b></div>
+                <div><span class="has-tip" tabindex="0">当前持有<span class="tip-text">该梯队当前核心VIP+重要客户合计</span></span>：<b>1534人</b></div>
+            </div>
+            <div style="margin-top:10px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:86.96145124716553%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">87%</span></div></div>
+        </div>
+        <div style="background:#EBF8FF;border-left:4px solid #3182CE;border-radius:var(--radius);padding:20px;">
+            <div style="font-size:14px;font-weight:700;color:#3182CE;margin-bottom:12px;">C档（社区店）（10家）</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:12px;color:var(--text-sec);">
+                <div><span class="has-tip" tabindex="0">平衡线范围<span class="tip-text">该梯队门店盈亏平衡点的最小/最大值</span></span>：<b>66~96万</b></div>
+                <div><span class="has-tip" tabindex="0">人均年贡献均值<span class="tip-text">该梯队各门店高价值客户人均年贡献的加权平均</span></span>：<b>¥4,456</b></div>
+                <div><span class="has-tip" tabindex="0">营收占比均值<span class="tip-text">该梯队高价值客户营收占比的加权平均</span></span>：<b>56.4%</b></div>
+                <div><span class="has-tip" tabindex="0">基准总数<span class="tip-text">该梯队基准人数之和</span></span>：<b>1030人</b></div>
+                <div><span class="has-tip" tabindex="0">当前持有<span class="tip-text">该梯队当前核心VIP+重要客户合计</span></span>：<b>1016人</b></div>
+            </div>
+            <div style="margin-top:10px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:98.64077669902913%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">99%</span></div></div>
+        </div>
+            </div>
+        </div>
+
+        
+    <div class="hv-note section-gap">
+        <b>数据说明</b><br>
+        · 高价值客户 = 核心VIP + 重要客户（按消费贡献自动分层）<br>
+        · 高价值营收占比 = 该门店近360天高价值客户消费总额 / 门店总营收（样本量不足10人时使用梯队加权均值）<br>
+        · 需承担营收 = 盈亏平衡点 x 高价值营收占比<br>
+        · 基准人数 = 需承担营收 / 人均年贡献（向上取整）<br>
+        · 梯队分档：A档 ≥200万（旗舰店）/ B档 100~200万（主力店）/ C档 &lt;100万（社区店）<br>
+        · 数据来源：有赞后台订单数据（2026-06-16快照）+ 2026各店铺盈亏平衡线统计表
+    </div>
+
+        <div class="card section-gap">
+            <div class="card-title"><div class="dot" style="background:var(--brand);"></div>门店明细</div>
+            <div class="hv-filter-bar">
+                <span style="font-size:12px;color:var(--text-sec);font-weight:600;">负责人：</span>
+                <select id="hvRegionFilter" onchange="hvFilterByRegion(this.value)" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;">
+                    <option value="">全部区域</option>
+                    <option value="古欢欢">古欢欢</option><option value="彭苑婷">彭苑婷</option><option value="李硕果">李硕果</option><option value="赖月平">赖月平</option><option value="陈祝利">陈祝利</option><option value="鲜于浩">鲜于浩</option>
+                </select>
+                <span id="hvFilterCount" style="font-size:12px;color:var(--text-tri);"></span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="hv-detail-table" id="hvDetailTable">
+                    <thead>
+                        <tr>
+                            <th>门店</th>
+                            <th>负责人</th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">平衡线(万)</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">该门店2026年年度盈亏平衡点</span></th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">营收占比</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">高价值客户消费总额占门店总营收的比例</span></th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">需承担(万)</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">盈亏平衡点 x 高价值营收占比</span></th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">人均年贡献</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">该门店高价值客户近360天人均实付总额</span></th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">基准人数</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">需承担营收 / 人均年贡献，向上取整</span></th>
+                            <th class="has-tip" tabindex="0" style="text-align:right;"><span style="border-bottom:1px dashed var(--text-tri);">当前持有</span><span class="tip-text" style="bottom:auto;top:calc(100% + 8px);">核心VIP + 重要客户（实时快照）</span></th>
+                            <th style="text-align:center;">缺口</th>
+                            <th>达成率</th>
+                            <th style="text-align:center;">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody><tr class="hv-tier-header" data-tier="A"><td colspan="11" style="background:#fef2f2;font-weight:700;color:#dc3545;padding:10px 16px;font-size:13px;border:none;">A档（旗舰店）</td></tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="A">
+            <td>广州塔广场店</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">264</td>
+            <td style="text-align:right;">39.9%</td>
+            <td style="text-align:right;">105</td>
+            <td style="text-align:right;">¥3,516</td>
+            <td style="text-align:right;font-weight:600;">300</td>
+            <td style="text-align:right;">228<span style="color:var(--text-tri);font-size:11px;"> (36+192)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-72</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:76.0%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">76%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="A">
+            <td>海珠乐峰广场</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">278</td>
+            <td style="text-align:right;">46.5%</td>
+            <td style="text-align:right;">129</td>
+            <td style="text-align:right;">¥3,702</td>
+            <td style="text-align:right;font-weight:600;">349</td>
+            <td style="text-align:right;">284<span style="color:var(--text-tri);font-size:11px;"> (53+231)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-65</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:81.37535816618912%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">81%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="陈祝利" data-tier="A">
+            <td>清远城市广场</td>
+            <td>陈祝利</td>
+            <td style="text-align:right;">240</td>
+            <td style="text-align:right;">44.1%</td>
+            <td style="text-align:right;">106</td>
+            <td style="text-align:right;">¥3,707</td>
+            <td style="text-align:right;font-weight:600;">286</td>
+            <td style="text-align:right;">312<span style="color:var(--text-tri);font-size:11px;"> (70+242)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+26</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">109%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="赖月平" data-tier="A">
+            <td>萝岗万达</td>
+            <td>赖月平</td>
+            <td style="text-align:right;">254</td>
+            <td style="text-align:right;">44.8%</td>
+            <td style="text-align:right;">114</td>
+            <td style="text-align:right;">¥3,728</td>
+            <td style="text-align:right;font-weight:600;">306</td>
+            <td style="text-align:right;">397<span style="color:var(--text-tri);font-size:11px;"> (72+325)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+91</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">130%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-tier-header" data-tier="B"><td colspan="11" style="background:#fffbeb;font-weight:700;color:#f59e0b;padding:10px 16px;font-size:13px;border:none;">B档（主力店）</td></tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="B">
+            <td>白云万象汇朵以</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">120</td>
+            <td style="text-align:right;">38.9%</td>
+            <td style="text-align:right;">47</td>
+            <td style="text-align:right;">¥2,203</td>
+            <td style="text-align:right;font-weight:600;">213</td>
+            <td style="text-align:right;">75<span style="color:var(--text-tri);font-size:11px;"> (10+65)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-138</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:35.2112676056338%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">35%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="李硕果" data-tier="B">
+            <td>深圳龙华大浪</td>
+            <td>李硕果</td>
+            <td style="text-align:right;">114</td>
+            <td style="text-align:right;">22.7%</td>
+            <td style="text-align:right;">26</td>
+            <td style="text-align:right;">¥4,846</td>
+            <td style="text-align:right;font-weight:600;">54</td>
+            <td style="text-align:right;">27<span style="color:var(--text-tri);font-size:11px;"> (6+21)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-27</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:50.0%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">50%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="B">
+            <td>乐从天佑城</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">128</td>
+            <td style="text-align:right;">42.0%</td>
+            <td style="text-align:right;">53</td>
+            <td style="text-align:right;">¥2,534</td>
+            <td style="text-align:right;font-weight:600;">212</td>
+            <td style="text-align:right;">151<span style="color:var(--text-tri);font-size:11px;"> (19+132)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-61</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:71.22641509433963%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">71%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="赖月平" data-tier="B">
+            <td>花都骏壹万邦</td>
+            <td>赖月平</td>
+            <td style="text-align:right;">132</td>
+            <td style="text-align:right;">37.3%</td>
+            <td style="text-align:right;">49</td>
+            <td style="text-align:right;">¥3,720</td>
+            <td style="text-align:right;font-weight:600;">133</td>
+            <td style="text-align:right;">99<span style="color:var(--text-tri);font-size:11px;"> (17+82)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-34</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:74.43609022556392%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">74%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="B">
+            <td>潘州广场朵以</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">132</td>
+            <td style="text-align:right;">50.2%</td>
+            <td style="text-align:right;">66</td>
+            <td style="text-align:right;">¥2,758</td>
+            <td style="text-align:right;font-weight:600;">241</td>
+            <td style="text-align:right;">187<span style="color:var(--text-tri);font-size:11px;"> (37+150)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-54</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:77.59336099585063%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">78%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="李硕果" data-tier="B">
+            <td>深圳宝安店</td>
+            <td>李硕果</td>
+            <td style="text-align:right;">108</td>
+            <td style="text-align:right;">46.1%</td>
+            <td style="text-align:right;">50</td>
+            <td style="text-align:right;">¥6,761</td>
+            <td style="text-align:right;font-weight:600;">74</td>
+            <td style="text-align:right;">62<span style="color:var(--text-tri);font-size:11px;"> (20+42)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-12</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:83.78378378378379%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">84%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="鲜于浩" data-tier="B">
+            <td>宜都清江店</td>
+            <td>鲜于浩</td>
+            <td style="text-align:right;">126</td>
+            <td style="text-align:right;">34.5%</td>
+            <td style="text-align:right;">44</td>
+            <td style="text-align:right;">¥3,582</td>
+            <td style="text-align:right;font-weight:600;">122</td>
+            <td style="text-align:right;">104<span style="color:var(--text-tri);font-size:11px;"> (15+89)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-18</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:85.24590163934425%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">85%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="B">
+            <td>茂名印象汇</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">132</td>
+            <td style="text-align:right;">49.3%</td>
+            <td style="text-align:right;">65</td>
+            <td style="text-align:right;">¥4,079</td>
+            <td style="text-align:right;font-weight:600;">160</td>
+            <td style="text-align:right;">168<span style="color:var(--text-tri);font-size:11px;"> (30+138)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+8</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">105%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="B">
+            <td>岗顶天娱广场</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">174</td>
+            <td style="text-align:right;">68.1%</td>
+            <td style="text-align:right;">118</td>
+            <td style="text-align:right;">¥4,686</td>
+            <td style="text-align:right;font-weight:600;">253</td>
+            <td style="text-align:right;">299<span style="color:var(--text-tri);font-size:11px;"> (97+202)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+46</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">118%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="鲜于浩" data-tier="B">
+            <td>通城朵以</td>
+            <td>鲜于浩</td>
+            <td style="text-align:right;">132</td>
+            <td style="text-align:right;">52.1%</td>
+            <td style="text-align:right;">69</td>
+            <td style="text-align:right;">¥4,034</td>
+            <td style="text-align:right;font-weight:600;">171</td>
+            <td style="text-align:right;">204<span style="color:var(--text-tri);font-size:11px;"> (48+156)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+33</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">119%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="李硕果" data-tier="B">
+            <td>深圳龙岗坪山</td>
+            <td>李硕果</td>
+            <td style="text-align:right;">108</td>
+            <td style="text-align:right;">52.9%</td>
+            <td style="text-align:right;">57</td>
+            <td style="text-align:right;">¥4,377</td>
+            <td style="text-align:right;font-weight:600;">131</td>
+            <td style="text-align:right;">158<span style="color:var(--text-tri);font-size:11px;"> (40+118)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+27</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">121%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-tier-header" data-tier="C"><td colspan="11" style="background:#EBF8FF;font-weight:700;color:#3182CE;padding:10px 16px;font-size:13px;border:none;">C档（社区店）</td></tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="C">
+            <td>湛江吴川</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">90</td>
+            <td style="text-align:right;">57.1%</td>
+            <td style="text-align:right;">51</td>
+            <td style="text-align:right;">¥4,086</td>
+            <td style="text-align:right;font-weight:600;">126</td>
+            <td style="text-align:right;">91<span style="color:var(--text-tri);font-size:11px;"> (27+64)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-35</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:72.22222222222221%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">72%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="李硕果" data-tier="C">
+            <td>深圳满京华店</td>
+            <td>李硕果</td>
+            <td style="text-align:right;">66</td>
+            <td style="text-align:right;">55.4%</td>
+            <td style="text-align:right;">37</td>
+            <td style="text-align:right;">¥3,640</td>
+            <td style="text-align:right;font-weight:600;">101</td>
+            <td style="text-align:right;">73<span style="color:var(--text-tri);font-size:11px;"> (19+54)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-28</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:72.27722772277228%;height:100%;background:var(--red);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--red);">72%</span></div></td>
+            <td style="text-align:center;"><span style="background:#dc3545;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">缺口大</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="C">
+            <td>东莞黄江大道</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">96</td>
+            <td style="text-align:right;">47.4%</td>
+            <td style="text-align:right;">46</td>
+            <td style="text-align:right;">¥4,845</td>
+            <td style="text-align:right;font-weight:600;">94</td>
+            <td style="text-align:right;">77<span style="color:var(--text-tri);font-size:11px;"> (21+56)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-17</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:81.91489361702128%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">82%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="李硕果" data-tier="C">
+            <td>坪地宜城店</td>
+            <td>李硕果</td>
+            <td style="text-align:right;">96</td>
+            <td style="text-align:right;">53.9%</td>
+            <td style="text-align:right;">52</td>
+            <td style="text-align:right;">¥4,597</td>
+            <td style="text-align:right;font-weight:600;">113</td>
+            <td style="text-align:right;">96<span style="color:var(--text-tri);font-size:11px;"> (30+66)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-17</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:84.95575221238938%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">85%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="C">
+            <td>东莞南城</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">84</td>
+            <td style="text-align:right;">64.4%</td>
+            <td style="text-align:right;">54</td>
+            <td style="text-align:right;">¥4,748</td>
+            <td style="text-align:right;font-weight:600;">114</td>
+            <td style="text-align:right;">101<span style="color:var(--text-tri);font-size:11px;"> (35+66)</span></td>
+            <td style="text-align:center;"><span style="color:var(--red);">-13</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:88.59649122807018%;height:100%;background:var(--orange);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--orange);">89%</span></div></td>
+            <td style="text-align:center;"><span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">接近</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="C">
+            <td>大朗店</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">90</td>
+            <td style="text-align:right;">55.1%</td>
+            <td style="text-align:right;">50</td>
+            <td style="text-align:right;">¥4,123</td>
+            <td style="text-align:right;font-weight:600;">121</td>
+            <td style="text-align:right;">131<span style="color:var(--text-tri);font-size:11px;"> (27+104)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+10</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">108%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="C">
+            <td>英德朵以</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">66</td>
+            <td style="text-align:right;">63.3%</td>
+            <td style="text-align:right;">42</td>
+            <td style="text-align:right;">¥5,186</td>
+            <td style="text-align:right;font-weight:600;">81</td>
+            <td style="text-align:right;">90<span style="color:var(--text-tri);font-size:11px;"> (25+65)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+9</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">111%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="鲜于浩" data-tier="C">
+            <td>宜城香港路</td>
+            <td>鲜于浩</td>
+            <td style="text-align:right;">72</td>
+            <td style="text-align:right;">59.0%</td>
+            <td style="text-align:right;">42</td>
+            <td style="text-align:right;">¥4,461</td>
+            <td style="text-align:right;font-weight:600;">96</td>
+            <td style="text-align:right;">112<span style="color:var(--text-tri);font-size:11px;"> (39+73)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+16</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">117%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="彭苑婷" data-tier="C">
+            <td>南村店</td>
+            <td>彭苑婷</td>
+            <td style="text-align:right;">72</td>
+            <td style="text-align:right;">54.9%</td>
+            <td style="text-align:right;">39</td>
+            <td style="text-align:right;">¥5,135</td>
+            <td style="text-align:right;font-weight:600;">77</td>
+            <td style="text-align:right;">92<span style="color:var(--text-tri);font-size:11px;"> (24+68)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+15</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">119%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr><tr class="hv-store-row" data-region="古欢欢" data-tier="C">
+            <td>高埗万和</td>
+            <td>古欢欢</td>
+            <td style="text-align:right;">78</td>
+            <td style="text-align:right;">55.2%</td>
+            <td style="text-align:right;">43</td>
+            <td style="text-align:right;">¥4,033</td>
+            <td style="text-align:right;font-weight:600;">107</td>
+            <td style="text-align:right;">153<span style="color:var(--text-tri);font-size:11px;"> (35+118)</span></td>
+            <td style="text-align:center;"><span style="color:var(--green);">+46</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:80px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:4px;"></div></div><span style="font-size:13px;font-weight:600;color:var(--green);">143%</span></div></td>
+            <td style="text-align:center;"><span style="background:#22c55e;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">达标</span></td>
+        </tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card section-gap">
+            <div class="card-title"><div class="dot" style="background:var(--orange);"></div>普通客户升级潜力（仅展示有缺口门店）</div>
+            <div style="overflow-x:auto;">
+                <table class="hv-detail-table">
+                    <thead>
+                        <tr>
+                            <th>门店</th>
+                            <th style="text-align:center;">梯队</th>
+                            <th style="text-align:right;">缺口人数</th>
+                            <th style="text-align:right;">普通客户数</th>
+                            <th style="text-align:right;">需转化比例</th>
+                            <th style="text-align:center;">可行性</th>
+                        </tr>
+                    </thead>
+                    <tbody><tr>
+            <td>白云万象汇朵以</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">138</td>
+            <td style="text-align:right;">483</td>
+            <td style="text-align:right;font-weight:600;">28.6%</td>
+            <td style="text-align:center;"><span style="color:#dc3545;font-weight:600;">有难度</span></td>
+        </tr><tr>
+            <td>湛江吴川</td>
+            <td style="text-align:center;"><span style="color:#3182CE;font-weight:600;">C档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">35</td>
+            <td style="text-align:right;">226</td>
+            <td style="text-align:right;font-weight:600;">15.5%</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">需努力</span></td>
+        </tr><tr>
+            <td>深圳满京华店</td>
+            <td style="text-align:center;"><span style="color:#3182CE;font-weight:600;">C档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">28</td>
+            <td style="text-align:right;">186</td>
+            <td style="text-align:right;font-weight:600;">15.1%</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">需努力</span></td>
+        </tr><tr>
+            <td>深圳龙华大浪</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">27</td>
+            <td style="text-align:right;">184</td>
+            <td style="text-align:right;font-weight:600;">14.7%</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">需努力</span></td>
+        </tr><tr>
+            <td>乐从天佑城</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">61</td>
+            <td style="text-align:right;">656</td>
+            <td style="text-align:right;font-weight:600;">9.3%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>潘州广场朵以</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">54</td>
+            <td style="text-align:right;">662</td>
+            <td style="text-align:right;font-weight:600;">8.2%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>深圳宝安店</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">12</td>
+            <td style="text-align:right;">154</td>
+            <td style="text-align:right;font-weight:600;">7.8%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>坪地宜城店</td>
+            <td style="text-align:center;"><span style="color:#3182CE;font-weight:600;">C档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">17</td>
+            <td style="text-align:right;">233</td>
+            <td style="text-align:right;font-weight:600;">7.3%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>海珠乐峰广场</td>
+            <td style="text-align:center;"><span style="color:#dc3545;font-weight:600;">A档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">65</td>
+            <td style="text-align:right;">941</td>
+            <td style="text-align:right;font-weight:600;">6.9%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>广州塔广场店</td>
+            <td style="text-align:center;"><span style="color:#dc3545;font-weight:600;">A档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">72</td>
+            <td style="text-align:right;">1096</td>
+            <td style="text-align:right;font-weight:600;">6.6%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>花都骏壹万邦</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">34</td>
+            <td style="text-align:right;">558</td>
+            <td style="text-align:right;font-weight:600;">6.1%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>东莞南城</td>
+            <td style="text-align:center;"><span style="color:#3182CE;font-weight:600;">C档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">13</td>
+            <td style="text-align:right;">241</td>
+            <td style="text-align:right;font-weight:600;">5.4%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>东莞黄江大道</td>
+            <td style="text-align:center;"><span style="color:#3182CE;font-weight:600;">C档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">17</td>
+            <td style="text-align:right;">391</td>
+            <td style="text-align:right;font-weight:600;">4.3%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr><tr>
+            <td>宜都清江店</td>
+            <td style="text-align:center;"><span style="color:#f59e0b;font-weight:600;">B档</span></td>
+            <td style="text-align:right;color:var(--red);font-weight:600;">18</td>
+            <td style="text-align:right;">631</td>
+            <td style="text-align:right;font-weight:600;">2.9%</td>
+            <td style="text-align:center;"><span style="color:#22c55e;font-weight:600;">较容易</span></td>
+        </tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 子Tab2: 行动看板 -->
+    <div id="hv-sub-action" class="hv-sub-page">
+        
+    <div class="action-summary">
+        <div class="action-summary-card" style="border-left:4px solid #E53E3E;">
+            <div style="font-size:15px;font-weight:700;color:#E53E3E;">🔴 缺口大</div>
+            <div style="font-size:24px;font-weight:800;color:#E53E3E;margin:4px 0;">8<span style="font-size:14px;font-weight:400;">家</span></div>
+            <div style="font-size:12px;color:#4A5568;">总缺口 449 人</div>
+        </div>
+        <div class="action-summary-card" style="border-left:4px solid #DD6B20;">
+            <div style="font-size:15px;font-weight:700;color:#DD6B20;">🟡 接近达标</div>
+            <div style="font-size:24px;font-weight:800;color:#DD6B20;margin:4px 0;">6<span style="font-size:14px;font-weight:400;">家</span></div>
+            <div style="font-size:12px;color:#4A5568;">总缺口 142 人</div>
+        </div>
+        <div class="action-summary-card" style="border-left:4px solid #38A169;">
+            <div style="font-size:15px;font-weight:700;color:#38A169;">🟢 已达标</div>
+            <div style="font-size:24px;font-weight:800;color:#38A169;margin:4px 0;">11<span style="font-size:14px;font-weight:400;">家</span></div>
+            <div style="font-size:12px;color:#4A5568;">超额 +327 人</div>
+        </div>
+    </div>
+    <div class="action-group-title" style="border-left:4px solid #E53E3E;background:#FFF5F5;">
+        🔴 缺口大 — 重点扩池（8家）
+    </div>
+    <div class="action-cards-grid">
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">白云万象汇朵以</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">35%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-138</b></span>
+                <span>B档 · 平衡线120万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 10 · 重要 65 · 普通 483 · 初级 363</div>
+                <div class="action-card-struct">活跃 236 · 沉默 73 · 睡眠 253 · 预流失 370</div>
+                <div class="action-card-struct">高连带 119 · 单次高连带 354 · 单次低连带 337</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 483 人，需转化 138 人（28.6%）。每月目标 23 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📣 初级客户激活</div>
+                    <div class="action-item-detail">初级客户 363 人，超过普通客户的一半。优先通过到店活动、新品体验提升进店频次，逐步培养为普通客户再向上升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 1587 人，超过活跃+沉默 309 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>23</b> 人（剩余6个月，缺口138人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">深圳龙华大浪</div>
+                <div class="action-card-mgr">李硕果</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">50%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-27</b></span>
+                <span>B档 · 平衡线114万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 6 · 重要 21 · 普通 184 · 初级 135</div>
+                <div class="action-card-struct">活跃 265 · 沉默 54 · 睡眠 5 · 预流失 26</div>
+                <div class="action-card-struct">高连带 44 · 单次高连带 170 · 单次低连带 107</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 184 人，需转化 27 人（14.7%）。每月目标 5 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📣 初级客户激活</div>
+                    <div class="action-item-detail">初级客户 135 人，超过普通客户的一半。优先通过到店活动、新品体验提升进店频次，逐步培养为普通客户再向上升级。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>5</b> 人（剩余6个月，缺口27人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">乐从天佑城</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">71%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-61</b></span>
+                <span>B档 · 平衡线128万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 19 · 重要 132 · 普通 656 · 初级 385</div>
+                <div class="action-card-struct">活跃 260 · 沉默 118 · 睡眠 287 · 预流失 555</div>
+                <div class="action-card-struct">高连带 220 · 单次高连带 540 · 单次低连带 298</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 656 人，需转化 61 人（9.3%）。每月目标 11 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📣 初级客户激活</div>
+                    <div class="action-item-detail">初级客户 385 人，超过普通客户的一半。优先通过到店活动、新品体验提升进店频次，逐步培养为普通客户再向上升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 4104 人，超过活跃+沉默 378 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>11</b> 人（剩余6个月，缺口61人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">湛江吴川</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">72%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-35</b></span>
+                <span>C档 · 平衡线90万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 27 · 重要 64 · 普通 226 · 初级 125</div>
+                <div class="action-card-struct">活跃 114 · 沉默 44 · 睡眠 143 · 预流失 154</div>
+                <div class="action-card-struct">高连带 117 · 单次高连带 145 · 单次低连带 116</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 226 人，需转化 35 人（15.5%）。每月目标 6 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📣 初级客户激活</div>
+                    <div class="action-item-detail">初级客户 125 人，超过普通客户的一半。优先通过到店活动、新品体验提升进店频次，逐步培养为普通客户再向上升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 789 人，超过活跃+沉默 158 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>6</b> 人（剩余6个月，缺口35人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">深圳满京华店</div>
+                <div class="action-card-mgr">李硕果</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">72%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-28</b></span>
+                <span>C档 · 平衡线66万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 19 · 重要 54 · 普通 186 · 初级 82</div>
+                <div class="action-card-struct">活跃 168 · 沉默 56 · 睡眠 50 · 预流失 76</div>
+                <div class="action-card-struct">高连带 92 · 单次高连带 156 · 单次低连带 63</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 186 人，需转化 28 人（15.1%）。每月目标 5 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>5</b> 人（剩余6个月，缺口28人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">花都骏壹万邦</div>
+                <div class="action-card-mgr">赖月平</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">74%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-34</b></span>
+                <span>B档 · 平衡线132万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 17 · 重要 82 · 普通 558 · 初级 147</div>
+                <div class="action-card-struct">活跃 229 · 沉默 63 · 睡眠 230 · 预流失 299</div>
+                <div class="action-card-struct">高连带 162 · 单次高连带 451 · 单次低连带 132</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 558 人，需转化 34 人（6.1%）。每月目标 6 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 1296 人，超过活跃+沉默 292 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>6</b> 人（剩余6个月，缺口34人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">广州塔广场店</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">76%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-72</b></span>
+                <span>A档 · 平衡线264万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 36 · 重要 192 · 普通 1096 · 初级 465</div>
+                <div class="action-card-struct">活跃 352 · 沉默 132 · 睡眠 399 · 预流失 928</div>
+                <div class="action-card-struct">高连带 256 · 单次高连带 1035 · 单次低连带 404</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 1096 人，需转化 72 人（6.6%）。每月目标 12 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 3112 人，超过活跃+沉默 484 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>12</b> 人（剩余6个月，缺口72人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>萝岗万达</b>（达成率 130%，人均 ¥3,728）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #dc3545;">
+                <div class="action-card-store">潘州广场朵以</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#dc3545;">78%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-54</b></span>
+                <span>B档 · 平衡线132万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 37 · 重要 150 · 普通 662 · 初级 330</div>
+                <div class="action-card-struct">活跃 254 · 沉默 107 · 睡眠 295 · 预流失 538</div>
+                <div class="action-card-struct">高连带 297 · 单次高连带 466 · 单次低连带 285</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🔑 普通客户升级</div>
+                    <div class="action-item-detail">普通客户池 662 人，需转化 54 人（8.2%）。每月目标 9 人。建议通过储值锁客、搭配陈列提客单、多件优惠提连带推动升级。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⚠️ 流失预警</div>
+                    <div class="action-item-detail">预流失+流失 1821 人，超过活跃+沉默 361 人。需优先止损，对预流失客户做召回触达。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>9</b> 人（剩余6个月，缺口54人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+    </div>
+    <div class="action-group-title" style="border-left:4px solid #DD6B20;background:#FFFAF0;">
+        🟡 接近达标 — 精准冲线（6家）
+    </div>
+    <div class="action-cards-grid">
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">海珠乐峰广场</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">81%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-65</b></span>
+                <span>A档 · 平衡线278万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 53 · 重要 231 · 普通 941 · 初级 474</div>
+                <div class="action-card-struct">活跃 457 · 沉默 169 · 睡眠 450 · 预流失 642</div>
+                <div class="action-card-struct">高连带 365 · 单次高连带 768 · 单次低连带 417</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 65 人，按月分解每月 11 人。普通客户池 941 人，转化比例仅需 6.9%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：萝岗万达</div>
+                    <div class="action-item-detail">同梯队达成率最高（130%），人均贡献 ¥3,728。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>11</b> 人（剩余6个月，缺口65人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>萝岗万达</b>（达成率 130%，人均 ¥3,728）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">东莞黄江大道</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">82%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-17</b></span>
+                <span>C档 · 平衡线96万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 21 · 重要 56 · 普通 391 · 初级 43</div>
+                <div class="action-card-struct">活跃 84 · 沉默 41 · 睡眠 141 · 预流失 252</div>
+                <div class="action-card-struct">高连带 123 · 单次高连带 235 · 单次低连带 45</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 17 人，按月分解每月 3 人。普通客户池 391 人，转化比例仅需 4.3%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：高埗万和</div>
+                    <div class="action-item-detail">同梯队达成率最高（143%），人均贡献 ¥4,033。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>3</b> 人（剩余6个月，缺口17人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">深圳宝安店</div>
+                <div class="action-card-mgr">李硕果</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">84%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-12</b></span>
+                <span>B档 · 平衡线108万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 20 · 重要 42 · 普通 154 · 初级 105</div>
+                <div class="action-card-struct">活跃 258 · 沉默 17 · 睡眠 18 · 预流失 37</div>
+                <div class="action-card-struct">高连带 95 · 单次高连带 121 · 单次低连带 86</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 12 人，按月分解每月 2 人。普通客户池 154 人，转化比例仅需 7.8%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：深圳龙岗坪山</div>
+                    <div class="action-item-detail">同梯队达成率最高（121%），人均贡献 ¥4,377。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>2</b> 人（剩余6个月，缺口12人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">坪地宜城店</div>
+                <div class="action-card-mgr">李硕果</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">85%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-17</b></span>
+                <span>C档 · 平衡线96万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 30 · 重要 66 · 普通 233 · 初级 119</div>
+                <div class="action-card-struct">活跃 128 · 沉默 61 · 睡眠 132 · 预流失 128</div>
+                <div class="action-card-struct">高连带 106 · 单次高连带 177 · 单次低连带 97</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 17 人，按月分解每月 3 人。普通客户池 233 人，转化比例仅需 7.3%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：高埗万和</div>
+                    <div class="action-item-detail">同梯队达成率最高（143%），人均贡献 ¥4,033。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>3</b> 人（剩余6个月，缺口17人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">宜都清江店</div>
+                <div class="action-card-mgr">鲜于浩</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">85%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-18</b></span>
+                <span>B档 · 平衡线126万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 15 · 重要 89 · 普通 631 · 初级 383</div>
+                <div class="action-card-struct">活跃 323 · 沉默 56 · 睡眠 206 · 预流失 551</div>
+                <div class="action-card-struct">高连带 150 · 单次高连带 356 · 单次低连带 388</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 18 人，按月分解每月 3 人。普通客户池 631 人，转化比例仅需 2.9%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：深圳龙岗坪山</div>
+                    <div class="action-item-detail">同梯队达成率最高（121%），人均贡献 ¥4,377。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>3</b> 人（剩余6个月，缺口18人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>深圳龙岗坪山</b>（达成率 121%，人均 ¥4,377）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #f59e0b;">
+                <div class="action-card-store">东莞南城</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#f59e0b;">89%</b></span>
+                <span>缺口 <b style="color:#E53E3E;">-13</b></span>
+                <span>C档 · 平衡线84万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 35 · 重要 66 · 普通 241 · 初级 90</div>
+                <div class="action-card-struct">活跃 83 · 沉默 29 · 睡眠 87 · 预流失 246</div>
+                <div class="action-card-struct">高连带 136 · 单次高连带 223 · 单次低连带 51</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🎯 精准冲线</div>
+                    <div class="action-item-detail">仅差 13 人，按月分解每月 3 人。普通客户池 241 人，转化比例仅需 5.4%，压力不大。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">🏆 参考标杆：高埗万和</div>
+                    <div class="action-item-detail">同梯队达成率最高（143%），人均贡献 ¥4,033。可学习其高连带客户培养经验和搭配陈列方法。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">每月需转化 <b>3</b> 人（剩余6个月，缺口13人）</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队达标最佳：<b>高埗万和</b>（达成率 143%，人均 ¥4,033）</div>
+            </div>
+        </div>
+    </div>
+    <div class="action-group-title" style="border-left:4px solid #38A169;background:#F0FFF4;">
+        🟢 已达标 — 提质防流失（11家）
+    </div>
+    <div class="action-cards-grid">
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">茂名印象汇</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">105%</b></span>
+                <span>缺口 <b style="color:#38A169;">+8</b></span>
+                <span>B档 · 平衡线132万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 30 · 重要 138 · 普通 588 · 初级 203</div>
+                <div class="action-card-struct">活跃 212 · 沉默 91 · 睡眠 265 · 预流失 393</div>
+                <div class="action-card-struct">高连带 254 · 单次高连带 526 · 单次低连带 122</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 8 人。活跃 212 人、沉默 91 人（沉默占比 30%，需关注沉默VIP激活）。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥4,079 领先梯队均值 ¥3,882。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>168</b> 人高价值客户，超额 8 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">大朗店</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">108%</b></span>
+                <span>缺口 <b style="color:#38A169;">+10</b></span>
+                <span>C档 · 平衡线90万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 27 · 重要 104 · 普通 339 · 初级 99</div>
+                <div class="action-card-struct">活跃 165 · 沉默 47 · 睡眠 155 · 预流失 215</div>
+                <div class="action-card-struct">高连带 162 · 单次高连带 236 · 单次低连带 128</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 10 人。活跃 165 人、沉默 47 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📈 人均贡献提升</div>
+                    <div class="action-item-detail">当前人均 ¥4,123，梯队均值 ¥4,456（差 7%）。高连带客户 162 人，建议通过搭配陈列、多件优惠提升连带率。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>131</b> 人高价值客户，超额 10 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">清远城市广场</div>
+                <div class="action-card-mgr">陈祝利</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">109%</b></span>
+                <span>缺口 <b style="color:#38A169;">+26</b></span>
+                <span>A档 · 平衡线240万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 70 · 重要 242 · 普通 1215 · 初级 780</div>
+                <div class="action-card-struct">活跃 606 · 沉默 205 · 睡眠 577 · 预流失 955</div>
+                <div class="action-card-struct">高连带 430 · 单次高连带 782 · 单次低连带 761</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 26 人。活跃 606 人、沉默 205 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥3,707 领先梯队均值 ¥3,677。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>312</b> 人高价值客户，超额 26 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>萝岗万达</b>（¥3,728）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">英德朵以</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">111%</b></span>
+                <span>缺口 <b style="color:#38A169;">+9</b></span>
+                <span>C档 · 平衡线66万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 25 · 重要 65 · 普通 146 · 初级 33</div>
+                <div class="action-card-struct">活跃 80 · 沉默 23 · 睡眠 62 · 预流失 106</div>
+                <div class="action-card-struct">高连带 89 · 单次高连带 119 · 单次低连带 39</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 9 人。活跃 80 人、沉默 23 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥5,186 领先梯队均值 ¥4,456。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>90</b> 人高价值客户，超额 9 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">🏅 本梯队人均贡献标杆</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">宜城香港路</div>
+                <div class="action-card-mgr">鲜于浩</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">117%</b></span>
+                <span>缺口 <b style="color:#38A169;">+16</b></span>
+                <span>C档 · 平衡线72万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 39 · 重要 73 · 普通 283 · 初级 126</div>
+                <div class="action-card-struct">活跃 153 · 沉默 37 · 睡眠 128 · 预流失 216</div>
+                <div class="action-card-struct">高连带 133 · 单次高连带 176 · 单次低连带 124</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 16 人。活跃 153 人、沉默 37 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥4,461 领先梯队均值 ¥4,456。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>112</b> 人高价值客户，超额 16 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">岗顶天娱广场</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">118%</b></span>
+                <span>缺口 <b style="color:#38A169;">+46</b></span>
+                <span>B档 · 平衡线174万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 97 · 重要 202 · 普通 543 · 初级 146</div>
+                <div class="action-card-struct">活跃 295 · 沉默 79 · 睡眠 189 · 预流失 450</div>
+                <div class="action-card-struct">高连带 372 · 单次高连带 406 · 单次低连带 123</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 46 人。活跃 295 人、沉默 79 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥4,686 领先梯队均值 ¥3,882。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>299</b> 人高价值客户，超额 46 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">通城朵以</div>
+                <div class="action-card-mgr">鲜于浩</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">119%</b></span>
+                <span>缺口 <b style="color:#38A169;">+33</b></span>
+                <span>B档 · 平衡线132万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 48 · 重要 156 · 普通 599 · 初级 335</div>
+                <div class="action-card-struct">活跃 375 · 沉默 36 · 睡眠 239 · 预流失 511</div>
+                <div class="action-card-struct">高连带 205 · 单次高连带 336 · 单次低连带 367</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 33 人。活跃 375 人、沉默 36 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥4,034 领先梯队均值 ¥3,882。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>204</b> 人高价值客户，超额 33 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">南村店</div>
+                <div class="action-card-mgr">彭苑婷</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">119%</b></span>
+                <span>缺口 <b style="color:#38A169;">+15</b></span>
+                <span>C档 · 平衡线72万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 24 · 重要 68 · 普通 315 · 初级 118</div>
+                <div class="action-card-struct">活跃 116 · 沉默 47 · 睡眠 111 · 预流失 256</div>
+                <div class="action-card-struct">高连带 123 · 单次高连带 230 · 单次低连带 113</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 15 人。活跃 116 人、沉默 47 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥5,135 领先梯队均值 ¥4,456。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>92</b> 人高价值客户，超额 15 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">深圳龙岗坪山</div>
+                <div class="action-card-mgr">李硕果</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">121%</b></span>
+                <span>缺口 <b style="color:#38A169;">+27</b></span>
+                <span>B档 · 平衡线108万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 40 · 重要 118 · 普通 394 · 初级 240</div>
+                <div class="action-card-struct">活跃 257 · 沉默 95 · 睡眠 270 · 预流失 175</div>
+                <div class="action-card-struct">高连带 197 · 单次高连带 269 · 单次低连带 213</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 27 人。活跃 257 人、沉默 95 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥4,377 领先梯队均值 ¥3,882。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>158</b> 人高价值客户，超额 27 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>深圳宝安店</b>（¥6,761）</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">萝岗万达</div>
+                <div class="action-card-mgr">赖月平</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">130%</b></span>
+                <span>缺口 <b style="color:#38A169;">+91</b></span>
+                <span>A档 · 平衡线254万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 72 · 重要 325 · 普通 1648 · 初级 584</div>
+                <div class="action-card-struct">活跃 703 · 沉默 249 · 睡眠 640 · 预流失 1100</div>
+                <div class="action-card-struct">高连带 586 · 单次高连带 1257 · 单次低连带 529</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 91 人。活跃 703 人、沉默 249 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">⭐ 经验输出</div>
+                    <div class="action-item-detail">人均贡献 ¥3,728 领先梯队均值 ¥3,677。可作为同梯队标杆，向缺口门店输出客户运营经验。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>397</b> 人高价值客户，超额 91 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">🏅 本梯队人均贡献标杆</div>
+            </div>
+        </div>
+        <div class="action-card">
+            <div class="action-card-header" style="border-left:4px solid #22c55e;">
+                <div class="action-card-store">高埗万和</div>
+                <div class="action-card-mgr">古欢欢</div>
+            </div>
+            <div class="action-card-metrics">
+                <span>达成率 <b style="color:#22c55e;">143%</b></span>
+                <span>缺口 <b style="color:#38A169;">+46</b></span>
+                <span>C档 · 平衡线78万</span>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📊 客户结构</div>
+                <div class="action-card-struct">核心VIP 35 · 重要 118 · 普通 430 · 初级 148</div>
+                <div class="action-card-struct">活跃 177 · 沉默 58 · 睡眠 211 · 预流失 298</div>
+                <div class="action-card-struct">高连带 164 · 单次高连带 202 · 单次低连带 167</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🎯 核心行动</div>
+                
+                <div class="action-item">
+                    <div class="action-item-title">🛡️ VIP保有</div>
+                    <div class="action-item-detail">超额 46 人。活跃 177 人、沉默 58 人。持续维护核心VIP到店频次，防止滑向沉默。</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-item-title">📈 人均贡献提升</div>
+                    <div class="action-item-detail">当前人均 ¥4,033，梯队均值 ¥4,456（差 9%）。高连带客户 164 人，建议通过搭配陈列、多件优惠提升连带率。</div>
+                </div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">📈 月度目标</div>
+                <div class="action-card-target">保有 <b>153</b> 人高价值客户，超额 46 人</div>
+            </div>
+            <div class="action-card-section">
+                <div class="action-card-section-title">🏆 对标</div>
+                <div class="action-card-benchmark">同梯队人均贡献最高：<b>英德朵以</b>（¥5,186）</div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -2792,6 +4349,34 @@ function calcStrategy(tier, lc, direction, cellData) {
     window.addEventListener('orientationchange',orientHandler);
   }
 })();
+
+function switchHvSubTab(tab, el) {
+    document.querySelectorAll('.hv-sub-page').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.hv-sub-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById('hv-sub-' + tab).classList.add('active');
+    if (el) el.classList.add('active');
+}
+function hvFilterByRegion(region) {
+    var rows = document.querySelectorAll('#hvDetailTable .hv-store-row');
+    var headers = document.querySelectorAll('#hvDetailTable .hv-tier-header');
+    var visibleCount = 0;
+    var visibleTiers = {};
+    rows.forEach(function(row) {
+        if (!region || row.dataset.region === region) {
+            row.style.display = '';
+            visibleCount++;
+            visibleTiers[row.dataset.tier] = true;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    headers.forEach(function(h) {
+        h.style.display = visibleTiers[h.dataset.tier] ? '' : 'none';
+    });
+    var countEl = document.getElementById('hvFilterCount');
+    if (region) { countEl.textContent = '显示 ' + visibleCount + ' 家门店'; }
+    else { countEl.textContent = ''; }
+}
 </script>
 
 </body>
