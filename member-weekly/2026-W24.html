@@ -439,17 +439,17 @@
         
 
 
-.salon-wrap .hero{position:relative;padding:80px 24px 60px;text-align:center;background:linear-gradient(135deg,.salon-wrap #E8E0D8,.salon-wrap #F0E8E0,.salon-wrap #E8E4E0,.salon-wrap #E0E4E8);overflow:hidden}
+.salon-wrap .hero{position:relative;padding:80px 24px 60px;text-align:center;background:linear-gradient(135deg,#E8E0D8,#F0E8E0,#E8E4E0,#E0E4E8);overflow:hidden}
 .salon-wrap .hero-logo{height:56px;margin-bottom:16px;object-fit:contain;filter:brightness(0.35)}.salon-wrap .hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:300;letter-spacing:.15em;position:relative;z-index:1}
 .salon-wrap .hero p{font-size:1rem;color:var(--text-secondary);margin-top:12px;position:relative;z-index:1}
 .salon-wrap .nav-bar{position:sticky;top:0;z-index:100;display:flex;gap:4px;padding:10px 16px;background:rgba(245,240,235,.92);backdrop-filter:blur(12px);overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border-color)}
 .salon-wrap .nav-bar::-webkit-scrollbar{display:none}
 .salon-wrap .nav-btn{flex-shrink:0;padding:7px 16px;border:none;background:transparent;color:var(--text-light);font-size:.85rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .salon-wrap .nav-btn:hover{background:rgba(90,82,74,.06);color:var(--text-secondary)}
-.salon-wrap .nav-btn.salon-wrap .active{background:var(--text-primary);color:var(--bg-primary);font-weight:500}
+.salon-wrap .nav-btn.active{background:var(--text-primary);color:var(--bg-primary);font-weight:500}
 .salon-wrap .filter-bar{display:flex;gap:8px;padding:12px 16px;flex-wrap:wrap;background:var(--bg-primary);border-bottom:1px solid var(--border-color)}
-.salon-wrap .filter-chip{padding:5px 14px;border:1px solid var(--border-color);background:.salon-wrap #fff;color:var(--text-secondary);font-size:.8rem;border-radius:16px;cursor:pointer;transition:all .2s}
-.salon-wrap .filter-chip.salon-wrap .active{background:var(--text-primary);color:var(--bg-primary);border-color:var(--text-primary)}
+.salon-wrap .filter-chip{padding:5px 14px;border:1px solid var(--border-color);background:#fff;color:var(--text-secondary);font-size:.8rem;border-radius:16px;cursor:pointer;transition:all .2s}
+.salon-wrap .filter-chip.active{background:var(--text-primary);color:var(--bg-primary);border-color:var(--text-primary)}
 .salon-wrap .main{max-width:1200px;margin:0 auto;padding:20px 16px}
 .salon-wrap .cat-section{margin-bottom:32px}
 .salon-wrap .cat-title{font-size:1.1rem;font-weight:500;margin-bottom:16px;padding-left:4px;display:flex;align-items:center;gap:8px}
@@ -458,23 +458,23 @@
 .salon-wrap .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
 .salon-wrap .card-img-wrap{position:relative;width:100%;padding-top:65%;overflow:hidden}
 .salon-wrap .card-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.salon-wrap .card:hover .salon-wrap .card-img{transform:scale(1.05)}
-.salon-wrap .card-img-placeholder{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,.salon-wrap #EDE8E3,.salon-wrap #E3E0E8)}
+.salon-wrap .card:hover .card-img{transform:scale(1.05)}
+.salon-wrap .card-img-placeholder{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#EDE8E3,#E3E0E8)}
 .salon-wrap .card-badge{position:absolute;top:10px;right:10px;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:500}
-.salon-wrap .badge-easy{background:rgba(168,181,160,.85);color:.salon-wrap #fff}
-.salon-wrap .badge-medium{background:rgba(184,169,201,.85);color:.salon-wrap #fff}
+.salon-wrap .badge-easy{background:rgba(168,181,160,.85);color:#fff}
+.salon-wrap .badge-medium{background:rgba(184,169,201,.85);color:#fff}
 .salon-wrap .card-
-.salon-wrap .card-name{font-size:.95rem;font-weight:600;margin-bottom:8px}
+.card-name{font-size:.95rem;font-weight:600;margin-bottom:8px}
 .salon-wrap .card-meta{display:flex;gap:12px;margin-bottom:8px;font-size:.8rem;color:var(--text-secondary)}
 .salon-wrap .card-tag{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.75rem}
 .salon-wrap .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(90,82,74,.4);backdrop-filter:blur(4px);z-index:1000;justify-content:center;align-items:center;padding:20px}
-.salon-wrap .modal-overlay.salon-wrap .show{display:flex}
-.salon-wrap .modal{background:.salon-wrap #fff;border-radius:18px;max-width:560px;width:100%;max-height:90vh;overflow:hidden;animation:modalIn .3s ease;display:flex;flex-direction:column}
+.salon-wrap .modal-overlay.show{display:flex}
+.salon-wrap .modal{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:90vh;overflow:hidden;animation:modalIn .3s ease;display:flex;flex-direction:column}
 @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .salon-wrap .modal-img-area{position:relative;width:100%;max-height:280px;overflow:hidden;flex-shrink:0}
 .salon-wrap .modal-img-area img{width:100%;height:280px;object-fit:cover}
 .salon-wrap .modal-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.85);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary)}
-.salon-wrap .modal-close:hover{background:.salon-wrap #fff}
+.salon-wrap .modal-close:hover{background:#fff}
 .salon-wrap .modal-scroll{flex:1;overflow-y:auto;padding:24px 28px 28px;min-height:0}
 .salon-wrap .modal-scroll::-webkit-scrollbar{width:4px}
 .salon-wrap .modal-scroll::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
@@ -486,7 +486,7 @@
 .salon-wrap .modal-imgs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
 .salon-wrap .modal-imgs::-webkit-scrollbar{display:none}
 .salon-wrap .modal-thumb{flex-shrink:0;width:56px;height:56px;border-radius:8px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .2s}
-.salon-wrap .modal-thumb.salon-wrap .active{border-color:var(--text-primary)}
+.salon-wrap .modal-thumb.active{border-color:var(--text-primary)}
 .salon-wrap .modal-thumb img{width:100%;height:100%;object-fit:cover}
 .salon-wrap .ec-section{margin-top:20px}
 .salon-wrap .ec-content{font-size:.85rem;color:var(--text-secondary);line-height:1.7}
@@ -504,7 +504,7 @@
 .salon-wrap .ec-tab-bar::-webkit-scrollbar{display:none}
 .salon-wrap .ec-tab{flex-shrink:0;padding:7px 14px;border:none;background:transparent;color:var(--text-light);font-size:.82rem;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .salon-wrap .ec-tab:hover{background:rgba(90,82,74,.05);color:var(--text-secondary)}
-.salon-wrap .ec-tab.salon-wrap .active{background:var(--text-primary);color:var(--bg-primary);font-weight:500}
+.salon-wrap .ec-tab.active{background:var(--text-primary);color:var(--bg-primary);font-weight:500}
 .salon-wrap .footer{text-align:center;padding:32px 16px;color:var(--text-light);font-size:.85rem}
 @media(max-width:768px){.salon-wrap .hero{padding:40px 16px 32px}.salon-wrap .hero-logo{height:40px;margin-bottom:12px}.salon-wrap .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.salon-wrap .modal-info-grid{grid-template-columns:repeat(2,1fr)}.salon-wrap .modal-scroll{padding:16px 18px 20px}.salon-wrap .modal-img-area img{height:200px}.salon-wrap .modal-img-area{max-height:200px}.salon-wrap .modal{max-height:92vh}}
 .salon-wrap .salon-qr-float {
@@ -5192,15 +5192,16 @@ var currentCat='all',currentDiff='all',_ec=null;
 function getFiltered(){return activities.filter(function(a){return(currentCat==='all'||a.category===currentCat)&&(currentDiff==='all'||a.difficulty===currentDiff)})}
 function renderCard(a){var im=images[a.name],mi=im&&im.length?im[0]:'',dc=a.difficulty==='零门槛'?'badge-easy':'badge-medium',ct=catConfig[a.category]||{},ts='background:'+ct.bg+';color:'+ct.color+';';return'<div class="card" data-id="'+a.id+'"><div class="card-img-wrap">'+(mi?'<img class="card-img" src="'+mi+'" alt="'+a.name+'" loading="lazy">':'<div class="card-img-placeholder">'+(ct.emoji||'✨')+'</div>')+'<span class="card-badge '+dc+'">'+a.difficulty+'</span></div><div class="card-body"><div class="card-name">'+a.name+'</div><div class="card-meta"><span>💰'+a.cost+'</span><span>⏱'+a.duration+'</span></div><span class="card-tag" style="'+ts+'">'+a.tag+'</span></div></div>'}
 function render(){var list=getFiltered(),m=document.getElementById('salonMainContent');if(currentCat==='all'){var h='';catOrder.forEach(function(c){var it=list.filter(function(a){return a.category===c});if(!it.length)return;h+='<div class="cat-section"><div class="cat-title">'+catConfig[c].emoji+' '+c+'</div><div class="cards-grid">';it.forEach(function(a){h+=renderCard(a)});h+='</div></div>'});m.innerHTML=h}else{var h='<div class="cat-section"><div class="cards-grid">';list.forEach(function(a){h+=renderCard(a)});h+='</div></div>';m.innerHTML=h}}
-function openModal(id){var a=activities.find(function(x){return x.id===id});if(!a)return;var imgs=images[a.name]||[],mi=imgs.length?imgs[0]:'',cat=catConfig[a.category]||{},ec=getEC(a.name);_ec=ec;var h='<div class="modal-img-area">';if(mi)h+='<img id="modalMainImg" src="'+mi+'" alt="'+a.name+'">';h+='<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-scroll"><h2 class="modal-name">'+a.name+'</h2><div class="modal-info-grid"><div class="modal-info-item"><div class="info-label">类别</div><div class="info-value">'+(cat.emoji||'')+' '+a.category+'</div></div><div class="modal-info-item"><div class="info-label">成本</div><div class="info-value">'+a.cost+'</div></div><div class="modal-info-item"><div class="info-label">时长</div><div class="info-value">'+a.duration+'</div></div><div class="modal-info-item"><div class="info-label">难度</div><div class="info-value">'+a.difficulty+'</div></div><div class="modal-info-item"><div class="info-label">标签</div><div class="info-value">'+a.tag+'</div></div><div class="modal-info-item"><div class="info-label">定位</div><div class="info-value">'+a.zone+'</div></div></div>';if(imgs.length>1){h+='<div class="modal-imgs">';for(var i=0;i<imgs.length;i++)h+='<div class="modal-thumb'+(i===0?' active':'')+'" data-url="'+imgs[i]+'"><img src="'+imgs[i]+'" loading="lazy"></div>';h+='</div>'}if(ec.meta)h+='<div class="ec-meta-bar ec-content">'+ec.meta+'</div>';h+='<div class="ec-section"><div class="ec-tab-bar"><button class="ec-tab active" data-tk="materials">📦 物料清单</button><button class="ec-tab" data-tk="process">📋 执行流程</button><button class="ec-tab" data-tk="script">🗣️ 导购话术</button><button class="ec-tab" data-tk="pitfalls">⚠️ 翻车点</button><button class="ec-tab" data-tk="purchase">🛒 采购指南</button></div><div class="ec-content" id="ecContent">'+(ec.materials||'<p>暂无内容</p>')+'</div></div></div>';document.querySelector('.modal').innerHTML=h;document.getElementById('salonModalOverlay').classList.add('show');document.body.style.overflow='hidden'}
+function openModal(id){var a=activities.find(function(x){return x.id===id});if(!a)return;var imgs=images[a.name]||[],mi=imgs.length?imgs[0]:'',cat=catConfig[a.category]||{},ec=getEC(a.name);_ec=ec;var h='<div class="modal-img-area">';if(mi)h+='<img id="modalMainImg" src="'+mi+'" alt="'+a.name+'">';h+='<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-scroll"><h2 class="modal-name">'+a.name+'</h2><div class="modal-info-grid"><div class="modal-info-item"><div class="info-label">类别</div><div class="info-value">'+(cat.emoji||'')+' '+a.category+'</div></div><div class="modal-info-item"><div class="info-label">成本</div><div class="info-value">'+a.cost+'</div></div><div class="modal-info-item"><div class="info-label">时长</div><div class="info-value">'+a.duration+'</div></div><div class="modal-info-item"><div class="info-label">难度</div><div class="info-value">'+a.difficulty+'</div></div><div class="modal-info-item"><div class="info-label">标签</div><div class="info-value">'+a.tag+'</div></div><div class="modal-info-item"><div class="info-label">定位</div><div class="info-value">'+a.zone+'</div></div></div>';if(imgs.length>1){h+='<div class="modal-imgs">';for(var i=0;i<imgs.length;i++)h+='<div class="modal-thumb'+(i===0?' active':'')+'" data-url="'+imgs[i]+'"><img src="'+imgs[i]+'" loading="lazy"></div>';h+='</div>'}if(ec.meta)h+='<div class="ec-meta-bar ec-content">'+ec.meta+'</div>';h+='<div class="ec-section"><div class="ec-tab-bar"><button class="ec-tab active" data-tk="materials">📦 物料清单</button><button class="ec-tab" data-tk="process">📋 执行流程</button><button class="ec-tab" data-tk="script">🗣️ 导购话术</button><button class="ec-tab" data-tk="pitfalls">⚠️ 翻车点</button><button class="ec-tab" data-tk="purchase">🛒 采购指南</button></div><div class="ec-content" id="ecContent">'+(ec.materials||'<p>暂无内容</p>')+'</div></div></div>';document.querySelector('.salon-wrap .modal').innerHTML=h;document.getElementById('salonModalOverlay').classList.add('show');document.body.style.overflow='hidden'}
 function closeModal(){document.getElementById('salonModalOverlay').classList.remove('show');document.body.style.overflow=''}
 document.getElementById('salonModalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
 document.getElementById('salonMainContent').addEventListener('click',function(e){var c=e.target.closest('.card');if(c)openModal(parseInt(c.dataset.id))});
-document.querySelector('.modal').addEventListener('click',function(e){var t=e.target.closest('.ec-tab');if(t){document.querySelectorAll('.ec-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');var k=t.dataset.tk,el=document.getElementById('ecContent');if(el&&_ec)el.innerHTML=_ec[k]||'<p>暂无内容</p>';return}var th=e.target.closest('.modal-thumb');if(th){document.getElementById('modalMainImg').src=th.dataset.url;th.parentElement.querySelectorAll('.modal-thumb').forEach(function(x){x.classList.remove('active')});th.classList.add('active')}});
-document.querySelectorAll('.nav-btn').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentCat=this.dataset.cat;render()})});
-document.querySelectorAll('.filter-chip[data-diff]').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.filter-chip[data-diff]').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentDiff=this.dataset.diff;render()})});
+document.querySelector('.salon-wrap .modal').addEventListener('click',function(e){var t=e.target.closest('.ec-tab');if(t){document.querySelectorAll('.salon-wrap .ec-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');var k=t.dataset.tk,el=document.getElementById('ecContent');if(el&&_ec)el.innerHTML=_ec[k]||'<p>暂无内容</p>';return}var th=e.target.closest('.modal-thumb');if(th){document.getElementById('modalMainImg').src=th.dataset.url;th.parentElement.querySelectorAll('.modal-thumb').forEach(function(x){x.classList.remove('active')});th.classList.add('active')}});
+document.querySelectorAll('.salon-wrap .nav-btn').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.salon-wrap .nav-btn').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentCat=this.dataset.cat;render()})});
+document.querySelectorAll('.salon-wrap .filter-chip[data-diff]').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.salon-wrap .filter-chip[data-diff]').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentDiff=this.dataset.diff;render()})});
 render();
+window.closeModal = closeModal;
 })();
 </script>
 
