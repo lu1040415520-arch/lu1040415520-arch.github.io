@@ -507,6 +507,31 @@
 .salon-wrap .ec-tab.salon-wrap .active{background:var(--text-primary);color:var(--bg-primary);font-weight:500}
 .salon-wrap .footer{text-align:center;padding:32px 16px;color:var(--text-light);font-size:.85rem}
 @media(max-width:768px){.salon-wrap .hero{padding:40px 16px 32px}.salon-wrap .hero-logo{height:40px;margin-bottom:12px}.salon-wrap .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.salon-wrap .modal-info-grid{grid-template-columns:repeat(2,1fr)}.salon-wrap .modal-scroll{padding:16px 18px 20px}.salon-wrap .modal-img-area img{height:200px}.salon-wrap .modal-img-area{max-height:200px}.salon-wrap .modal{max-height:92vh}}
+.salon-wrap .salon-qr-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    width: 90px;
+    height: 90px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    overflow: hidden;
+    transition: all .3s ease;
+    opacity: 0.85;
+}
+.salon-wrap .salon-qr-float:hover {
+    transform: scale(1.15);
+    opacity: 1;
+    box-shadow: 0 6px 28px rgba(0,0,0,.22);
+}
+.salon-wrap .salon-qr-float img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
     </style>
 </head>
 <body>
@@ -3933,7 +3958,7 @@ window.addEventListener('load', function() { document.getElementById('auth-input
     <div class="page-summary">
         <strong>会员沙龙</strong>是提升高价值客户粘性与复购的核心运营动作。通过线下手作活动拉近关系，强化品牌认同，提升客户终身价值。
     </div>
-    <div class="salon-wrap">
+    <div class="salon-wrap" style="position:relative;">
 <nav class="nav-bar" id="salonNavBar">
 <button class="nav-btn active" data-cat="all">全部</button>
 <button class="nav-btn" data-cat="花艺">🌸 花艺</button>
@@ -3952,7 +3977,9 @@ window.addEventListener('load', function() { document.getElementById('auth-input
 </div>
 <div class="main" id="salonMainContent"></div>
 <div class="modal-overlay" id="salonModalOverlay"><div class="modal"></div></div>
-</div>
+<a href="https://f.wps.cn/g/OdwWgx78/" target="_blank" class="salon-qr-float" title="朵以手作沙龙活动评价表">
+        <img src="https://claw.youzan.com/api/oss/download/reports/assets/salon-feedback-qr.png" alt="活动评价表二维码">
+    </a></div>
 </div>
 
 <!-- ===== 第七页：导购入门 ===== -->
