@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>朵以会员运营数据 NC1.0.0</title>
+<title>会员运营数据 V1.8.27</title>
 <style>
 :root {
   --primary: #07643C;
@@ -3496,7 +3496,7 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
         <div class="progress-bar">
           <div class="fill" id="progressFill" style="width:0%"></div>
         </div>
-        <div class="period-sub" id="ovPeriodItem">测算区间：<span id="ovPeriod">--</span><span class="tip-icon" onclick="ct_ct_toggleTip(this)" style="margin-left:2px;">ⓘ<span class="tip-popup">倒推测算的起止日期范围，起 = 数据统计最后一天的下一天，止 = 12月31日。</span></span></div>
+        <div class="period-sub" id="ovPeriodItem">测算区间：<span id="ovPeriod">--</span><span class="tip-icon" onclick="ct_ct_toggleTip(this)" style="margin-left:2px;">ⓘ<span class="tip-popup">倒推测算的起止日期范围，起 = 周报数据周期最后一天的下一天，止 = 12月31日。</span></span></div>
       </div>
     </div>
 
@@ -4053,9 +4053,9 @@ async function ct_onStoreChange() {
   bl.custPrice = analysis.baseline.custPrice;
   bl.custCountWeekly = bl.weekdayCustCount * 5 + bl.weekendCustCount * 2;
 
-  // 设置测算区间
-  const latestDate = new Date(analysis.latestDate + 'T00:00:00');
-  const startDate = new Date(latestDate);
+  // 设置测算区间：起算日 = V3周报week_end + 1（而非门店最后交易日期+1）
+  const weekEndDate = new Date(DATA.date + 'T00:00:00');
+  const startDate = new Date(weekEndDate);
   startDate.setDate(startDate.getDate() + 1);
   const endDate = new Date('2026-12-31T00:00:00');
   state.period.startDate = startDate;
@@ -12452,9 +12452,9 @@ async function ct_onStoreChange() {
   bl.custPrice = analysis.baseline.custPrice;
   bl.custCountWeekly = bl.weekdayCustCount * 5 + bl.weekendCustCount * 2;
 
-  // 设置测算区间
-  const latestDate = new Date(analysis.latestDate + 'T00:00:00');
-  const startDate = new Date(latestDate);
+  // 设置测算区间：起算日 = V3周报week_end + 1（而非门店最后交易日期+1）
+  const weekEndDate = new Date(DATA.date + 'T00:00:00');
+  const startDate = new Date(weekEndDate);
   startDate.setDate(startDate.getDate() + 1);
   const endDate = new Date('2026-12-31T00:00:00');
   ct_state.period.startDate = startDate;
