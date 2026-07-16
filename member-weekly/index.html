@@ -2167,6 +2167,18 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
   display: inline-flex;
   align-items: center;
 }
+.calc-tool .result-current {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-right: 4px;
+  white-space: nowrap;
+}
+.calc-tool .result-arrow {
+  font-size: 12px;
+  color: var(--primary);
+  margin: 0 4px;
+  font-weight: 600;
+}
 .calc-tool .result-deviation {
   font-size: 10px;
   color: var(--gray-500);
@@ -3575,28 +3587,28 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
       <!-- 件单价 -->
       <div class="result-row">
         <span class="result-name">件单价<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间需达到的件单价（已撇除礼品单）。若未手动调整，则等于历史基线值；调整后取调整值。</span></span></span>
-        <span class="result-val" id="resUnitPrice">--</span>
+        <span class="result-current" id="curUnitPrice"></span><span class="result-arrow" id="arrUnitPrice"></span><span class="result-val" id="resUnitPrice">--</span>
         <span class="result-indicator" id="indUnitPrice"></span>
         <span class="result-deviation" id="devUnitPrice"></span>
       </div>
       <!-- 连带率 -->
       <div class="result-row">
         <span class="result-name">连带率<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间需达到的连带率（已撇除礼品件数）。若未手动调整，则等于历史基线值；调整后取调整值。</span></span></span>
-        <span class="result-val" id="resConnRate">--</span>
+        <span class="result-current" id="curConnRate"></span><span class="result-arrow" id="arrConnRate"></span><span class="result-val" id="resConnRate">--</span>
         <span class="result-indicator" id="indConnRate"></span>
         <span class="result-deviation" id="devConnRate"></span>
       </div>
       <!-- 客单量 -->
       <div class="result-row">
         <span class="result-name">客单量<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间每周需达成的交易笔数（周均），为独立可调参数，不会因件单价或连带率变化而自动调整。</span></span></span>
-        <span class="result-val" id="resCustCount">--</span>
+        <span class="result-current" id="curCustCount"></span><span class="result-arrow" id="arrCustCount"></span><span class="result-val" id="resCustCount">--</span>
         <span class="result-indicator" id="indCustCount"></span>
         <span class="result-deviation" id="devCustCount"></span>
       </div>
       <!-- 客单价 -->
       <div class="result-row">
         <span class="result-name">客单价<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">每笔交易的平均金额 = 连带率 × 件单价（均已撇除礼品单），为派生值，不可独立调整。</span></span></span>
-        <span class="result-val" id="resCustPrice">--</span>
+        <span class="result-current" id="curCustPrice"></span><span class="result-arrow" id="arrCustPrice"></span><span class="result-val" id="resCustPrice">--</span>
         <span class="result-indicator" id="indCustPrice"></span>
         <span class="result-deviation" id="devCustPrice"></span>
       </div>
@@ -4171,7 +4183,7 @@ function resetFromStore() {
 }
 
 function clearResult() {
-  ['resUnitPrice','resConnRate','resCustCount','resCustPrice'].forEach(id => {
+  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice'].forEach(id => {
     document.getElementById(id).textContent = '--';
   });
   document.getElementById('resWeeklySales').textContent = '--';
@@ -12570,7 +12582,7 @@ function ct_resetFromStore() {
 }
 
 function ct_clearResult() {
-  ['resUnitPrice','resConnRate','resCustCount','resCustPrice'].forEach(id => {
+  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice'].forEach(id => {
     document.getElementById(id).textContent = '--';
   });
   document.getElementById('resWeeklySales').textContent = '--';
@@ -12825,6 +12837,14 @@ function ct_renderResult() {
 
   if (r.isOverAchieved) {
     ct_clearResult();
+    document.getElementById('curUnitPrice').textContent = '';
+    document.getElementById('arrUnitPrice').textContent = '';
+    document.getElementById('curConnRate').textContent = '';
+    document.getElementById('arrConnRate').textContent = '';
+    document.getElementById('curCustCount').textContent = '';
+    document.getElementById('arrCustCount').textContent = '';
+    document.getElementById('curCustPrice').textContent = '';
+    document.getElementById('arrCustPrice').textContent = '';
     document.getElementById('resCustCount').textContent = '已超额完成！';
     document.getElementById('resWeeklySales').textContent = '🎉';
     document.getElementById('resEstimatedTotal').textContent = '🎉';
@@ -12835,25 +12855,45 @@ function ct_renderResult() {
 
   const bl = ct_state.baseline;
 
-  document.getElementById('resUnitPrice').textContent = Math.round(r.unitPrice) + '元';
+  // 件单价：当前值 vs 需达到值
+  const curUP = Math.round(bl.unitPrice);
+  const resUP = Math.round(r.unitPrice);
+  document.getElementById('curUnitPrice').textContent = (curUP === resUP) ? '' : (curUP + '元');
+  document.getElementById('arrUnitPrice').textContent = (curUP === resUP) ? '' : '→';
+  document.getElementById('resUnitPrice').textContent = resUP + '元';
   const devUP = r.unitPrice / bl.unitPrice - 1;
   document.getElementById('indUnitPrice').innerHTML = ct_getDeviationIndicator('rate', devUP);
   document.getElementById('devUnitPrice').textContent =
     ct_formatPct(devUP) + '（差' + Math.round(Math.abs(r.unitPrice - bl.unitPrice)) + '元）';
 
-  document.getElementById('resConnRate').textContent = r.connRate.toFixed(2);
+  // 连带率：当前值 vs 需达到值
+  const curCR = bl.connRate.toFixed(2);
+  const resCR = r.connRate.toFixed(2);
+  document.getElementById('curConnRate').textContent = (curCR === resCR) ? '' : curCR;
+  document.getElementById('arrConnRate').textContent = (curCR === resCR) ? '' : '→';
+  document.getElementById('resConnRate').textContent = resCR;
   const devCR = r.connRate / bl.connRate - 1;
   document.getElementById('indConnRate').innerHTML = ct_getDeviationIndicator('rate', devCR);
   document.getElementById('devConnRate').textContent =
     ct_formatPct(devCR) + '（差' + Math.abs(r.connRate - bl.connRate).toFixed(2) + '件）';
 
-  document.getElementById('resCustCount').textContent = Math.round(r.weeklyCustCount) + '笔/周';
+  // 客单量：当前值 vs 需达到值
+  const curCC = Math.round(bl.custCountWeekly);
+  const resCC = Math.round(r.weeklyCustCount);
+  document.getElementById('curCustCount').textContent = (curCC === resCC) ? '' : (curCC + '笔/周');
+  document.getElementById('arrCustCount').textContent = (curCC === resCC) ? '' : '→';
+  document.getElementById('resCustCount').textContent = resCC + '笔/周';
   const devCC = r.weeklyCustCount / (ct_state.params.targetCustCount || bl.custCountWeekly) - 1;
   document.getElementById('indCustCount').innerHTML = ct_getDeviationIndicator('volume', devCC);
   document.getElementById('devCustCount').textContent =
     ct_formatPct(devCC) + '（差' + Math.round(Math.abs(r.weeklyCustCount - (ct_state.params.targetCustCount || bl.custCountWeekly))) + '笔/周）';
 
-  document.getElementById('resCustPrice').textContent = Math.round(r.custPrice) + '元';
+  // 客单价：当前值 vs 需达到值
+  const curCP = Math.round(bl.custPrice);
+  const resCP = Math.round(r.custPrice);
+  document.getElementById('curCustPrice').textContent = (curCP === resCP) ? '' : (curCP + '元');
+  document.getElementById('arrCustPrice').textContent = (curCP === resCP) ? '' : '→';
+  document.getElementById('resCustPrice').textContent = resCP + '元';
   const devCP = r.custPrice / bl.custPrice - 1;
   document.getElementById('indCustPrice').innerHTML = ct_getDeviationIndicator('volume', devCP);
   document.getElementById('devCustPrice').textContent =
