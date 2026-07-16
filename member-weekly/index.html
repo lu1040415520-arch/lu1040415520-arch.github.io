@@ -12372,6 +12372,7 @@ function ct_computeStoreAnalysis(storeCode) {
     },
     weekendMultiplier: Math.round(weekendMultiplier * 100) / 100,
     layers: ct_getStoreLayers(storeName),
+    lastWeek: summary.last_week || null,
   };
 }
 
