@@ -1838,17 +1838,6 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
 }
 .calc-tool .app-header .title-area h1 { font-size: 17px; font-weight: 600; letter-spacing: 0.5px; }
 .calc-tool .app-header .title-area p { font-size: 11px; opacity: 0.75; margin-top: 1px; }
-.calc-tool .app-header .ds-toggle {
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.calc-tool .app-header .ds-toggle.api { background: rgba(255,255,255,0.3); }
 /* ===== 内容区 ===== */
 .calc-tool .content { padding: 14px; }
 /* ===== 卡片通用 ===== */
@@ -2315,21 +2304,6 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
   text-align: center;
 }
 .calc-tool .toast.show { opacity: 1; }
-/* ===== 数据源标记 ===== */
-.calc-tool .data-source-tag {
-  font-size: 10px;
-  color: var(--gray-400);
-  text-align: center;
-  padding: 10px 0 0;
-}
-.calc-tool .data-source-tag .dot {
-  display: inline-block;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  margin-right: 3px;
-  vertical-align: middle;
-}
-.calc-tool .dot.mock { background: var(--warning); }
 .calc-tool .dot.api { background: var(--success); }
 /* ===== 错误提示 ===== */
 .calc-tool .error-msg {
@@ -3449,7 +3423,7 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
       <h1>🎯 业绩倒推测算</h1>
       <p>朵以门店年度目标拆解工具</p>
     </div>
-    <div class="ds-toggle" id="dsToggle" style="cursor:default;font-size:9px;opacity:0.7;">JSON模式</div>
+    
   </div>
 
   <div class="content">
@@ -3729,12 +3703,6 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
           <strong>周末倍数：</strong>从全年日维度数据自动算出「周末日均销售额 ÷ 工作日日均销售额」，可微调。
         </div>
       </div>
-    </div>
-
-    <!-- 数据源标记 -->
-    <div class="data-source-tag" id="dataSourceTag">
-      <span class="dot mock" id="sourceDot"></span>
-      <span id="sourceText">Mock 模拟数据</span>
     </div>
   </div>
 </div>
