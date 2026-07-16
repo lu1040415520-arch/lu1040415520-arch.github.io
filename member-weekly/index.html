@@ -2194,6 +2194,13 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
   margin-right: 4px;
   white-space: nowrap;
 }
+.calc-tool .result-diff {
+  font-size: 11px;
+  margin-left: 2px;
+  font-weight: 500;
+}
+.calc-tool .result-diff.pos { color: #e8913a; }
+.calc-tool .result-diff.neg { color: #e05050; }
 .calc-tool .result-arrow {
   font-size: 12px;
   color: var(--primary);
@@ -3608,28 +3615,28 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
       <!-- 件单价 -->
       <div class="result-row">
         <span class="result-name">件单价<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间需达到的件单价（已撇除礼品单）。若未手动调整，则等于历史基线值；调整后取调整值。</span></span></span>
-        <span class="result-current" id="curUnitPrice"></span><span class="result-arrow" id="arrUnitPrice"></span><span class="result-val" id="resUnitPrice">--</span>
+        <span class="result-current" id="curUnitPrice"></span><span class="result-diff" id="diffUnitPrice"></span><span class="result-arrow" id="arrUnitPrice"></span><span class="result-val" id="resUnitPrice">--</span>
         <span class="result-indicator" id="indUnitPrice"></span>
         <span class="result-deviation" id="devUnitPrice"></span>
       </div>
       <!-- 连带率 -->
       <div class="result-row">
         <span class="result-name">连带率<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间需达到的连带率（已撇除礼品件数）。若未手动调整，则等于历史基线值；调整后取调整值。</span></span></span>
-        <span class="result-current" id="curConnRate"></span><span class="result-arrow" id="arrConnRate"></span><span class="result-val" id="resConnRate">--</span>
+        <span class="result-current" id="curConnRate"></span><span class="result-diff" id="diffConnRate"></span><span class="result-arrow" id="arrConnRate"></span><span class="result-val" id="resConnRate">--</span>
         <span class="result-indicator" id="indConnRate"></span>
         <span class="result-deviation" id="devConnRate"></span>
       </div>
       <!-- 客单量 -->
       <div class="result-row">
         <span class="result-name">客单量<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间每周需达成的交易笔数（周均），为独立可调参数，不会因件单价或连带率变化而自动调整。</span></span></span>
-        <span class="result-current" id="curCustCount"></span><span class="result-arrow" id="arrCustCount"></span><span class="result-val" id="resCustCount">--</span>
+        <span class="result-current" id="curCustCount"></span><span class="result-diff" id="diffCustCount"></span><span class="result-arrow" id="arrCustCount"></span><span class="result-val" id="resCustCount">--</span>
         <span class="result-indicator" id="indCustCount"></span>
         <span class="result-deviation" id="devCustCount"></span>
       </div>
       <!-- 客单价 -->
       <div class="result-row">
         <span class="result-name">客单价<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">每笔交易的平均金额 = 连带率 × 件单价（均已撇除礼品单），为派生值，不可独立调整。</span></span></span>
-        <span class="result-current" id="curCustPrice"></span><span class="result-arrow" id="arrCustPrice"></span><span class="result-val" id="resCustPrice">--</span>
+        <span class="result-current" id="curCustPrice"></span><span class="result-diff" id="diffCustPrice"></span><span class="result-arrow" id="arrCustPrice"></span><span class="result-val" id="resCustPrice">--</span>
         <span class="result-indicator" id="indCustPrice"></span>
         <span class="result-deviation" id="devCustPrice"></span>
       </div>
@@ -4204,7 +4211,7 @@ function resetFromStore() {
 }
 
 function clearResult() {
-  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice'].forEach(id => {
+  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice','diffUnitPrice','diffConnRate','diffCustCount','diffCustPrice'].forEach(id => {
     document.getElementById(id).textContent = '--';
   });
   document.getElementById('resWeeklySales').textContent = '--';
@@ -12623,7 +12630,7 @@ function ct_resetFromStore() {
 }
 
 function ct_clearResult() {
-  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice'].forEach(id => {
+  ['resUnitPrice','resConnRate','resCustCount','resCustPrice','curUnitPrice','curConnRate','curCustCount','curCustPrice','arrUnitPrice','arrConnRate','arrCustCount','arrCustPrice','diffUnitPrice','diffConnRate','diffCustCount','diffCustPrice'].forEach(id => {
     document.getElementById(id).textContent = '--';
   });
   document.getElementById('resWeeklySales').textContent = '--';
@@ -12904,6 +12911,7 @@ function ct_renderResult() {
   const resUP = Math.round(r.unitPrice);
   var lwOn = !document.getElementById('lwToggle').classList.contains('off');
   document.getElementById('curUnitPrice').textContent = (lwOn && lw && curUP !== resUP) ? (curUP + '元') : ((lwOn && !lw) ? '--元' : '');
+  if (lwOn && lw) { var dUP = curUP - resUP; document.getElementById('diffUnitPrice').textContent = (dUP >= 0 ? '+' : '') + dUP + '元'; document.getElementById('diffUnitPrice').className = 'result-diff ' + (dUP >= 0 ? 'pos' : 'neg'); } else { document.getElementById('diffUnitPrice').textContent = ''; }
   document.getElementById('arrUnitPrice').textContent = (lwOn && lw && curUP !== resUP) ? '→' : '';
   document.getElementById('resUnitPrice').textContent = resUP + '元';
   const devUP = r.unitPrice / bl.unitPrice - 1;
@@ -12915,6 +12923,7 @@ function ct_renderResult() {
   const curCR = lw ? lw.conn_rate.toFixed(2) : '--';
   const resCR = r.connRate.toFixed(2);
   document.getElementById('curConnRate').textContent = (lwOn && lw && curCR !== resCR) ? curCR : ((lwOn && !lw) ? '--' : '');
+  if (lwOn && lw) { var dCR = (lw.conn_rate - r.connRate).toFixed(2); document.getElementById('diffConnRate').textContent = (dCR >= 0 ? '+' : '') + dCR; document.getElementById('diffConnRate').className = 'result-diff ' + (parseFloat(dCR) >= 0 ? 'pos' : 'neg'); } else { document.getElementById('diffConnRate').textContent = ''; }
   document.getElementById('arrConnRate').textContent = (lwOn && lw && curCR !== resCR) ? '→' : '';
   document.getElementById('resConnRate').textContent = resCR;
   const devCR = r.connRate / bl.connRate - 1;
@@ -12926,6 +12935,7 @@ function ct_renderResult() {
   const curCC = lw ? lw.cust_count_weekly : '--';
   const resCC = Math.round(r.weeklyCustCount);
   document.getElementById('curCustCount').textContent = (lwOn && lw && curCC !== resCC) ? (curCC + '笔/周') : ((lwOn && !lw) ? '--笔/周' : '');
+  if (lwOn && lw) { var dCC = curCC - resCC; document.getElementById('diffCustCount').textContent = (dCC >= 0 ? '+' : '') + dCC + '笔'; document.getElementById('diffCustCount').className = 'result-diff ' + (dCC >= 0 ? 'pos' : 'neg'); } else { document.getElementById('diffCustCount').textContent = ''; }
   document.getElementById('arrCustCount').textContent = (lwOn && lw && curCC !== resCC) ? '→' : '';
   document.getElementById('resCustCount').textContent = resCC + '笔/周';
   const devCC = r.weeklyCustCount / (ct_state.params.targetCustCount || bl.custCountWeekly) - 1;
@@ -12937,6 +12947,7 @@ function ct_renderResult() {
   const curCP = lw ? Math.round(lw.cust_price) : '--';
   const resCP = Math.round(r.custPrice);
   document.getElementById('curCustPrice').textContent = (lwOn && lw && curCP !== resCP) ? (curCP + '元') : ((lwOn && !lw) ? '--元' : '');
+  if (lwOn && lw) { var dCP = curCP - resCP; document.getElementById('diffCustPrice').textContent = (dCP >= 0 ? '+' : '') + dCP + '元'; document.getElementById('diffCustPrice').className = 'result-diff ' + (dCP >= 0 ? 'pos' : 'neg'); } else { document.getElementById('diffCustPrice').textContent = ''; }
   document.getElementById('arrCustPrice').textContent = (lwOn && lw && curCP !== resCP) ? '→' : '';
   document.getElementById('resCustPrice').textContent = resCP + '元';
   const devCP = r.custPrice / bl.custPrice - 1;
