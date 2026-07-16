@@ -2167,6 +2167,27 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
   display: inline-flex;
   align-items: center;
 }
+/* 上周实绩开关 */
+.calc-tool .lw-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e8f0ec;
+  color: #07643C;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  vertical-align: middle;
+  margin-left: 6px;
+  user-select: none;
+}
+.calc-tool .lw-toggle:hover { background: #d0e4d8; }
+.calc-tool .lw-toggle.off { background: #eee; color: #bbb; }
+.calc-tool .lw-toggle.off:hover { background: #e0e0e0; }
+
 .calc-tool .result-current {
   font-size: 13px;
   color: var(--gray-400);
@@ -3583,7 +3604,7 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
 
     <!-- 5. 测算结果 -->
     <div class="card result-section" id="resultCard" style="display:none;">
-      <div class="card-title" style="color:var(--primary);">── 测算结果（周均） ──</div>
+      <div class="card-title" style="color:var(--primary);display:flex;align-items:center;gap:0;">── 测算结果（周均） ──<span class="lw-toggle" id="lwToggle" onclick="ct_toggleLastWeek()" title="显示/隐藏上周实绩">📊</span></div>
       <!-- 件单价 -->
       <div class="result-row">
         <span class="result-name">件单价<span class="tip-icon" onclick="ct_ct_toggleTip(this)">ⓘ<span class="tip-popup">剩余期间需达到的件单价（已撇除礼品单）。若未手动调整，则等于历史基线值；调整后取调整值。</span></span></span>
@@ -12380,6 +12401,21 @@ function ct_computeStoreAnalysis(storeCode) {
 //  事件处理
 // ============================================================
 
+// 上周实绩开关
+function ct_toggleLastWeek() {
+  var el = document.getElementById('lwToggle');
+  var show = !el.classList.contains('off');
+  el.classList.toggle('off');
+  // 隐藏/显示所有current和arrow
+  var curs = document.querySelectorAll('.result-current, .result-arrow');
+  curs.forEach(function(s) { s.style.display = show ? 'none' : ''; });
+  // 切换后，如果关了，重新渲染结果区（让当前值不显示）
+  // 如果开了，重新渲染（让当前值显示）
+  if (typeof ct_state !== 'undefined' && ct_state.lastWeek) {
+    ct_renderResult();
+  }
+}
+
 async function ct_init() {
   ct_showLoading(true);
   try {
@@ -12866,8 +12902,9 @@ function ct_renderResult() {
   // 件单价：上周实绩 vs 需达到值
   const curUP = lw ? Math.round(lw.unit_price) : '--';
   const resUP = Math.round(r.unitPrice);
-  document.getElementById('curUnitPrice').textContent = (lw && curUP !== resUP) ? (curUP + '元') : (lw ? '' : '--元');
-  document.getElementById('arrUnitPrice').textContent = (lw && curUP !== resUP) ? '→' : '';
+  var lwOn = !document.getElementById('lwToggle').classList.contains('off');
+  document.getElementById('curUnitPrice').textContent = (lwOn && lw && curUP !== resUP) ? (curUP + '元') : ((lwOn && !lw) ? '--元' : '');
+  document.getElementById('arrUnitPrice').textContent = (lwOn && lw && curUP !== resUP) ? '→' : '';
   document.getElementById('resUnitPrice').textContent = resUP + '元';
   const devUP = r.unitPrice / bl.unitPrice - 1;
   document.getElementById('indUnitPrice').innerHTML = ct_getDeviationIndicator('rate', devUP);
@@ -12877,8 +12914,8 @@ function ct_renderResult() {
   // 连带率：上周实绩 vs 需达到值
   const curCR = lw ? lw.conn_rate.toFixed(2) : '--';
   const resCR = r.connRate.toFixed(2);
-  document.getElementById('curConnRate').textContent = (lw && curCR !== resCR) ? curCR : (lw ? '' : '--');
-  document.getElementById('arrConnRate').textContent = (lw && curCR !== resCR) ? '→' : '';
+  document.getElementById('curConnRate').textContent = (lwOn && lw && curCR !== resCR) ? curCR : ((lwOn && !lw) ? '--' : '');
+  document.getElementById('arrConnRate').textContent = (lwOn && lw && curCR !== resCR) ? '→' : '';
   document.getElementById('resConnRate').textContent = resCR;
   const devCR = r.connRate / bl.connRate - 1;
   document.getElementById('indConnRate').innerHTML = ct_getDeviationIndicator('rate', devCR);
@@ -12888,8 +12925,8 @@ function ct_renderResult() {
   // 客单量：上周实绩 vs 需达到值
   const curCC = lw ? lw.cust_count_weekly : '--';
   const resCC = Math.round(r.weeklyCustCount);
-  document.getElementById('curCustCount').textContent = (lw && curCC !== resCC) ? (curCC + '笔/周') : (lw ? '' : '--笔/周');
-  document.getElementById('arrCustCount').textContent = (lw && curCC !== resCC) ? '→' : '';
+  document.getElementById('curCustCount').textContent = (lwOn && lw && curCC !== resCC) ? (curCC + '笔/周') : ((lwOn && !lw) ? '--笔/周' : '');
+  document.getElementById('arrCustCount').textContent = (lwOn && lw && curCC !== resCC) ? '→' : '';
   document.getElementById('resCustCount').textContent = resCC + '笔/周';
   const devCC = r.weeklyCustCount / (ct_state.params.targetCustCount || bl.custCountWeekly) - 1;
   document.getElementById('indCustCount').innerHTML = ct_getDeviationIndicator('volume', devCC);
@@ -12899,8 +12936,8 @@ function ct_renderResult() {
   // 客单价：上周实绩 vs 需达到值
   const curCP = lw ? Math.round(lw.cust_price) : '--';
   const resCP = Math.round(r.custPrice);
-  document.getElementById('curCustPrice').textContent = (lw && curCP !== resCP) ? (curCP + '元') : (lw ? '' : '--元');
-  document.getElementById('arrCustPrice').textContent = (lw && curCP !== resCP) ? '→' : '';
+  document.getElementById('curCustPrice').textContent = (lwOn && lw && curCP !== resCP) ? (curCP + '元') : ((lwOn && !lw) ? '--元' : '');
+  document.getElementById('arrCustPrice').textContent = (lwOn && lw && curCP !== resCP) ? '→' : '';
   document.getElementById('resCustPrice').textContent = resCP + '元';
   const devCP = r.custPrice / bl.custPrice - 1;
   document.getElementById('indCustPrice').innerHTML = ct_getDeviationIndicator('volume', devCP);
