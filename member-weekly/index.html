@@ -7037,21 +7037,21 @@ function renderAreaDiagCards() {
   const statusTag = hasRed ? '🔴 需紧急关注' : hasYellow ? '🟡 需关注' : '🟢 运行正常';
   const statusBg = hasRed ? '#fde8e8' : hasYellow ? '#fef9e7' : '#e8f5ee';
 
-  /* ===== 布局：上排两卡并列 + 下方全宽诊断内容 ===== */
+  /* ===== 布局：区域诊断卡（上）+ 门店诊断矩阵（下），各自独占页宽 ===== */
   let h = '';
 
-  /* ── 上排：区域诊断卡（左）+ 门店诊断矩阵（右）── */
-  h += `<div style="display:flex;gap:16px;margin-bottom:24px;${isMobile()?'flex-direction:column':''}">`;
+  /* ── 上：区域诊断卡（独占页宽）── */
+  h += `<div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">`;
 
-  /* === 左卡：区域诊断 === */
-  h += `<div class="area-detail-panel" style="flex:1;min-width:0">
+  /* === 上卡：区域诊断 === */
+  h += `<div class="area-detail-panel" style="width:100%">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <h4 style="margin:0;padding:0;border:0">🔍 ${area.supervisor} 区域诊断</h4>
       <span style="font-size:13px;padding:4px 12px;border-radius:12px;background:${statusBg};color:var(--text)">${statusTag}</span>
     </div>`;
 
   /* 红绿灯指标矩阵 3×3 */
-  h += `<div style="display:grid;grid-template-columns:repeat(isMobile()?2:3,1fr);gap:10px">`;
+  h += `<div style="display:grid;grid-template-columns:repeat(${isMobile()?2:3},1fr);gap:10px">`;
   metricDefs.forEach(m => {
     const light = lights[m.key];
     h += `<div style="background:${lightColors[light]};border:1px solid ${lightBorders[light]};border-radius:8px;padding:10px 12px;text-align:center">
@@ -7062,8 +7062,8 @@ function renderAreaDiagCards() {
   });
   h += `</div></div>`;
 
-  /* === 右卡：门店诊断矩阵 === */
-  h += `<div class="area-detail-panel" style="flex:1;min-width:0">
+  /* === 下卡：门店诊断矩阵（独占页宽）=== */
+  h += `<div class="area-detail-panel" style="width:100%">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <h4 style="margin:0;padding:0;border:0">📊 门店诊断矩阵</h4>
       <select id="selDiagDim" onchange="_diagDimFilter=this.value;renderAreaDiagCards()">
@@ -10057,7 +10057,7 @@ function renderValuecardSection() {
   // 渗透率/消费占比/净流入 — 三列指标卡同行
   const tlEl = document.getElementById('vcTrafficLights');
   if (tlEl) {
-    tlEl.innerHTML = `<div class="metrics-row" style="width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    tlEl.innerHTML = `<div class="metrics-row" style="width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card">
         <div class="metric-label"><span class="v3-tip">储值渗透率<span class="v3-tip-text">储值余额>0的会员占有效会员的比例</span></span></div>
         <div class="metric-value num">${ex.vc_penetration}%</div>
@@ -10079,7 +10079,7 @@ function renderValuecardSection() {
   // Metrics rows — adapt to screen width
   const m1El = document.getElementById('vcMetricsRow1');
   if (m1El) {
-    m1El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    m1El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值本金<span class="v3-tip-text">本周所有门店储值充值的本金总额</span></span></div><div class="metric-value num" style="color:var(--accent)">${fmtMoney(vc.recharge_principal)}</div><div class="metric-delta delta-down num">↓ 7.8%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值赠金<span class="v3-tip-text">本周储值充值时系统赠送的赠金总额</span></span></div><div class="metric-value num" style="color:var(--accent)">${fmtMoney(vc.recharge_bonus)}</div><div class="metric-delta delta-down num">↓ 6.2%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充赠比<span class="v3-tip-text">周充值赠金 ÷ 周充值本金 × 100%</span></span></div><div class="metric-value num" style="color:var(--primary)">${ex.vc_bonus_ratio}%</div><div class="metric-delta delta-up num">↑ 2.2%</div></div>
@@ -10087,7 +10087,7 @@ function renderValuecardSection() {
   }
   const m2El = document.getElementById('vcMetricsRow2');
   if (m2El) {
-    m2El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    m2El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值笔数<span class="v3-tip-text">本周发生储值充值的总笔数</span></span></div><div class="metric-value num" style="color:var(--primary)">${vc.recharge_count}</div><div class="metric-delta delta-down num">↓ 11.7%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">笔均充值<span class="v3-tip-text">周充值本金 ÷ 周充值笔数</span></span></div><div class="metric-value num" style="color:var(--primary)">¥${fmt(ex.vc_recharge_avg)}</div><div class="metric-delta delta-up num">↑ 4.3%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周消费笔数<span class="v3-tip-text">本周使用储值余额支付的总笔数</span></span></div><div class="metric-value num" style="color:var(--chart3)">${vc.consume_count}</div><div class="metric-delta delta-down num">↓ 9.8%</div></div>
