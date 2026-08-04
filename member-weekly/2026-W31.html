@@ -7051,7 +7051,7 @@ function renderAreaDiagCards() {
     </div>`;
 
   /* 红绿灯指标矩阵 3×3 */
-  h += `<div style="display:grid;grid-template-columns:repeat(isMobile()?2:3,1fr);gap:10px">`;
+  h += `<div style="display:grid;grid-template-columns:repeat(${isMobile()?2:3},1fr);gap:10px">`;
   metricDefs.forEach(m => {
     const light = lights[m.key];
     h += `<div style="background:${lightColors[light]};border:1px solid ${lightBorders[light]};border-radius:8px;padding:10px 12px;text-align:center">
@@ -10057,7 +10057,7 @@ function renderValuecardSection() {
   // 渗透率/消费占比/净流入 — 三列指标卡同行
   const tlEl = document.getElementById('vcTrafficLights');
   if (tlEl) {
-    tlEl.innerHTML = `<div class="metrics-row" style="width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    tlEl.innerHTML = `<div class="metrics-row" style="width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card">
         <div class="metric-label"><span class="v3-tip">储值渗透率<span class="v3-tip-text">储值余额>0的会员占有效会员的比例</span></span></div>
         <div class="metric-value num">${ex.vc_penetration}%</div>
@@ -10079,7 +10079,7 @@ function renderValuecardSection() {
   // Metrics rows — adapt to screen width
   const m1El = document.getElementById('vcMetricsRow1');
   if (m1El) {
-    m1El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    m1El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值本金<span class="v3-tip-text">本周所有门店储值充值的本金总额</span></span></div><div class="metric-value num" style="color:var(--accent)">${fmtMoney(vc.recharge_principal)}</div><div class="metric-delta delta-down num">↓ 7.8%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值赠金<span class="v3-tip-text">本周储值充值时系统赠送的赠金总额</span></span></div><div class="metric-value num" style="color:var(--accent)">${fmtMoney(vc.recharge_bonus)}</div><div class="metric-delta delta-down num">↓ 6.2%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充赠比<span class="v3-tip-text">周充值赠金 ÷ 周充值本金 × 100%</span></span></div><div class="metric-value num" style="color:var(--primary)">${ex.vc_bonus_ratio}%</div><div class="metric-delta delta-up num">↑ 2.2%</div></div>
@@ -10087,7 +10087,7 @@ function renderValuecardSection() {
   }
   const m2El = document.getElementById('vcMetricsRow2');
   if (m2El) {
-    m2El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(isMobile()?2:3,1fr)">
+    m2El.innerHTML = `<div class="metrics-row" style="margin-bottom:12px;width:100%;grid-template-columns:repeat(${isMobile()?2:3},1fr)">
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周充值笔数<span class="v3-tip-text">本周发生储值充值的总笔数</span></span></div><div class="metric-value num" style="color:var(--primary)">${vc.recharge_count}</div><div class="metric-delta delta-down num">↓ 11.7%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">笔均充值<span class="v3-tip-text">周充值本金 ÷ 周充值笔数</span></span></div><div class="metric-value num" style="color:var(--primary)">¥${fmt(ex.vc_recharge_avg)}</div><div class="metric-delta delta-up num">↑ 4.3%</div></div>
       <div class="metric-card"><div class="metric-label"><span class="v3-tip">周消费笔数<span class="v3-tip-text">本周使用储值余额支付的总笔数</span></span></div><div class="metric-value num" style="color:var(--chart3)">${vc.consume_count}</div><div class="metric-delta delta-down num">↓ 9.8%</div></div>
@@ -10381,7 +10381,7 @@ function renderValuecardSection() {
     aHtml += `<div class="card-title"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--danger)"></span> 检测周期：${anomalyData.period}</div>`;
 
     // Stat cards
-    aHtml += '<div style="display:grid;grid-template-columns:repeat(isMobile()?1:3,1fr);gap:12px;margin-bottom:16px">';
+    aHtml += '<div style="display:grid;grid-template-columns:repeat(' + (isMobile()?1:3) + ',1fr);gap:12px;margin-bottom:16px">';
     (anomalyData.stats||[]).forEach(st => {
       const bg = st.type==='danger'?'var(--danger)':st.type==='warn'?'var(--accent)':'var(--primary)';
       const bgLight = st.type==='danger'?'rgba(207,34,46,0.08)':st.type==='warn'?'rgba(232,145,58,0.08)':'var(--primary-bg)';
