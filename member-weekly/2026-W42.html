@@ -3066,7 +3066,7 @@ select option { background: #fff; color: var(--text-main); padding: 6px 12px; }
 #meetingTableWrap { display:none; }
 .tm-scroll { overflow-x:auto; background:var(--card,#fff); border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
 table.tm-table { border-collapse:collapse; font-size:12px; min-width:100%; }
-.tm-table th, .tm-table td { border-bottom:1px solid #f0f0f0; padding:6px 8px; text-align:right; white-space:nowrap; }
+.tm-table th, .tm-table td { border-bottom:1px solid #f0f0f0; padding:6px 8px; text-align:center; white-space:nowrap; }
 .tm-table thead th { background:#f7faf8; color:var(--text-sub); font-weight:500; position:sticky; top:0; z-index:3; }
 .tm-table thead tr.tm-grp th { background:#eef5f0; color:var(--primary-dark,#07643C); font-weight:600; text-align:center; border-left:1px solid #e3ece6; }
 .tm-table td.tm-store, .tm-table th.tm-store { position:sticky; left:0; background:#fff; z-index:2; text-align:left; font-weight:600; box-shadow:1px 0 0 #f0f0f0; }
@@ -3076,7 +3076,7 @@ table.tm-table { border-collapse:collapse; font-size:12px; min-width:100%; }
 .tm-table tr:hover td.tm-store { background:#eef5f0; }
 .tm-sub { display:block; font-size:10px; color:#9ca3af; font-weight:400; margin-top:1px; }
 .tm-sub .up { color:#dc2626; } .tm-sub .down { color:#16a34a; }
-.tm-th-cell { display:flex; align-items:center; justify-content:flex-end; gap:3px; }
+.tm-th-cell { display:flex; align-items:center; justify-content:center; gap:3px; }
 .tm-th-ops { display:inline-flex; gap:2px; opacity:.35; }
 .tm-th-ops:hover, .tm-th-ops.active { opacity:1; }
 .tm-th-ops button { border:none; background:none; cursor:pointer; font-size:11px; padding:1px 2px; color:var(--text-sub); }
@@ -13659,11 +13659,11 @@ TABLE_DATA = {"snapshot_date": "2026-10-18", "stores": [{"name": "东莞黄江�
     const mk = (label, base) => {
       if (base === null || base === undefined) return '';
       const diff = cur - base;
-      const sign = diff > 0 ? '+' : '';
       const cls = diff > 0 ? 'up' : diff < 0 ? 'down' : '';
       const d = METRIC_DIGIT[m];
       const abs = Math.abs(diff).toLocaleString('zh-CN', {minimumFractionDigits: d, maximumFractionDigits: d});
-      return `<span class="${cls}">${label}${sign}${diff === 0 ? '0' : (diff > 0 ? '+' : '-') + abs}</span>`;
+      const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+      return `<span class="${cls}">${label}${sign}${diff === 0 ? '0' : abs}</span>`;
     };
     const p = mk('环', prev), y = mk('同', yoy);
     if (p) parts.push(p); if (y) parts.push(y);
