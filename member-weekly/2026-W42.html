@@ -13675,8 +13675,8 @@ TABLE_DATA = {"snapshot_date": "2026-10-18", "stores": [{"name": "东莞黄江�
     const cols = [];
     TEXT_COLS.forEach(t => cols.push({group: null, key: t, label: t, metric: null}));
     const tiers = tmTier ? [tmTier] : (tmExpand ? ['总', ...TD.tiers] : ['总']);
-    tiers.forEach(tk => {
-      METRICS.forEach(m => cols.push({group: m, key: tk, label: tk, metric: m}));
+    METRICS.forEach(m => {
+      tiers.forEach(tk => cols.push({group: m, key: tk, label: tk, metric: m}));
     });
     return cols.filter(c => !tmHidden.includes(colId(c)));
   }
